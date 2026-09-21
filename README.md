@@ -2,6 +2,9 @@
 
 Hand-coded build of the Book Nook site 
 
+## FIGMA
+https://www.figma.com/design/C8CzTyhKqB1bXOBC3PZxYd/book-nook-website?node-id=117-599&t=c5oMHRM4X3DnWiP2-1
+
 ## Pages built
 
 - `index.html` — Home
@@ -10,6 +13,34 @@ Hand-coded build of the Book Nook site
 - `waitlist.html` — Waitlist sign-up (includes the confirmation state — see Deviations below)
 - `about.html` — About Us
 - `journal.html` — Journal / Blog
+
+## Navigation
+
+```mermaid
+flowchart TD
+    Nav{{Shared header nav — on every page}}
+    Nav --> Home[index.html<br/>Home]
+    Nav --> Explore[explore.html<br/>Explore]
+    Nav --> Features[features.html<br/>Features]
+    Nav --> About[about.html<br/>About]
+    Nav --> Journal[journal.html<br/>Journal]
+
+    Home -.->|"Join the Nook" button| Waitlist
+    Explore -.->|"Join the Nook" button| Waitlist
+    Features -.->|"Join the Nook" button| Waitlist
+    About -.->|"Join the Nook" button| Waitlist
+    Journal -.->|"Join the Nook" button| Waitlist
+
+    subgraph Waitlist[waitlist.html]
+        SignUp[Sign-up panel] -->|form submit, JS in PEC5| Confirm[Confirmation panel, hidden by default]
+    end
+```
+
+Every page shares one header with links to all five top-level pages (so the graph above uses a
+single nav node rather than drawing all 20 page-to-page edges). `waitlist.html` is reached from
+every page via the "Join the Nook" button and is the only page with internal state: the
+confirmation panel exists in the same document, hidden until PEC5's JavaScript swaps it in on
+form submit — see Deviations below for why.
 
 ## Components
 
