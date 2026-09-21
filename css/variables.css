@@ -1,0 +1,49 @@
+:root {
+  /* Book Nook color system */
+  --color-dominant: #2A3244;   /* Dress Blues - text / nav / headers / thin banners */
+  --color-background: #E2C4A6; /* Apricot Illusion — page background */
+  --color-surface: #FBF4EA;    /* Bone — cards / elevated surfaces */
+  --color-accent-1: #56352D;   /* Chocolate Fondant — CTA / links / secondary+tertiary buttons */
+  --color-gold: #FFC233;       /* Gold — ratings/stars only, never on backgrounds directly */
+
+  /* Header & footer */
+  --color-surface-20: rgba(251, 244, 234, 0.2); /* Bone @ 20% — translucent header background over the page */
+  --color-aux8: #C8C3BA;                        /* header bottom border */
+  --color-aux10: #E6E6E1;                       /* light text + icon color, used only on the dark footer background */
+
+  /* Neutrals & tints (new, for book-card / feature-block) */
+  --color-surface-60: rgba(251, 244, 234, 0.6); /* Bone @ 60% opacity */
+  --color-aux4: #4A4E41;                        /* book cover placeholder */
+  --color-text-muted: #70746B;                  /* muted text — book-card author + feature-block body */
+  --color-highlight-body: #756F65;              /* Figma variable "aux4" (type b collection) — NOT the same as --color-aux4 below despite the name collision; used for .highlight card body text and muted body copy under page-intro headings (hero, features-intro, etc.) */
+
+  /* Button system */
+  --color-primary-default: var(--color-accent-1);   /* Accent 1 100% — Primary default fill */
+  --color-accent-1-80: rgba(86, 53, 45, 0.8);        /* Accent 1 @ 80% — Primary hover fill / Tertiary hover text */
+  --color-disabled-fill: #CACCC6;                    /* aux9 — disabled fill, all variants */
+  --color-disabled-text: #938C81;                    /* aux5 — disabled text, all variants */
+  --color-primary-active: rgba(42, 50, 68, 0.8);     /* Dominant @ 80% — Primary active fill */
+  --color-secondary-active: rgba(42, 50, 68, 0.2);   /* Dominant @ 20% — Secondary active tint */
+  --color-secondary-hover: rgba(86, 53, 45, 0.1);    /* Accent 1 @ 10% — Secondary hover tint */
+  --color-secondary-disabled: #B8B4AD;               /* aux7 — Secondary disabled border; also reused for the waitlist email-input border and the confirmation ticket's dashed divider */
+
+  /* Typography */
+  --font-heading: 'Crimson Pro', serif;
+  --font-body: 'Roboto Flex', sans-serif;
+
+  --fs-h1: 36px;
+  --fs-h2: 32px;
+  --fs-h3: 24px;
+  --fs-h4: 20px;
+  --fs-body-1: 16px;
+  --fs-body-2: 16px;
+
+  --fw-bold: 700;      /* H1, H3 */
+  --fw-extrabold: 800; /* H4 */
+  --fw-medium: 500;    /* H2 (italic) */
+  --fw-regular: 400;   /* Body 1 */
+  --fw-semibold: 600;  /* Body 2 */
+
+  --lh-display: 1.2;
+  --lh-body: 1.55;
+}

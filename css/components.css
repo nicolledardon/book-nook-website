@@ -1,0 +1,325 @@
+/* 
+   BUTTON SYSTEM
+   Three variants — primary, secondary, tertiary — each with 5 states:
+   default, hover, active, focus-visible, disabled */
+
+.btn {
+  display: inline-flex; /* button only takes up as much horizontal space as its content needs, instead of stretching */
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 16px;
+  border: 2px solid transparent; /* button's total size doesn't change drastically */ 
+  font-family: var(--font-body);
+  font-size: var(--fs-body-2);
+  font-weight: var(--fw-semibold);
+  line-height: normal;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; /* animate smoothly the state change of buttons */
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-default);
+  color: var(--color-surface);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-1-80);
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-active);
+  border-width: 3px;
+  border-color: var(--color-dominant);
+}
+
+.btn-primary:focus-visible {
+  background-color: var(--color-primary-default);
+  border-width: 3px;
+  border-color: var(--color-dominant);
+  outline: none;
+}
+
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+  background-color: var(--color-disabled-fill);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--color-accent-1);
+  color: var(--color-accent-1);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-accent-1);
+}
+
+.btn-secondary:active {
+  background-color: var(--color-secondary-active);
+  border-color: var(--color-dominant);
+  color: var(--color-dominant);
+}
+
+.btn-secondary:focus-visible {
+  background-color: transparent;
+  border-width: 3px;
+  border-color: var(--color-dominant);
+  outline: none;
+}
+
+.btn-secondary:disabled,
+.btn-secondary[aria-disabled="true"] {
+  background-color: transparent;
+  border-color: var(--color-secondary-disabled);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+.btn-tertiary {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--color-accent-1);
+  text-decoration: none;
+}
+
+.btn-tertiary:hover {
+  color: var(--color-accent-1-80);
+  text-decoration: underline;
+}
+
+.btn-tertiary:active {
+  color: var(--color-dominant);
+  text-decoration: none;
+}
+
+.btn-tertiary:focus-visible {
+  border-width: 3px;
+  border-color: var(--color-dominant);
+  color: var(--color-dominant);
+  outline: none;
+}
+
+.btn-tertiary:disabled,
+.btn-tertiary[aria-disabled="true"] {
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+/* BOOK CARD
+   Reused as-is on Home's Popular Books row and all three
+   Explore rows — cover, title, author, star rating. */
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 300px; /* corrected 2026-09-20 — was a 200px placeholder; the real Figma Book Card is 300px wide */
+  padding: 16px;
+  background-color: var(--color-surface-60);
+  border-radius: 12px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.14);
+}
+
+.book-card__cover {
+  width: 100%;
+  aspect-ratio: 2 / 3; /* standard book-cover proportions; the real covers are ~0.63-0.66 width:height, so this crops almost nothing */
+  border-radius: 8px;
+  background-color: var(--color-aux4);
+  overflow: hidden;
+}
+
+.book-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.book-card__title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: var(--fw-semibold);
+  line-height: 22px;
+  color: var(--color-dominant);
+  text-align: center;
+  width: 100%;
+}
+
+.book-card__author {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-regular);
+  line-height: 20px;
+  color: var(--color-text-muted);
+  text-align: center;
+  width: 100%;
+}
+
+.book-card__rating {
+  display: flex;
+  gap: 3px;
+}
+
+.star {
+  display: inline-block;
+  width: 22px;
+  height: 21px;
+  background-repeat: no-repeat;
+  background-size: 22px 21px;
+}
+
+.star--full {
+  background-image: url("../assets/icons/star.svg");
+}
+
+.star--half {
+  background-image: url("../assets/icons/half_star.svg");
+}
+
+.star--empty {
+  background-image: url("../assets/icons/empty_star.svg");
+}
+
+/* FEATURE BLOCK
+   Features page only — 4 full-width instances that alternate
+   image-left/text-right, then text-left/image-right. Markup
+   order never changes; feature-block-reverse (on blocks 2 & 4
+   in features.html) flips the visual order purely in CSS. */
+
+.feature-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 48px;
+}
+
+.feature-block-reverse {
+  flex-direction: row-reverse;
+}
+
+.feature-block > div:first-child {
+  background-color: var(--color-disabled-text);
+  border-radius: 16px;
+  height: 360px;
+  flex: 1 1 0;
+  max-width: 560px;
+}
+
+.feature-block > div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  flex: 1 1 0;
+  max-width: 560px;
+}
+
+.feature-block p {
+  color: var(--color-text-muted);
+}
+
+
+/* HIGHLIGHTS
+   Home only — "What makes Book Nook different" heading + 4
+   feature-card-compact cards, laid out as a 4-column grid matching
+   the live Figma feature-cards-section/feature-cards-row exactly
+   (318px cards, 24px column gap, 32px row gap, Surface@20% fill,
+   48px Accent-1 icon placeholder, 12px radius). */
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  row-gap: 32px;
+}
+
+.highlights h2 {
+  grid-column: 1 / -1;
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  font-style: normal; /* base.css makes h2 italic + 32px by default — Figma's heading here is 24px, bold, not italic */
+  text-align: center;
+}
+
+.highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 20px;
+  background-color: var(--color-surface-20);
+  border-radius: 12px;
+}
+
+.highlight > div:first-child {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background-color: var(--color-accent-1);
+}
+
+.highlight > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.highlight h3 {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: var(--fw-semibold);
+  font-style: normal;
+  line-height: 22px;
+  color: var(--color-dominant);
+}
+
+.highlight p {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-highlight-body);
+}
+
+/* MOOD CHIP
+   Explore page only — a filter chip that behaves like a button
+   (default / hover / focus / selected). "Cozy" carries .is-selected
+   by default to match Figma's pre-selected state; PEC5 will move that
+   class on click. */
+
+.mood-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-color: var(--color-secondary-hover);
+  color: var(--color-accent-1);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  line-height: 20px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.mood-chip:hover {
+  background-color: var(--color-accent-1-80);
+  color: var(--color-surface);
+}
+
+.mood-chip:focus-visible {
+  outline: none;
+  border-color: var(--color-dominant);
+}
+
+.mood-chip.is-selected {
+  background-color: var(--color-accent-1);
+  color: var(--color-surface);
+}

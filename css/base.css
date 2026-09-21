@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box; /* padding + border count INSIDE the width you set, not added on top */
+  margin: 0;
+  padding: 0;
+}
+
+/* strip the browser's default bullet + indentation */
+ul {
+  list-style: none;
+}
+
+/* Links inherit color/font instead of the browser default */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* <button> elements (nav-toggle, Join the Nook, mood chips,
+   book ratings) lose their native OS chrome */
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Images never overflow their container */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Visually hides an element while keeping it readable to screen readers —
+   used for form <label>s that Figma shows only as an input placeholder. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* BODY DEFAULTS
+   Sets the page-wide font, colors, and line
+   spacing that everything else inherits */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-dominant);
+  line-height: var(--lh-body);
+}
+
+/* TYPE SCALE - headings
+   Crimson Pro across all headings, with each
+   level's own size/weight from variables.css */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  line-height: var(--lh-display);
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-bold);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-medium);
+  font-style: italic;
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+}
+
+h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-extrabold);
+}
+
+/* TYPE SCALE - body text  */
+p {
+  font-size: var(--fs-body-1);
+  font-weight: var(--fw-regular);
+}
