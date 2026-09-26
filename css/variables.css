@@ -72,4 +72,15 @@
 
   /* Effects */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.14);
+
+  /* Border radius scale — these were used throughout components.css via
+     var(--radius-*) but never actually defined here, so every one of
+     those elements was rendering with 0 border-radius (square corners)
+     instead of rounded. Values recovered from the original px scale
+     (8/10/12/16/24px) noted in the corrections checklist and confirmed
+     against the .highlights build notes (10px icon, 12px card). */
+  --radius-sm: 0.5rem;   /* 8px — book-card__cover */
+  --radius-base: 0.625rem; /* 10px — highlight icon */
+  --radius-md: 0.75rem;  /* 12px — book-card, highlight card */
+  --radius-lg: 1.5rem;   /* 24px — buttons, feature-block image, ticket */
 }

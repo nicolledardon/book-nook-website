@@ -4,9 +4,9 @@ main > section { /* only ever touches top-level page sections */
   width: 100%; /* explicit definite width — without this, the auto side margins below disable
                   flex stretch on this item, .popular's width goes indefinite, and .book-row's
                   grid-template-columns: repeat(auto-fill, ...) collapses to a single column */
-  max-width: 1440px;
+  max-width: 90rem;
   margin: 0 auto;
-  padding: 0 48px;
+  padding: 0 var(--space-lg);
 }
 
 
@@ -19,10 +19,10 @@ main > section { /* only ever touches top-level page sections */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  max-width: 960px;
+  gap: var(--space-md);
+  max-width: 60rem;
   margin: 0 auto;
-  padding: 96px 0;
+  padding: var(--space-xl) 0;
   text-align: center;
 }
 
@@ -39,10 +39,10 @@ main > section { /* only ever touches top-level page sections */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  max-width: 960px;
+  gap: var(--space-lg-sm);
+  max-width: 60rem;
   margin: 0 auto;
-  padding-top: 96px;
+  padding-top: var(--space-xl);
   text-align: center;
 }
 
@@ -53,7 +53,7 @@ main > section { /* only ever touches top-level page sections */
 
 .anchor-buttons {
   display: flex;
-  gap: 28px;
+  gap: var(--space-md-plus);
   flex-wrap: wrap;
 }
 
@@ -61,7 +61,7 @@ main > section { /* only ever touches top-level page sections */
    16px (--fs-body-2) — scoped here so the shared .btn-tertiary class
    used elsewhere keeps its documented single size. */
 .anchor-buttons .btn-tertiary {
-  font-size: 14px;
+  font-size: var(--fs-small);
 }
 
 /* EXPLORE — MOOD-BASED BROWSE
@@ -73,8 +73,8 @@ main > section { /* only ever touches top-level page sections */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
-  padding-top: 96px;
+  gap: var(--space-md);
+  padding-top: var(--space-xl);
 }
 
 .mood-browse h1 {
@@ -84,7 +84,7 @@ main > section { /* only ever touches top-level page sections */
 
 .moods {
   display: flex;
-  gap: 12px;
+  gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
@@ -97,10 +97,10 @@ main > section { /* only ever touches top-level page sections */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  max-width: 720px;
+  gap: var(--space-lg-sm);
+  max-width: 45rem;
   margin: 0 auto;
-  padding: 96px 0;
+  padding: var(--space-xl) 0;
   text-align: center;
 }
 
@@ -114,8 +114,8 @@ main > section { /* only ever touches top-level page sections */
 }
 
 .creator-photo {
-  width: 140px;
-  height: 140px;
+  width: 8.75rem;
+  height: 8.75rem;
   border-radius: 50%;
   background-color: var(--color-aux4);
 }
@@ -127,10 +127,10 @@ main > section { /* only ever touches top-level page sections */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  max-width: 720px;
+  gap: var(--space-md);
+  max-width: 45rem;
   margin: 0 auto;
-  padding: 128px 0;
+  padding: var(--space-xxl) 0;
   text-align: center;
 }
 
@@ -141,18 +141,18 @@ main > section { /* only ever touches top-level page sections */
 .signup-form {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .signup-form input[type="email"] {
-  width: 320px;
-  height: 56px;
-  padding: 0 20px;
-  border-radius: 16px;
+  width: 20rem;
+  height: 3.5rem;
+  padding: 0 var(--space-sm-plus);
+  border-radius: 1rem;
   border: 1.5px solid var(--color-secondary-disabled);
   background-color: var(--color-surface);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--fs-body-1);
   color: var(--color-dominant);
 }
 
@@ -174,7 +174,7 @@ main > section { /* only ever touches top-level page sections */
 .confirmation-panel {
   display: flex;
   justify-content: center;
-  padding: 96px 0;
+  padding: var(--space-xl) 0;
 }
 
 /* [hidden] on its own loses to the .confirmation-panel display:flex rule
@@ -190,12 +190,12 @@ main > section { /* only ever touches top-level page sections */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  width: 480px;
-  padding: 48px 40px;
+  gap: var(--space-md);
+  width: 30rem;
+  padding: var(--space-lg) var(--space-lg-offset);
   background-color: var(--color-surface);
   border: 1px solid var(--color-dominant);
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
   text-align: center;
 }
 
@@ -210,12 +210,12 @@ main > section { /* only ever touches top-level page sections */
 
 .queue-badge {
   display: inline-flex;
-  padding: 8px 16px;
-  border-radius: 999px;
+  padding: var(--space-xs) var(--space-base);
+  border-radius: 50%;
   background-color: var(--color-secondary-hover);
   color: var(--color-accent-1);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
 }
 
@@ -226,23 +226,23 @@ main > section { /* only ever touches top-level page sections */
 
 .barcode {
   display: flex;
-  gap: 2px;
-  height: 48px;
+  gap: 0.125rem;
+  height: 3rem;
 }
 
 .barcode__bar {
-  width: 2px;
+  width: 0.125rem;
   height: 100%;
   background-color: var(--color-dominant);
 }
 
-.barcode__bar:nth-child(4n+1) { width: 3px; }
-.barcode__bar:nth-child(4n+2) { width: 1px; }
-.barcode__bar:nth-child(4n+3) { width: 2px; }
-.barcode__bar:nth-child(4n)   { width: 4px; }
+.barcode__bar:nth-child(4n+1) { width: 0.1875rem; }
+.barcode__bar:nth-child(4n+2) { width: 0.0625rem; }
+.barcode__bar:nth-child(4n+3) { width: 0.125rem; }
+.barcode__bar:nth-child(4n)   { width: 0.25rem; }
 
 .confirmation-code {
-  font-size: 13px;
+  font-size: var(--fs-micro);
   color: var(--color-highlight-body);
 }
 
@@ -267,10 +267,10 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 24px 48px;
+  padding: var(--space-md) var(--space-lg);
   background-color: var(--color-surface-20);
-  backdrop-filter: blur(5.3px);
-  -webkit-backdrop-filter: blur(5.3px); /* Safari requires the prefixed version */
+  backdrop-filter: blur(0.33125rem);
+  -webkit-backdrop-filter: blur(0.33125rem); /* Safari requires the prefixed version */
   /*border-bottom: 1px solid var(--color-aux8);*/
 }
 
@@ -282,16 +282,16 @@ header nav {
 
 .logo {
   font-family: var(--font-heading);
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: var(--fw-bold);
-  line-height: 29px;
+  line-height: 1.2;
   color: var(--color-dominant);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: var(--space-lg-sm);
   font-size: var(--fs-body-1);
   font-weight: var(--fw-regular);
   color: var(--color-dominant);
@@ -299,6 +299,90 @@ header nav {
 
 .nav-toggle {
   display: none; /* hidden by default — shown at mobile widths via the media query below */
+}
+
+/* FOOTER
+   Dark 4-column bar: about/tagline — nav links — social — legal */
+
+footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-xl-sm) var(--space-lg);
+  background-color: var(--color-dominant);
+  color: var(--color-aux10);
+}
+
+.footer-about,
+.footer-legal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.footer-about h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
+  font-style: normal;   /* base.css makes h2 italic + 32px by default */
+  line-height: 1.2;
+}
+
+.footer-about p,
+.footer-links a,
+.footer-legal p {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-regular);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md-plus); /* pre-wired for whenever you add the icon elements — no visible effect while it's empty */
+}
+
+
+/* ==========================================================================
+   SECTION RHYTHM
+   96px of vertical breathing room between every top-level section on the
+   page — matches the consistent gap Figma uses between Explore's
+   mood-based-browse / recent-releases / popular-shelves / user-shelves-cta,
+   and between Home's feature-cards-section / popular-books-section. */
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding-top: var(--space-sm-plus);
+  padding-bottom: var(--space-xl-sm);
+}
+
+/* ==========================================================================
+   EXPLORE / BOOK GRID
+   Turns .book-row (Home's "Popular right now" row + all three Explore
+   rows) into a responsive grid instead of a fixed layout. Cards are
+   300px wide with 48px gaps, matching Figma's Book Row exactly — at
+   the 1440px reference width that's 4 columns (4×300 + 3×48 = 1344px,
+   the full container width). On narrower screens columns drop to 3,
+   2, then 1 automatically — no media queries needed. */
+
+.book-row {
+  display: grid;
+  width: 100%; /* explicit definite width — .mood-browse is display:flex with
+                  align-items: flex-start, which shrink-wraps children instead of
+                  stretching them; without this, .book-row has no definite width and
+                  grid-template-columns: repeat(auto-fill, ...) collapses to 1 column,
+                  same root cause as the main > section fix above but for a flex parent
+                  instead of a margin:auto block parent. */
+  grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+  gap: var(--space-lg);
 }
 
 /* HAMBURGER MENU & MOBILE NAVIGATION */
@@ -322,7 +406,7 @@ header nav {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: var(--space-lg-sm);
   font-size: var(--fs-body-1);
   font-weight: var(--fw-regular);
   color: var(--color-dominant);
@@ -336,8 +420,8 @@ body::before {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
   z-index: 98;
   display: none;
 }
@@ -464,8 +548,8 @@ body.nav-open::before {
     flex-direction: column;
     gap: var(--space-md);
     background-color: var(--color-surface-20);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(0.625rem);
+    -webkit-backdrop-filter: blur(0.625rem);
     border-left: 1px solid var(--color-aux8);
     border-bottom: 1px solid var(--color-aux8);
     padding: var(--space-md);
@@ -616,6 +700,6 @@ body.nav-open::before {
   }
   
   .book-row {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
   }
 }
