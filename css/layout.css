@@ -422,15 +422,18 @@ main {
 
 /* EXPLORE — RECENT RELEASES / POPULAR SHELVES
    Heading + book-row pattern, reused identically on Home's "Popular
-   right now" section below. 96px gap between heading and row, per
-   Figma (Nicolle, 2026-09-26). */
+   right now" section below. 24px gap between heading and row —
+   corrected 2026-09-27 against the live Figma file (node 117:600/699):
+   96px is the gap BETWEEN these sections (already handled by main's
+   own 96px gap), not the internal heading-to-row spacing, which
+   measures ~24px in Figma — same value .mood-browse already used. */
 
 .recent-releases,
 .popular-shelves,
 .popular {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl); /* 96px */
+  gap: var(--space-md); /* 24px */
 }
 
 /* EXPLORE — BUILD YOUR OWN SHELVES CTA
