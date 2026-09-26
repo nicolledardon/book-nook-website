@@ -211,7 +211,18 @@
   aspect-ratio: 14 / 9;
   flex: 1 1 0;
   max-width: 35rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6rem 6rem;
 }
+
+/* Placeholder illustrations, matched to each block's position in
+   features.html (order: Genre Tracking, Half-Star Ratings, Anonymous
+   Profiles, Recommendations) — not final art, see icon note above */
+.feature-block:nth-of-type(1) > div:first-child { background-image: url("../assets/icons/feature-genre-tracking.svg"); }
+.feature-block:nth-of-type(2) > div:first-child { background-image: url("../assets/icons/feature-half-star.svg"); }
+.feature-block:nth-of-type(3) > div:first-child { background-image: url("../assets/icons/feature-anonymous.svg"); }
+.feature-block:nth-of-type(4) > div:first-child { background-image: url("../assets/icons/feature-recommendations.svg"); }
 
 .feature-block > div:last-child {
   display: flex;
@@ -268,7 +279,17 @@
   height: 3rem;
   border-radius: var(--radius-base);
   background-color: var(--color-accent-1);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.5rem 1.5rem;
 }
+
+/* Placeholder line-icons (simple stand-ins, not final art) — see
+   Nicolle's 2026-09-26 decision to defer real assets */
+.highlight__icon--half-star   { background-image: url("../assets/icons/icon-half-star.svg"); }
+.highlight__icon--anonymous   { background-image: url("../assets/icons/icon-anonymous.svg"); }
+.highlight__icon--genre-tracking { background-image: url("../assets/icons/icon-genre-tracking.svg"); }
+.highlight__icon--recommendations { background-image: url("../assets/icons/icon-recommendations.svg"); }
 
 .highlight > div:last-child {
   display: flex;

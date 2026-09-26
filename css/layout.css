@@ -345,8 +345,26 @@ footer {
 .footer-social {
   display: flex;
   align-items: center;
-  gap: var(--space-md-plus); /* pre-wired for whenever you add the icon elements — no visible effect while it's empty */
+  gap: var(--space-md-plus);
 }
+
+.footer-social__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--color-secondary-hover);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.1rem 1.1rem;
+}
+
+/* Placeholder icons (not final art) — see Nicolle's 2026-09-26 decision */
+.footer-social__icon--heart { background-image: url("../assets/icons/social-heart.svg"); }
+.footer-social__icon--share { background-image: url("../assets/icons/social-share.svg"); }
+.footer-social__icon--at    { background-image: url("../assets/icons/social-at.svg"); }
 
 
 /* ==========================================================================
