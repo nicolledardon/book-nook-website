@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal</title>
+    <title>Journal | Book Nook</title>
+    <meta name="description" content="Notes on reading, design, and privacy from the team building Book Nook.">
+    <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <meta property="og:title" content="Journal">
+    <meta property="og:description" content="Notes on reading, design, and privacy from the team building Book Nook.">
+    <meta property="og:image" content="https://book-nook.example/assets/og-image.png">
+    <meta property="og:url" content="https://book-nook.example/journal.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Book Nook">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
@@ -32,9 +44,9 @@
         <section class="journal">
         <h1>Journal</h1>
         <div class="category-tabs">
-            <button class="tab">Reading</button>
-            <button class="tab">Design</button>
-            <button class="tab">Privacy</button>
+            <button type="button" class="tab">Reading</button>
+            <button type="button" class="tab">Design</button>
+            <button type="button" class="tab">Privacy</button>
         </div>
         <div class="post-grid"></div>
     </section>
@@ -42,7 +54,7 @@
     <footer>
         <div class="footer__inner">
         <div class="footer-about">
-            <h2>Book Nook</h2>
+            <p class="footer-about__title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
         <div class="footer-links">

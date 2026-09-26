@@ -335,11 +335,11 @@ footer {
   gap: var(--space-xs);
 }
 
-.footer-about h2 {
+.footer-about__title {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: var(--fw-bold);
-  font-style: normal;   /* base.css makes h2 italic + 32px by default */
+  font-style: normal;
   line-height: 1.2;
 }
 
@@ -449,7 +449,10 @@ main {
 
 .cta {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  text-align: center;
   padding: 0 15rem; /* 240px */
 }
 

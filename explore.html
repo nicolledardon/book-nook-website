@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore</title>
+    <title>Explore | Book Nook</title>
+    <meta name="description" content="Browse recent releases and popular shelves, or find your next read by mood — cozy, thrilling, heartfelt, and more.">
+    <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <meta property="og:title" content="Explore">
+    <meta property="og:description" content="Browse recent releases and popular shelves, or find your next read by mood — cozy, thrilling, heartfelt, and more.">
+    <meta property="og:image" content="https://book-nook.example/assets/og-image.png">
+    <meta property="og:url" content="https://book-nook.example/explore.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Book Nook">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
@@ -32,11 +44,11 @@
         <section class="mood-browse">
         <h1>Browse by mood</h1>
         <div class="moods">
-            <button class="mood-chip is-selected">Cozy</button>
-            <button class="mood-chip">Thrilling</button>
-            <button class="mood-chip">Heartfelt</button>
-            <button class="mood-chip">Mind-bending</button>
-            <button class="mood-chip">Uplifting</button>
+            <button type="button" class="mood-chip is-selected">Cozy</button>
+            <button type="button" class="mood-chip">Thrilling</button>
+            <button type="button" class="mood-chip">Heartfelt</button>
+            <button type="button" class="mood-chip">Mind-bending</button>
+            <button type="button" class="mood-chip">Uplifting</button>
         </div>
         <div class="book-row">
             <div class="book-card">
@@ -204,7 +216,7 @@
     <footer>
         <div class="footer__inner">
         <div class="footer-about">
-            <h2>Book Nook</h2>
+            <p class="footer-about__title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
         <div class="footer-links">
