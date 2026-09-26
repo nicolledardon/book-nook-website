@@ -278,6 +278,11 @@ header nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%; /* same fix as main > section: explicit width so the auto
+                  margins below don't disable stretch and leave this
+                  indefinite */
+  max-width: 90rem;
+  margin: 0 auto;
 }
 
 .logo {
@@ -305,12 +310,22 @@ header nav {
    Dark 4-column bar: about/tagline — nav links — social — legal */
 
 footer {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   padding: var(--space-xl-sm) var(--space-lg);
   background-color: var(--color-dominant);
   color: var(--color-aux10);
+}
+
+/* Background spans full width (footer above); this inner wrapper caps
+   and centers the actual content at 90rem, matching main > section and
+   header nav so footer columns align with the page content above them
+   on screens wider than 1440px. */
+.footer__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
 }
 
 .footer-about,
@@ -539,9 +554,12 @@ body.nav-open::before {
   }
   
   footer {
+    padding: var(--space-md);
+  }
+  
+  .footer__inner {
     flex-direction: column;
     gap: var(--space-md);
-    padding: var(--space-md);
   }
   
   .signup-form {
@@ -664,9 +682,12 @@ body.nav-open::before {
   }
   
   footer {
+    padding: var(--space-lg-sm);
+  }
+  
+  .footer__inner {
     flex-wrap: wrap;
     gap: var(--space-lg);
-    padding: var(--space-lg-sm);
   }
   
   .footer-links,
