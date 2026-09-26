@@ -27,23 +27,23 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="header__nav">
             <a href="index.html" class="logo">Book Nook</a>
-            <ul class="nav-links" id="nav-links">
+            <ul class="nav__links" id="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="explore.html">Explore</a></li>
                 <li><a href="features.html">Features</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="journal.html">Journal</a></li>
             </ul>
-            <a href="waitlist.html" class="btn btn-primary">Join the Nook</a>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
+            <a href="waitlist.html" class="btn btn--primary">Join the Nook</a>
+            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
         </nav>
     </header>
     <main>
-        <section class="mood-browse">
-        <h1>Browse by mood</h1>
-        <div class="moods">
+        <section class="page-section mood-browse">
+        <h1 class="mood-browse__heading">Browse by mood</h1>
+        <div class="mood-browse__list">
             <button type="button" class="mood-chip is-selected">Cozy</button>
             <button type="button" class="mood-chip">Thrilling</button>
             <button type="button" class="mood-chip">Heartfelt</button>
@@ -101,7 +101,7 @@
             </div>
         </div>
     </section>
-    <section class="recent-releases">
+    <section class="page-section recent-releases">
         <h2>Recent releases</h2>
         <div class="book-row">
             <div class="book-card">
@@ -154,7 +154,7 @@
             </div>
         </div>
     </section>
-    <section class="popular-shelves">
+    <section class="page-section popular-shelves">
         <h2>Popular shelves</h2>
         <div class="book-row">
             <div class="book-card">
@@ -207,31 +207,31 @@
             </div>
         </div>
     </section>
-    <section class="user-shelves-cta">
+    <section class="page-section user-shelves-cta">
         <h2>Build your own shelves.</h2>
         <p>Thousands of readers are already organizing their reading their way. Join the waitlist to start yours.</p>
-        <a href="waitlist.html" class="btn btn-secondary">Join the Nook</a>
+        <a href="waitlist.html" class="btn btn--secondary">Join the Nook</a>
     </section>
     </main>
     <footer>
         <div class="footer__inner">
-        <div class="footer-about">
-            <p class="footer-about__title">Book Nook</p>
+        <div class="footer__about">
+            <p class="footer__about-title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
-        <div class="footer-links">
+        <div class="footer__links">
             <p><a href="index.html">Home</a></p>
             <p><a href="explore.html">Explore</a></p>
             <p><a href="features.html">Features</a></p>
             <p><a href="about.html">About</a></p>
             <p><a href="journal.html">Journal</a></p>
         </div>
-        <div class="footer-social">
-            <a href="#" class="footer-social__icon footer-social__icon--heart" aria-label="Book Nook on social media"></a>
-            <a href="#" class="footer-social__icon footer-social__icon--share" aria-label="Share Book Nook"></a>
-            <a href="#" class="footer-social__icon footer-social__icon--at" aria-label="Contact Book Nook"></a>
+        <div class="footer__social">
+            <a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a>
+            <a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a>
+            <a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a>
         </div>
-        <div class="footer-legal">
+        <div class="footer__legal">
             <p>&copy; 2026 Book Nook</p>
             <p>Privacy &middot; Terms</p>
         </div>

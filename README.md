@@ -57,7 +57,7 @@ form submit — see Deviations below for why.
 
 In Figma, "Waitlist Sign-up" and "Waitlist Confirmation" are two separate full-page frames, each
 with its own Header/Footer instance. In this build, both live inside a single file,
-`waitlist.html`, as two sections (`.signup-panel` and `.confirmation-panel`) instead of two pages
+`waitlist.html`, as two sections (`.signup__panel` and `.confirmation-panel`) instead of two pages
 (`waitlist.html` + `waitlist-confirm.html`).
 
 **Reasoning:** the transition from sign-up to confirmation is going to be driven by JavaScript in
@@ -93,6 +93,37 @@ share one `.book-card` structure. Card counts per row were also corrected to mat
 "Book Row" component (Popular Shelves was previously coded as 8 cards across 2 rows; Mood-based
 Browse was missing its results row entirely). Mood chips were reduced from 9 to Figma's actual 5
 (Cozy, Thrilling, Heartfelt, Mind-bending, Uplifting).
+
+## CSS Methodology
+
+This project uses **BEM** (Block\_\_Element--Modifier) for CSS class naming.
+
+- **Block** — a standalone, reusable component: `.book-card`, `.feature-block`, `.highlight`,
+  `.ticket`, `.mood-chip`. A hyphenated name (e.g. `.feature-block`, `.mood-browse`) is still a
+  single block, not a block+element split — the hyphen there is just part of the block's own
+  name.
+- **Element** — a part of a block that has no standalone meaning outside it, written
+  `.block__element`: `.book-card__cover`, `.highlight__icon`, `.highlight__title`,
+  `.feature-block__media`, `.ticket__heading`, `.footer__links`.
+- **Modifier** — a variant of a block or element, written `.block--modifier` or
+  `.block__element--modifier`: `.btn--primary`, `.feature-block--reverse`,
+  `.highlight__icon--half-star`.
+- **State classes** — one deliberate exception to strict BEM: `.is-selected` (mood chip) and
+  `.is-nav-open` (on `<body>`, mobile nav) use the SUIT CSS `is-` prefix instead of a BEM
+  modifier. States like "currently open" or "currently selected" describe a temporary condition
+  toggled by JS, not a permanent variant of the component, so a state class keeps that
+  distinction visible in the markup and avoids implying the state is baked into the component the
+  way a real modifier (`--reverse`, `--primary`) is.
+- **`.page-section`** is a layout utility class, not a BEM block — it's applied to every
+  top-level `<main> > <section>` across all six pages to give them a shared max-width/padding
+  container, replacing what used to be a `main > section` combinator selector so the same rule
+  now works whether or not a section is main's direct child.
+
+Selectors were also audited to avoid unnecessary specificity and structural (type/combinator)
+selectors that break the moment markup shifts: `header nav` → `.header__nav`,
+`main > section` → `.page-section`, `.highlight > div:first-child` → `.highlight__icon`, and
+similar — every element now targeted by a class that lives directly on it in the HTML, rather
+than by its position in the DOM.
 
 ## Tech notes
 

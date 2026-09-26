@@ -15,7 +15,7 @@ a {
   text-decoration: none;
 }
 
-/* <button> elements (nav-toggle, Join the Nook, mood chips,
+/* <button> elements (nav__toggle, Join the Nook, mood chips,
    book ratings) lose their native OS chrome */
 button {
   font: inherit;

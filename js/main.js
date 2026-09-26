@@ -1,5 +1,5 @@
 // Hamburger menu toggle
-// Visibility is driven entirely by CSS (body.nav-open .nav-links) —
+// Visibility is driven entirely by CSS (body.is-nav-open .nav-links) —
 // JS only toggles the class and the aria-expanded state. Setting
 // navLinks.style.display directly here would fight the mobile
 // stylesheet's ".nav-links { display: none }" rule on specificity
@@ -14,7 +14,7 @@ if (navToggle && navLinks) {
   navToggle.addEventListener('click', function() {
     const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
     navToggle.setAttribute('aria-expanded', !isExpanded);
-    body.classList.toggle('nav-open', !isExpanded);
+    body.classList.toggle('is-nav-open', !isExpanded);
   });
   
   // Close menu when a link is clicked
@@ -22,17 +22,17 @@ if (navToggle && navLinks) {
   links.forEach(link => {
     link.addEventListener('click', function() {
       navToggle.setAttribute('aria-expanded', 'false');
-      body.classList.remove('nav-open');
+      body.classList.remove('is-nav-open');
     });
   });
   
   // Close menu when clicking the overlay
   document.addEventListener('click', function(event) {
-    if (body.classList.contains('nav-open') && 
+    if (body.classList.contains('is-nav-open') && 
         !navToggle.contains(event.target) && 
         !navLinks.contains(event.target)) {
       navToggle.setAttribute('aria-expanded', 'false');
-      body.classList.remove('nav-open');
+      body.classList.remove('is-nav-open');
     }
   });
 }

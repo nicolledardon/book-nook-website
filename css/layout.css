@@ -1,6 +1,6 @@
 /* CONTAINER */
 
-main > section { /* only ever touches top-level page sections */
+.page-section { /* only ever touches top-level page sections */
   width: 100%; /* explicit definite width — without this, the auto side margins below disable
                   flex stretch on this item, .popular's width goes indefinite, and .book-row's
                   grid-template-columns: repeat(auto-fill, ...) collapses to a single column */
@@ -26,7 +26,7 @@ main > section { /* only ever touches top-level page sections */
   text-align: center;
 }
 
-.intro-subtitle {
+.intro__subtitle {
   color: var(--color-highlight-body);
 }
 
@@ -58,9 +58,11 @@ main > section { /* only ever touches top-level page sections */
 }
 
 /* Figma sizes these links at 14px, not the button system's standard
-   16px (--fs-body-2) — scoped here so the shared .btn-tertiary class
-   used elsewhere keeps its documented single size. */
-.anchor-buttons .btn-tertiary {
+   16px (--fs-body-2). .anchor-button is already a class directly on each
+   link (see features.html), so this targets it directly instead of the
+   .anchor-buttons .btn--tertiary descendant selector — same effect,
+   lower specificity, no risk of overriding .btn--tertiary elsewhere. */
+.anchor-button {
   font-size: var(--fs-small);
 }
 
@@ -77,12 +79,12 @@ main > section { /* only ever touches top-level page sections */
   padding-top: var(--space-xl);
 }
 
-.mood-browse h1 {
+.mood-browse__heading {
   font-size: var(--fs-h3);
   font-style: normal;
 }
 
-.moods {
+.mood-browse__list {
   display: flex;
   gap: var(--space-sm);
   flex-wrap: wrap;
@@ -104,16 +106,16 @@ main > section { /* only ever touches top-level page sections */
   text-align: center;
 }
 
-.meet-creator h2 {
+.meet-creator__heading {
   font-weight: var(--fw-bold);
   font-style: normal; /* base.css makes h2 italic by default — this heading isn't */
 }
 
-.meet-creator p {
+.meet-creator__bio {
   color: var(--color-highlight-body);
 }
 
-.creator-photo {
+.meet-creator__photo {
   width: 8.75rem;
   height: 8.75rem;
   border-radius: 50%;
@@ -123,7 +125,7 @@ main > section { /* only ever touches top-level page sections */
 /* WAITLIST — SIGN-UP
    Matches Figma's "waitlist-hero" node. */
 
-.signup-panel {
+.signup__panel {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,17 +136,17 @@ main > section { /* only ever touches top-level page sections */
   text-align: center;
 }
 
-.signup-subtitle {
+.signup__subtitle {
   color: var(--color-highlight-body);
 }
 
-.signup-form {
+.signup__form {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
 }
 
-.signup-form input[type="email"] {
+.signup__input {
   width: 20rem;
   height: 3.5rem;
   padding: 0 var(--space-sm-plus);
@@ -156,11 +158,11 @@ main > section { /* only ever touches top-level page sections */
   color: var(--color-dominant);
 }
 
-.signup-form input[type="email"]::placeholder {
+.signup__input::placeholder {
   color: var(--color-highlight-body);
 }
 
-.signup-form input[type="email"]:focus-visible {
+.signup__input:focus-visible {
   outline: none;
   border-width: 2px;
   border-color: var(--color-dominant);
@@ -199,12 +201,12 @@ main > section { /* only ever touches top-level page sections */
   text-align: center;
 }
 
-.ticket h2 {
+.ticket__heading {
   font-weight: var(--fw-bold);
   font-style: normal;
 }
 
-.ticket-subtitle {
+.ticket__subtitle {
   color: var(--color-highlight-body);
 }
 
@@ -241,7 +243,7 @@ main > section { /* only ever touches top-level page sections */
 .barcode__bar:nth-child(4n+3) { width: 0.125rem; }
 .barcode__bar:nth-child(4n)   { width: 0.25rem; }
 
-.confirmation-code {
+.ticket__code {
   font-size: var(--fs-micro);
   color: var(--color-highlight-body);
 }
@@ -274,7 +276,7 @@ header {
   /*border-bottom: 1px solid var(--color-aux8);*/
 }
 
-header nav {
+.header__nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -293,7 +295,7 @@ header nav {
   color: var(--color-dominant);
 }
 
-.nav-links {
+.nav__links {
   display: flex;
   align-items: center;
   gap: var(--space-lg-sm);
@@ -302,7 +304,7 @@ header nav {
   color: var(--color-dominant);
 }
 
-.nav-toggle {
+.nav__toggle {
   display: none; /* hidden by default — shown at mobile widths via the media query below */
 }
 
@@ -328,14 +330,14 @@ footer {
   margin: 0 auto;
 }
 
-.footer-about,
-.footer-legal {
+.footer__about,
+.footer__legal {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
 }
 
-.footer-about__title {
+.footer__about-title {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: var(--fw-bold);
@@ -343,27 +345,27 @@ footer {
   line-height: 1.2;
 }
 
-.footer-about p,
-.footer-links a,
-.footer-legal p {
+.footer__about p,
+.footer__links a,
+.footer__legal p {
   font-family: var(--font-body);
   font-size: var(--fs-small);
   font-weight: var(--fw-regular);
 }
 
-.footer-links {
+.footer__links {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
 }
 
-.footer-social {
+.footer__social {
   display: flex;
   align-items: center;
   gap: var(--space-md-plus);
 }
 
-.footer-social__icon {
+.footer__social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -377,9 +379,9 @@ footer {
 }
 
 /* Placeholder icons (not final art) — see Nicolle's 2026-09-26 decision */
-.footer-social__icon--heart { background-image: url("../assets/icons/social-heart.svg"); }
-.footer-social__icon--share { background-image: url("../assets/icons/social-share.svg"); }
-.footer-social__icon--at    { background-image: url("../assets/icons/social-at.svg"); }
+.footer__social-icon--heart { background-image: url("../assets/icons/social-heart.svg"); }
+.footer__social-icon--share { background-image: url("../assets/icons/social-share.svg"); }
+.footer__social-icon--at    { background-image: url("../assets/icons/social-at.svg"); }
 
 
 /* ==========================================================================
@@ -458,7 +460,7 @@ main {
 
 /* HAMBURGER MENU & MOBILE NAVIGATION */
 
-.nav-toggle {
+.nav__toggle {
   display: none;
   align-items: center;
   justify-content: center;
@@ -474,7 +476,7 @@ main {
   background-color: transparent;
 }
 
-.nav-links {
+.nav__links {
   display: flex;
   align-items: center;
   gap: var(--space-lg-sm);
@@ -490,14 +492,14 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--color-overlay-scrim);
   backdrop-filter: blur(0.25rem);
   -webkit-backdrop-filter: blur(0.25rem);
   z-index: 98;
   display: none;
 }
 
-body.nav-open::before {
+body.is-nav-open::before {
   display: block;
 }
 
@@ -507,7 +509,7 @@ body.nav-open::before {
 
 /* EXTRA SMALL PHONES (≤480px) */
 @media (max-width: 480px) {
-  main > section {
+  .page-section {
     padding: 0 var(--space-md);
   }
   
@@ -546,7 +548,7 @@ body.nav-open::before {
   }
   
   .feature-block,
-  .feature-block-reverse {
+  .feature-block--reverse {
     flex-direction: column;
   }
   
@@ -565,17 +567,17 @@ body.nav-open::before {
     gap: var(--space-md);
   }
   
-  .signup-form {
+  .signup__form {
     flex-direction: column;
     align-items: stretch;
   }
   
-  .signup-form input[type="email"] {
+  .signup__input {
     width: 100%;
     max-width: 20rem;
   }
   
-  .signup-form button {
+  .signup__submit {
     width: 100%;
     max-width: 20rem;
   }
@@ -589,14 +591,14 @@ body.nav-open::before {
   .intro,
   .features-intro,
   .meet-creator,
-  .signup-panel {
+  .signup__panel {
     padding: var(--space-md) 0;
   }
 }
 
 /* SMALL PHONES & TABLETS (481px - 768px) */
 @media (max-width: 768px) {
-  main > section {
+  .page-section {
     padding: 0 var(--space-lg-sm);
   }
   
@@ -605,11 +607,11 @@ body.nav-open::before {
     position: relative;
   }
   
-  header .btn-primary {
+  header .btn--primary {
     display: none;
   }
   
-  .nav-toggle {
+  .nav__toggle {
     display: flex;
   }
   
@@ -620,7 +622,7 @@ body.nav-open::before {
     padding: 0 var(--space-lg-sm);
   }
   
-  .nav-links {
+  .nav__links {
     display: none; /* hidden by default at mobile widths */
     position: fixed;
     top: calc(var(--space-md) * 2 + 2rem);
@@ -637,13 +639,13 @@ body.nav-open::before {
     z-index: 99;
   }
 
-  /* No !important: JS toggles body.nav-open, and this selector's higher
-     specificity (1 element + 2 classes = 0,2,1) beats the plain ".nav-links"
+  /* No !important: JS toggles body.is-nav-open, and this selector's higher
+     specificity (1 element + 2 classes = 0,2,1) beats the plain ".nav__links"
      rule above (0,1,0) on its own, so it wins whenever body has the class —
      no !important needed, and it still loses to nothing else in this file
-     since nav-links is only styled here and in the desktop (non-media) rule,
+     since nav__links is only styled here and in the desktop (non-media) rule,
      which this media query already outranks by being more specific+later. */
-  body.nav-open .nav-links {
+  body.is-nav-open .nav__links {
     display: flex;
   }
   
@@ -672,7 +674,7 @@ body.nav-open::before {
   }
   
   .feature-block,
-  .feature-block-reverse {
+  .feature-block--reverse {
     flex-direction: column;
     gap: var(--space-md);
     padding: var(--space-md);
@@ -693,23 +695,23 @@ body.nav-open::before {
     gap: var(--space-lg);
   }
   
-  .footer-links,
-  .footer-social {
+  .footer__links,
+  .footer__social {
     flex-direction: row;
   }
   
-  .signup-form {
+  .signup__form {
     flex-direction: column;
     gap: var(--space-md);
   }
   
-  .signup-form input[type="email"] {
+  .signup__input {
     width: 100%;
     max-width: 20rem;
     height: 3.5rem;
   }
   
-  .signup-form button {
+  .signup__submit {
     width: 100%;
     max-width: 20rem;
   }
@@ -723,7 +725,7 @@ body.nav-open::before {
   .intro,
   .features-intro,
   .meet-creator,
-  .signup-panel {
+  .signup__panel {
     padding: var(--space-lg) var(--space-md);
   }
   
@@ -767,7 +769,7 @@ body.nav-open::before {
     padding: var(--space-md) var(--space-lg-sm); /* 24px top/bottom, 32px sides (was 48px) */
   }
   
-  .nav-links {
+  .nav__links {
     gap: var(--space-md); /* 24px (was 32px) */
     font-size: var(--fs-small); /* 14px (was 16px) */
   }

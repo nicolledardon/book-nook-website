@@ -71,7 +71,8 @@
   --fs-micro: 0.8125rem; /* 13px — confirmation code */
 
   /* Effects */
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.14);
+  --shadow-card: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.14); /* book-card drop shadow */
+  --color-overlay-scrim: rgba(0, 0, 0, 0.2); /* mobile nav dropdown backdrop */
 
   /* Border radius scale — these were used throughout components.css via
      var(--radius-*) but never actually defined here, so every one of

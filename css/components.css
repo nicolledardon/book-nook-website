@@ -20,93 +20,93 @@
   white-space: nowrap;
 }
 
-.btn-primary {
+.btn--primary {
   background-color: var(--color-primary-default);
   color: var(--color-surface);
 }
 
-.btn-primary:hover {
+.btn--primary:hover {
   background-color: var(--color-accent-1-80);
 }
 
-.btn-primary:active {
+.btn--primary:active {
   background-color: var(--color-primary-active);
   border-width: 0.1875rem;
   border-color: var(--color-dominant);
 }
 
-.btn-primary:focus-visible {
+.btn--primary:focus-visible {
   background-color: var(--color-primary-default);
   border-width: 0.1875rem;
   border-color: var(--color-dominant);
   outline: none;
 }
 
-.btn-primary:disabled,
-.btn-primary[aria-disabled="true"] {
+.btn--primary:disabled,
+.btn--primary[aria-disabled="true"] {
   background-color: var(--color-disabled-fill);
   color: var(--color-disabled-text);
   cursor: not-allowed;
 }
 
-.btn-secondary {
+.btn--secondary {
   background-color: transparent;
   border-color: var(--color-accent-1);
   color: var(--color-accent-1);
 }
 
-.btn-secondary:hover {
+.btn--secondary:hover {
   background-color: var(--color-secondary-hover);
   border-color: var(--color-accent-1);
 }
 
-.btn-secondary:active {
+.btn--secondary:active {
   background-color: var(--color-secondary-active);
   border-color: var(--color-dominant);
   color: var(--color-dominant);
 }
 
-.btn-secondary:focus-visible {
+.btn--secondary:focus-visible {
   background-color: transparent;
   border-width: 0.1875rem;
   border-color: var(--color-dominant);
   outline: none;
 }
 
-.btn-secondary:disabled,
-.btn-secondary[aria-disabled="true"] {
+.btn--secondary:disabled,
+.btn--secondary[aria-disabled="true"] {
   background-color: transparent;
   border-color: var(--color-secondary-disabled);
   color: var(--color-disabled-text);
   cursor: not-allowed;
 }
 
-.btn-tertiary {
+.btn--tertiary {
   background-color: transparent;
   border-color: transparent;
   color: var(--color-accent-1);
   text-decoration: none;
 }
 
-.btn-tertiary:hover {
+.btn--tertiary:hover {
   color: var(--color-accent-1-80);
   text-decoration: underline;
 }
 
-.btn-tertiary:active {
+.btn--tertiary:active {
   color: var(--color-dominant);
   text-decoration: none;
 }
 
-.btn-tertiary:focus-visible {
+.btn--tertiary:focus-visible {
   border-width: 0.1875rem;
   border-color: var(--color-dominant);
   color: var(--color-dominant);
   outline: none;
 }
 
-.btn-tertiary:disabled,
-.btn-tertiary[aria-disabled="true"] {
+.btn--tertiary:disabled,
+.btn--tertiary[aria-disabled="true"] {
   color: var(--color-disabled-text);
   cursor: not-allowed;
 }
@@ -125,7 +125,7 @@
   padding: var(--space-base);
   background-color: var(--color-surface-60);
   border-radius: var(--radius-md);
-  box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.14);
+  box-shadow: var(--shadow-card);
 }
 
 .book-card__cover {
@@ -191,7 +191,7 @@
 /* FEATURE BLOCK
    Features page only — 4 full-width instances that alternate
    image-left/text-right, then text-left/image-right. Markup
-   order never changes; feature-block-reverse (on blocks 2 & 4
+   order never changes; feature-block--reverse (on blocks 2 & 4
    in features.html) flips the visual order purely in CSS. */
 
 .feature-block {
@@ -201,11 +201,11 @@
   padding: var(--space-lg);
 }
 
-.feature-block-reverse {
+.feature-block--reverse {
   flex-direction: row-reverse;
 }
 
-.feature-block > div:first-child {
+.feature-block__media {
   background-color: var(--color-disabled-text);
   border-radius: var(--radius-lg);
   aspect-ratio: 14 / 9;
@@ -219,12 +219,12 @@
 /* Placeholder illustrations, matched to each block's position in
    features.html (order: Genre Tracking, Half-Star Ratings, Anonymous
    Profiles, Recommendations) — not final art, see icon note above */
-.feature-block:nth-of-type(1) > div:first-child { background-image: url("../assets/icons/feature-genre-tracking.svg"); }
-.feature-block:nth-of-type(2) > div:first-child { background-image: url("../assets/icons/feature-half-star.svg"); }
-.feature-block:nth-of-type(3) > div:first-child { background-image: url("../assets/icons/feature-anonymous.svg"); }
-.feature-block:nth-of-type(4) > div:first-child { background-image: url("../assets/icons/feature-recommendations.svg"); }
+#genre-tracking .feature-block__media { background-image: url("../assets/icons/feature-genre-tracking.svg"); }
+#half-star-ratings .feature-block__media { background-image: url("../assets/icons/feature-half-star.svg"); }
+#anonymous-profiles .feature-block__media { background-image: url("../assets/icons/feature-anonymous.svg"); }
+#recommendations .feature-block__media { background-image: url("../assets/icons/feature-recommendations.svg"); }
 
-.feature-block > div:last-child {
+.feature-block__text {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -233,7 +233,7 @@
   max-width: 35rem;
 }
 
-.feature-block p {
+.feature-block__text p {
   color: var(--color-text-muted);
 }
 
@@ -252,7 +252,7 @@
   row-gap: var(--space-lg-sm);
 }
 
-.highlights h2 {
+.highlights__heading {
   grid-column: 1 / -1;
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
@@ -274,7 +274,7 @@
                    column widths and horizontal overflow of the grid */
 }
 
-.highlight > div:first-child {
+.highlight__icon {
   width: 3rem;
   height: 3rem;
   border-radius: var(--radius-base);
@@ -291,13 +291,13 @@
 .highlight__icon--genre-tracking { background-image: url("../assets/icons/icon-genre-tracking.svg"); }
 .highlight__icon--recommendations { background-image: url("../assets/icons/icon-recommendations.svg"); }
 
-.highlight > div:last-child {
+.highlight__body {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
 }
 
-.highlight h3 {
+.highlight__title {
   font-family: var(--font-body);
   font-size: var(--fs-body-1);
   font-weight: var(--fw-semibold);
@@ -306,7 +306,7 @@
   color: var(--color-dominant);
 }
 
-.highlight p {
+.highlight__text {
   font-size: var(--fs-small);
   line-height: 1.25;
   color: var(--color-highlight-body);

@@ -27,61 +27,61 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="header__nav">
             <a href="index.html" class="logo">Book Nook</a>
-            <ul class="nav-links" id="nav-links">
+            <ul class="nav__links" id="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="explore.html">Explore</a></li>
                 <li><a href="features.html">Features</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="journal.html">Journal</a></li>
             </ul>
-            <a href="waitlist.html" class="btn btn-primary">Join the Nook</a>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
+            <a href="waitlist.html" class="btn btn--primary">Join the Nook</a>
+            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
         </nav>
     </header>
     <main>
-        <section class="signup-panel">
+        <section class="page-section signup__panel">
             <h1>Be the first to know.</h1>
-            <p class="signup-subtitle">Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.</p>
-            <form class="signup-form">
+            <p class="signup__subtitle">Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.</p>
+            <form class="signup__form">
                 <label for="email" class="sr-only">Email address</label>
-                <input type="email" id="email" name="email" placeholder="you@email.com" required>
-                <button type="submit" class="btn btn-primary">Join Waitlist</button>
+                <input type="email" id="email" name="email" class="signup__input" placeholder="you@email.com" required>
+                <button type="submit" class="signup__submit btn btn--primary">Join Waitlist</button>
             </form>
         </section>
-        <section class="confirmation-panel" hidden>
+        <section class="page-section confirmation-panel" hidden>
             <div class="ticket">
-                <h2>You're on the list!</h2>
-                <p class="ticket-subtitle">We'll email you the moment it's your turn.</p>
+                <h2 class="ticket__heading">You're on the list!</h2>
+                <p class="ticket__subtitle">We'll email you the moment it's your turn.</p>
                 <div class="queue-badge">You're #1,204 in line</div>
                 <div class="dashed-divider"></div>
                 <div class="barcode">
                     <span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span>
                 </div>
-                <p class="confirmation-code">BN-2026-1204</p>
+                <p class="ticket__code">BN-2026-1204</p>
             </div>
         </section>
     </main>
     <footer>
         <div class="footer__inner">
-        <div class="footer-about">
-            <p class="footer-about__title">Book Nook</p>
+        <div class="footer__about">
+            <p class="footer__about-title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
-        <div class="footer-links">
+        <div class="footer__links">
             <p><a href="index.html">Home</a></p>
             <p><a href="explore.html">Explore</a></p>
             <p><a href="features.html">Features</a></p>
             <p><a href="about.html">About</a></p>
             <p><a href="journal.html">Journal</a></p>
         </div>
-        <div class="footer-social">
-            <a href="#" class="footer-social__icon footer-social__icon--heart" aria-label="Book Nook on social media"></a>
-            <a href="#" class="footer-social__icon footer-social__icon--share" aria-label="Share Book Nook"></a>
-            <a href="#" class="footer-social__icon footer-social__icon--at" aria-label="Contact Book Nook"></a>
+        <div class="footer__social">
+            <a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a>
+            <a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a>
+            <a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a>
         </div>
-        <div class="footer-legal">
+        <div class="footer__legal">
             <p>&copy; 2026 Book Nook</p>
             <p>Privacy &middot; Terms</p>
         </div>
