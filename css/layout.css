@@ -365,9 +365,6 @@ body.nav-open::before {
     line-height: 1.3;
   }
   
-  h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); }
-  h2 { font-size: clamp(1.25rem, 5vw, 2rem); }
-  
   main {
     gap: var(--space-md);
     padding-top: var(--space-sm);
@@ -377,12 +374,16 @@ body.nav-open::before {
   .book-row {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    gap: var(--space-md);
+    /* 7.5rem (120px) + 0.75rem (12px) gap: 2*120+12=252px fits inside the
+       272px available at 320px (320 - 48px section padding), with 20px
+       to spare that 1fr distributes back to the cards. The previous
+       8rem/24px-gap combo needed 280px — 8px more than 320px actually has. */
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: var(--space-sm);
   }
   
   .book-card {
-    max-width: 8rem;
+    max-width: 7.5rem;
   }
   
   .highlights {
@@ -455,7 +456,7 @@ body.nav-open::before {
   }
   
   .nav-links {
-    display: none !important;
+    display: none; /* hidden by default at mobile widths */
     position: fixed;
     top: calc(var(--space-md) * 2 + 2rem);
     right: 0;
@@ -469,6 +470,16 @@ body.nav-open::before {
     border-bottom: 1px solid var(--color-aux8);
     padding: var(--space-md);
     z-index: 99;
+  }
+
+  /* No !important: JS toggles body.nav-open, and this selector's higher
+     specificity (1 element + 2 classes = 0,2,1) beats the plain ".nav-links"
+     rule above (0,1,0) on its own, so it wins whenever body has the class —
+     no !important needed, and it still loses to nothing else in this file
+     since nav-links is only styled here and in the desktop (non-media) rule,
+     which this media query already outranks by being more specific+later. */
+  body.nav-open .nav-links {
+    display: flex;
   }
   
   .book-row {
@@ -558,12 +569,12 @@ body.nav-open::before {
 /* EXTRA SMALL OVERRIDE (≤480px) — Book card sizing only */
 @media (max-width: 480px) {
   .book-row {
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    gap: var(--space-md);
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: var(--space-sm);
   }
   
   .book-card {
-    max-width: 8rem;
+    max-width: 7.5rem;
   }
 }
 
@@ -574,7 +585,27 @@ body.nav-open::before {
   }
   
   .book-row {
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+  
+  .book-card {
+    max-width: 10rem;
+  }
+  
+  /* Nav collision fix: logo + 5 links + CTA is ~660px of content against
+     ~673px available at 769px (header padding 48px each side) — a ~13px
+     margin that breaks under real font rendering. Tighten padding + gap. */
+  header {
+    padding: var(--space-md) var(--space-lg-sm); /* 24px top/bottom, 32px sides (was 48px) */
+  }
+  
+  .nav-links {
+    gap: var(--space-md); /* 24px (was 32px) */
+    font-size: var(--fs-small); /* 14px (was 16px) */
+  }
+  
+  .logo {
+    font-size: 1.25rem; /* 20px (was 24px) */
   }
 }
 

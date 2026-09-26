@@ -256,6 +256,11 @@
   padding: var(--space-md) 1.25rem;
   background-color: var(--color-surface-20);
   border-radius: var(--radius-md);
+  min-width: 0; /* grid items default to min-width:auto, which refuses to
+                   shrink below the content's intrinsic width — with real
+                   text inside, whichever card's content is widest forces
+                   its whole column past its 1fr share, causing uneven
+                   column widths and horizontal overflow of the grid */
 }
 
 .highlight > div:first-child {

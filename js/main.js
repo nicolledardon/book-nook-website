@@ -1,4 +1,11 @@
 // Hamburger menu toggle
+// Visibility is driven entirely by CSS (body.nav-open .nav-links) —
+// JS only toggles the class and the aria-expanded state. Setting
+// navLinks.style.display directly here would fight the mobile
+// stylesheet's ".nav-links { display: none }" rule on specificity
+// terms (an inline style normally wins on specificity alone, which
+// is exactly why the menu broke before this fix — the class-based
+// approach avoids the fight instead of using !important to force it).
 const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
 const body = document.body;
@@ -7,15 +14,7 @@ if (navToggle && navLinks) {
   navToggle.addEventListener('click', function() {
     const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
     navToggle.setAttribute('aria-expanded', !isExpanded);
-    
-    // Toggle visibility of nav-links and overlay
-    if (isExpanded) {
-      navLinks.style.display = 'none';
-      body.classList.remove('nav-open');
-    } else {
-      navLinks.style.display = 'flex';
-      body.classList.add('nav-open');
-    }
+    body.classList.toggle('nav-open', !isExpanded);
   });
   
   // Close menu when a link is clicked
@@ -23,7 +22,6 @@ if (navToggle && navLinks) {
   links.forEach(link => {
     link.addEventListener('click', function() {
       navToggle.setAttribute('aria-expanded', 'false');
-      navLinks.style.display = 'none';
       body.classList.remove('nav-open');
     });
   });
@@ -34,7 +32,6 @@ if (navToggle && navLinks) {
         !navToggle.contains(event.target) && 
         !navLinks.contains(event.target)) {
       navToggle.setAttribute('aria-expanded', 'false');
-      navLinks.style.display = 'none';
       body.classList.remove('nav-open');
     }
   });

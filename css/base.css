@@ -64,12 +64,15 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: var(--fs-h1);
+  /* clamp() scales smoothly with viewport instead of jumping at a
+     breakpoint: 1.75rem floor on small phones, var(--fs-h1) (2.25rem)
+     ceiling from ~720px up, linear in between via 5vw. */
+  font-size: clamp(1.75rem, 5vw, var(--fs-h1));
   font-weight: var(--fw-bold);
 }
 
 h2 {
-  font-size: var(--fs-h2);
+  font-size: clamp(1.5rem, 4.5vw, var(--fs-h2));
   font-weight: var(--fw-medium);
   font-style: italic;
 }
