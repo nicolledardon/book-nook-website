@@ -1,4 +1,4 @@
-/* 
+/*
    BUTTON SYSTEM
    Three variants — primary, secondary, tertiary — each with 5 states:
    default, hover, active, focus-visible, disabled */
@@ -7,9 +7,9 @@
   display: inline-flex; /* button only takes up as much horizontal space as its content needs, instead of stretching */
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  border-radius: 16px;
-  border: 2px solid transparent; /* button's total size doesn't change drastically */ 
+  padding: 0.625rem;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent; /* button's total size doesn't change drastically */
   font-family: var(--font-body);
   font-size: var(--fs-body-2);
   font-weight: var(--fw-semibold);
@@ -119,19 +119,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-sm);
   width: 100%;
   max-width: 300px; /* corrected 2026-09-20 — was a 200px placeholder; the real Figma Book Card is 300px wide */
-  padding: 16px;
+  padding: var(--space-base);
   background-color: var(--color-surface-60);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.14);
 }
 
 .book-card__cover {
   width: 100%;
   aspect-ratio: 2 / 3; /* standard book-cover proportions; the real covers are ~0.63-0.66 width:height, so this crops almost nothing */
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background-color: var(--color-aux4);
   overflow: hidden;
 }
@@ -145,9 +145,9 @@
 
 .book-card__title {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--fs-body-1);
   font-weight: var(--fw-semibold);
-  line-height: 22px;
+  line-height: 1.375;
   color: var(--color-dominant);
   text-align: center;
   width: 100%;
@@ -155,9 +155,9 @@
 
 .book-card__author {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--fs-small);
   font-weight: var(--fw-regular);
-  line-height: 20px;
+  line-height: 1.25;
   color: var(--color-text-muted);
   text-align: center;
   width: 100%;
@@ -165,15 +165,15 @@
 
 .book-card__rating {
   display: flex;
-  gap: 3px;
+  gap: 0.1875rem;
 }
 
 .star {
   display: inline-block;
-  width: 22px;
-  height: 21px;
+  width: 1.375rem;
+  height: 1.3125rem;
   background-repeat: no-repeat;
-  background-size: 22px 21px;
+  background-size: 1.375rem 1.3125rem;
 }
 
 .star--full {
@@ -198,7 +198,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 48px;
+  padding: var(--space-lg);
 }
 
 .feature-block-reverse {
@@ -207,19 +207,19 @@
 
 .feature-block > div:first-child {
   background-color: var(--color-disabled-text);
-  border-radius: 16px;
-  height: 360px;
+  border-radius: var(--radius-lg);
+  aspect-ratio: 14 / 9;
   flex: 1 1 0;
-  max-width: 560px;
+  max-width: 35rem;
 }
 
 .feature-block > div:last-child {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-base);
   flex: 1 1 0;
-  max-width: 560px;
+  max-width: 35rem;
 }
 
 .feature-block p {
@@ -237,8 +237,8 @@
 .highlights {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 24px;
-  row-gap: 32px;
+  column-gap: var(--space-md);
+  row-gap: var(--space-lg-sm);
 }
 
 .highlights h2 {
@@ -252,37 +252,37 @@
 .highlight {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 24px 20px;
+  gap: var(--space-sm);
+  padding: var(--space-md) 1.25rem;
   background-color: var(--color-surface-20);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
 }
 
 .highlight > div:first-child {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-base);
   background-color: var(--color-accent-1);
 }
 
 .highlight > div:last-child {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .highlight h3 {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--fs-body-1);
   font-weight: var(--fw-semibold);
   font-style: normal;
-  line-height: 22px;
+  line-height: 1.375;
   color: var(--color-dominant);
 }
 
 .highlight p {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: var(--fs-small);
+  line-height: 1.25;
   color: var(--color-highlight-body);
 }
 
@@ -296,15 +296,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px;
+  padding: 0.625rem 1.125rem;
   border-radius: 999px;
   border: 2px solid transparent;
   background-color: var(--color-secondary-hover);
   color: var(--color-accent-1);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
-  line-height: 20px;
+  line-height: 1.25;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
