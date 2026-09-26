@@ -385,6 +385,41 @@ main {
   gap: var(--space-lg);
 }
 
+/* EXPLORE — RECENT RELEASES / POPULAR SHELVES
+   Heading + book-row pattern, reused identically on Home's "Popular
+   right now" section below. 96px gap between heading and row, per
+   Figma (Nicolle, 2026-09-26). */
+
+.recent-releases,
+.popular-shelves,
+.popular {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl); /* 96px */
+}
+
+/* EXPLORE — BUILD YOUR OWN SHELVES CTA
+   Centered heading + paragraph + button, 20px gap, per Figma
+   (Nicolle, 2026-09-26). */
+
+.user-shelves-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm-plus); /* 20px */
+  text-align: center;
+}
+
+/* FEATURES — BOTTOM CTA
+   Button centered in the section, 240px side padding, per Figma
+   (Nicolle, 2026-09-26). */
+
+.cta {
+  display: flex;
+  justify-content: center;
+  padding: 0 15rem; /* 240px */
+}
+
 /* HAMBURGER MENU & MOBILE NAVIGATION */
 
 .nav-toggle {
@@ -537,6 +572,13 @@ body.nav-open::before {
   
   .nav-toggle {
     display: flex;
+  }
+  
+  /* .cta's 240px side padding (desktop/Figma spec) would overflow badly
+     on mobile — 480px of padding alone exceeds most phone viewports.
+     Fall back to the same padding used by main > section elsewhere. */
+  .cta {
+    padding: 0 var(--space-lg-sm);
   }
   
   .nav-links {
