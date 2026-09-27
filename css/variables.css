@@ -27,6 +27,12 @@
   --color-secondary-hover: rgba(86, 53, 45, 0.1);    /* Accent 1 @ 10% — Secondary hover tint */
   --color-secondary-disabled: #B8B4AD;               /* aux7 — Secondary disabled border; also reused for the waitlist email-input border and the confirmation ticket's dashed divider */
 
+  /* Status colors (PEC 5) — checked against both Apricot (#E2C4A6) and
+     Bone (#FBF4EA), the two surfaces error/success text can appear on.
+     Both clear 4.5:1 body-text contrast. */
+  --color-error: #8a2f1c;   /* 5.06:1 on Apricot, 7.67:1 on Bone */
+  --color-success: #2f5d3a; /* 4.61:1 on Apricot, 7.00:1 on Bone */
+
   /* Typography — Font families */
   --font-heading: 'Crimson Pro', serif;
   --font-body: 'Roboto Flex', sans-serif;
