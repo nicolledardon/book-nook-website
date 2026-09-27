@@ -47,7 +47,53 @@ function initMobileNav() {
 }
 
 function initHeaderScroll() {
-  // Phase 2: header hides on scroll down, returns on scroll up.
+  const header = document.querySelector('header');
+  if (!header) return;
+
+  const MOBILE_MAX_WIDTH = 768; // matches the CSS breakpoint; mobile never hides
+  const HIDE_THRESHOLD = 5;     // px scrolled down before hiding
+  const SHOW_THRESHOLD = 10;    // px scrolled up before showing again (stops trackpad jitter)
+
+  let lastScrollY = Math.max(window.scrollY, 0);
+  let focusInHeader = false;
+  let ticking = false;
+
+  header.addEventListener('focusin', function () { focusInHeader = true; });
+  header.addEventListener('focusout', function () { focusInHeader = false; });
+
+  function show() {
+    header.classList.remove('header--hidden');
+  }
+
+  function update() {
+    ticking = false;
+
+    // iPhone's rubber-band bounce can report negative scrollY — treat as 0.
+    const currentScrollY = Math.max(window.scrollY, 0);
+    const delta = currentScrollY - lastScrollY;
+
+    const isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
+    const menuOpen = document.body.classList.contains('is-nav-open');
+    const nearTop = currentScrollY <= header.offsetHeight;
+
+    if (isMobile || menuOpen || focusInHeader || nearTop) {
+      show();
+    } else if (delta > HIDE_THRESHOLD) {
+      header.classList.add('header--hidden');
+    } else if (delta < -SHOW_THRESHOLD) {
+      show();
+    }
+    // else: movement too small, change nothing
+
+    lastScrollY = currentScrollY;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
 }
 
 function initWaitlistForm() {
