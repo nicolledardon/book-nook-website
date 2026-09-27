@@ -44,15 +44,18 @@
         <section class="page-section signup__panel">
             <h1>Be the first to know.</h1>
             <p class="signup__subtitle">Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.</p>
-            <form class="signup__form">
-                <label for="email" class="sr-only">Email address</label>
-                <input type="email" id="email" name="email" class="signup__input" placeholder="you@email.com" required>
+            <form class="signup__form" novalidate>
+                <div class="signup__field">
+                    <label for="email" class="sr-only">Email address</label>
+                    <input type="email" id="email" name="email" class="signup__input" placeholder="you@email.com" required aria-describedby="email-error">
+                    <p class="signup__error" id="email-error" aria-live="polite"></p>
+                </div>
                 <button type="submit" class="signup__submit btn btn--primary">Join Waitlist</button>
             </form>
         </section>
         <section class="page-section confirmation-panel" hidden>
             <div class="ticket">
-                <h2 class="ticket__heading">You're on the list!</h2>
+                <h2 class="ticket__heading" tabindex="-1">You're on the list!</h2>
                 <p class="ticket__subtitle">We'll email you the moment it's your turn.</p>
                 <div class="queue-badge">You're #1,204 in line</div>
                 <div class="dashed-divider"></div>

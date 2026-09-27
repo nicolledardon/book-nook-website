@@ -136,6 +136,12 @@
   text-align: center;
 }
 
+/* Same specificity fix as .confirmation-panel[hidden] below: a bare
+   [hidden] loses to this class's display:flex on its own. */
+.signup__panel[hidden] {
+  display: none;
+}
+
 .signup__subtitle {
   color: var(--color-highlight-body);
 }
@@ -144,6 +150,12 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+}
+
+.signup__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
 }
 
 .signup__input {
@@ -166,6 +178,26 @@
   outline: none;
   border-width: 2px;
   border-color: var(--color-dominant);
+}
+
+.signup__input.is-invalid {
+  border-color: var(--color-error);
+}
+
+.signup__input.is-valid {
+  border-color: var(--color-success);
+}
+
+.signup__error {
+  font-size: var(--fs-small);
+  color: var(--color-error);
+  text-align: left;
+}
+
+/* Collapses to nothing when JS clears the error text, instead of
+   leaving an empty paragraph's line-height as a gap under the input. */
+.signup__error:empty {
+  display: none;
 }
 
 /* WAITLIST — CONFIRMATION

@@ -97,7 +97,96 @@ function initHeaderScroll() {
 }
 
 function initWaitlistForm() {
-  // Phase 3: waitlist validation + confirmation.
+  const form = document.querySelector('.signup__form');
+  if (!form) return;
+
+  const input = document.getElementById('email');
+  const error = document.getElementById('email-error');
+  const submitButton = form.querySelector('.signup__submit');
+  let hasAttemptedSubmit = false;
+
+  function getError() {
+    const value = input.value;
+    if (value === '') {
+      return 'Please enter your email address';
+    }
+    // A simple shape check (something@something.something), not a full
+    // RFC 5322 regex — good enough to catch typos without being
+    // stricter than real-world email addresses actually are.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      return "That doesn't look like an email address";
+    }
+    return '';
+  }
+
+  function showError(message) {
+    error.textContent = message;
+    input.classList.add('is-invalid');
+    input.classList.remove('is-valid');
+    input.setAttribute('aria-invalid', 'true');
+  }
+
+  function showValid() {
+    error.textContent = '';
+    input.classList.remove('is-invalid');
+    input.classList.add('is-valid');
+    input.setAttribute('aria-invalid', 'false');
+  }
+
+  function revalidate() {
+    const message = getError();
+    if (message) {
+      showError(message);
+    } else {
+      showValid();
+    }
+    return message === '';
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    input.value = input.value.trim();
+    hasAttemptedSubmit = true;
+
+    const isValid = revalidate();
+    if (!isValid) return;
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    // Generate one random queue number (1,000-3,000) that drives both
+    // the queue badge and the ticket code, e.g. #1,847 and BN-2026-1847.
+    const queueNumber = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
+    const year = new Date().getFullYear();
+
+    const queueBadge = document.querySelector('.queue-badge');
+    const ticketCode = document.querySelector('.ticket__code');
+    const signupPanel = document.querySelector('.signup__panel');
+    const confirmationPanel = document.querySelector('.confirmation-panel');
+    const ticketHeading = document.querySelector('.ticket__heading');
+
+    if (queueBadge) {
+      queueBadge.textContent = "You're #" + queueNumber.toLocaleString('en-US') + ' in line';
+    }
+    if (ticketCode) {
+      ticketCode.textContent = 'BN-' + year + '-' + queueNumber;
+    }
+
+    if (signupPanel) signupPanel.hidden = true;
+    if (confirmationPanel) confirmationPanel.hidden = false;
+
+    window.scrollTo(0, 0);
+    if (ticketHeading) ticketHeading.focus();
+  });
+
+  // Only re-check while typing after a failed attempt, so someone isn't
+  // shown "please enter your email" while they're still typing it the
+  // first time around.
+  input.addEventListener('input', function () {
+    if (!hasAttemptedSubmit) return;
+    revalidate();
+  });
 }
 
 function initMoodFilter() {
