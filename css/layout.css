@@ -90,6 +90,11 @@
   flex-wrap: wrap;
 }
 
+.mood-browse__hint {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
 /* ABOUT PAGE
    Matches Figma's "about-content" node — centered single column:
    photo, heading, body copy, CTA — capped narrower than the hero

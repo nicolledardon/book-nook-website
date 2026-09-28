@@ -44,14 +44,16 @@
         <section class="page-section mood-browse">
         <h1 class="mood-browse__heading">Browse by mood</h1>
         <div class="mood-browse__list">
-            <button type="button" class="mood-chip is-selected">Cozy</button>
-            <button type="button" class="mood-chip">Thrilling</button>
-            <button type="button" class="mood-chip">Heartfelt</button>
-            <button type="button" class="mood-chip">Mind-bending</button>
-            <button type="button" class="mood-chip">Uplifting</button>
+            <button type="button" class="mood-chip is-selected" data-mood="cozy" aria-pressed="true">Cozy</button>
+            <button type="button" class="mood-chip" data-mood="thrilling" aria-pressed="false">Thrilling</button>
+            <button type="button" class="mood-chip" data-mood="heartfelt" aria-pressed="false">Heartfelt</button>
+            <button type="button" class="mood-chip" data-mood="mind-bending" aria-pressed="false">Mind-bending</button>
+            <button type="button" class="mood-chip" data-mood="uplifting" aria-pressed="false">Uplifting</button>
         </div>
+        <p class="mood-browse__hint">Tap a mood again to see all books.</p>
+        <p class="mood-browse__status sr-only" aria-live="polite"></p>
         <div class="book-row">
-            <div class="book-card">
+            <div class="book-card" data-moods="mind-bending">
                 <div class="book-card__cover"><img src="assets/book_cover_img/4671.jpg" alt="The Great Gatsby cover"></div>
                 <p class="book-card__title">The Great Gatsby</p>
                 <p class="book-card__author">F. Scott Fitzgerald</p>
@@ -63,7 +65,7 @@
                     <span class="star star--half"></span>
                 </div>
             </div>
-            <div class="book-card">
+            <div class="book-card" data-moods="cozy heartfelt">
                 <div class="book-card__cover"><img src="assets/book_cover_img/19063.jpg" alt="The Book Thief cover"></div>
                 <p class="book-card__title">The Book Thief</p>
                 <p class="book-card__author">Markus Zusak</p>
@@ -75,7 +77,7 @@
                     <span class="star star--half"></span>
                 </div>
             </div>
-            <div class="book-card">
+            <div class="book-card" data-moods="mind-bending thrilling">
                 <div class="book-card__cover"><img src="assets/book_cover_img/231126882.jpg" alt="The Age of Calamities cover"></div>
                 <p class="book-card__title">The Age of Calamities</p>
                 <p class="book-card__author">Senaa Ahmad</p>
@@ -87,10 +89,70 @@
                     <span class="star star--half"></span>
                 </div>
             </div>
-            <div class="book-card">
+            <div class="book-card" data-moods="cozy uplifting">
                 <div class="book-card__cover"><img src="assets/book_cover_img/28187.jpg" alt="The Lightning Thief cover"></div>
                 <p class="book-card__title">The Lightning Thief</p>
                 <p class="book-card__author">Rick Riordan</p>
+                <div class="book-card__rating">
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--half"></span>
+                </div>
+            </div>
+            <div class="book-card" data-moods="uplifting heartfelt">
+                <div class="book-card__cover"><img src="assets/book_cover_img/30075802.jpg" alt="The Princess Saves Herself in This One cover"></div>
+                <p class="book-card__title">The Princess Saves Herself in This One</p>
+                <p class="book-card__author">Amanda Lovelace</p>
+                <div class="book-card__rating">
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--half"></span>
+                </div>
+            </div>
+            <div class="book-card" data-moods="heartfelt">
+                <div class="book-card__cover"><img src="assets/book_cover_img/50706476.jpg" alt="Dearly cover"></div>
+                <p class="book-card__title">Dearly</p>
+                <p class="book-card__author">Margaret Atwood</p>
+                <div class="book-card__rating">
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--half"></span>
+                </div>
+            </div>
+            <div class="book-card" data-moods="thrilling">
+                <div class="book-card__cover"><img src="assets/book_cover_img/528.jpg" alt="From Blood and Ash cover"></div>
+                <p class="book-card__title">From Blood and Ash</p>
+                <p class="book-card__author">Jennifer L. Armentrout</p>
+                <div class="book-card__rating">
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--half"></span>
+                </div>
+            </div>
+            <div class="book-card" data-moods="mind-bending thrilling">
+                <div class="book-card__cover"><img src="assets/book_cover_img/62047984.jpg" alt="Yellowface cover"></div>
+                <p class="book-card__title">Yellowface</p>
+                <p class="book-card__author">R.F. Kuang</p>
+                <div class="book-card__rating">
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--full"></span>
+                    <span class="star star--half"></span>
+                </div>
+            </div>
+            <div class="book-card" data-moods="heartfelt uplifting">
+                <div class="book-card__cover"><img src="assets/book_cover_img/6313.jpg" alt="The Woman in Me cover"></div>
+                <p class="book-card__title">The Woman in Me</p>
+                <p class="book-card__author">Britney Spears</p>
                 <div class="book-card__rating">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>

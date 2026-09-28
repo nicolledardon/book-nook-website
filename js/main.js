@@ -189,8 +189,104 @@ function initWaitlistForm() {
   });
 }
 
+function filterCards(cardList, datasetKey, value) {
+  // Generic show/hide filter — takes the dataset key as a parameter (rather
+  // than hardcoding .dataset.moods) so Phase 6's Journal filter can reuse
+  // this same function with a different attribute (e.g. "category").
+  // Toggles the native `hidden` attribute instead of a CSS class, so the
+  // accessibility tree skips hidden cards automatically — no extra
+  // aria-hidden bookkeeping needed on top of it.
+  let visibleCount = 0;
+  cardList.forEach(function (card) {
+    const values = (card.dataset[datasetKey] || '').split(' ');
+    const matches = values.includes(value);
+    card.hidden = !matches;
+    if (matches) visibleCount += 1;
+  });
+  return visibleCount;
+}
+
+function setSelectedChip(chipList, selectedChip) {
+  // Single-select behaviour: clicking a chip selects only that one and
+  // resets every other chip in the group. aria-pressed reports the toggle
+  // state to assistive tech; is-selected drives the visual highlight.
+  chipList.forEach(function (chip) {
+    const isSelected = chip === selectedChip;
+    chip.classList.toggle('is-selected', isSelected);
+    chip.setAttribute('aria-pressed', String(isSelected));
+  });
+}
+
+function announce(liveRegion, message) {
+  // Writes into the sr-only aria-live="polite" region so screen reader
+  // users hear the filter result — sighted users already see the book
+  // grid change, but that visual-only change is invisible without this.
+  liveRegion.textContent = message;
+}
+
+function applyMoodFilter(chip, chipList, cardList, status) {
+  // Shared by the click handler and the on-load default below, so the
+  // "select a chip, filter the cards, announce the result" sequence only
+  // has to be written (and fixed, if it ever needs fixing) once.
+  const mood = chip.dataset.mood;
+  setSelectedChip(chipList, chip);
+  const visibleCount = filterCards(cardList, 'moods', mood);
+
+  if (status) {
+    const label = chip.textContent.trim();
+    const bookWord = visibleCount === 1 ? 'book' : 'books';
+    announce(status, `Showing ${visibleCount} ${bookWord} for ${label}`);
+  }
+}
+
+function clearMoodFilter(chipList, cardList, status) {
+  // Counterpart to applyMoodFilter() — used when the already-selected chip
+  // is clicked again. Passing null reuses setSelectedChip's own loop to
+  // deselect every chip, since chip === null is never true for any chip.
+  setSelectedChip(chipList, null);
+  cardList.forEach(function (card) {
+    card.hidden = false;
+  });
+
+  if (status) {
+    announce(status, `Showing all ${cardList.length} books`);
+  }
+}
+
 function initMoodFilter() {
   // Phase 4: mood-based Explore filter.
+  const chips = document.querySelectorAll('.mood-chip');
+  const cards = document.querySelectorAll('.mood-browse .book-card');
+  const status = document.querySelector('.mood-browse__status');
+
+  if (!chips.length || !cards.length) return;
+
+  const chipList = Array.prototype.slice.call(chips);
+  const cardList = Array.prototype.slice.call(cards);
+
+  chipList.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      if (chip.classList.contains('is-selected')) {
+        clearMoodFilter(chipList, cardList, status);
+      } else {
+        applyMoodFilter(chip, chipList, cardList, status);
+      }
+    });
+  });
+
+  // The HTML ships with the Cozy chip already marked is-selected /
+  // aria-pressed="true" — apply that filter on load so the grid matches
+  // what the chip visually claims, instead of showing all 9 cards under a
+  // chip that looks active. Reads the default from the markup rather than
+  // hardcoding 'cozy', so changing which chip ships pre-selected needs no
+  // JS edit.
+  const defaultChip = chipList.find(function (chip) {
+    return chip.classList.contains('is-selected');
+  });
+
+  if (defaultChip) {
+    applyMoodFilter(defaultChip, chipList, cardList, status);
+  }
 }
 
 function initAnchorNav() {

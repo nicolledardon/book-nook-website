@@ -128,6 +128,13 @@
   box-shadow: var(--shadow-card);
 }
 
+/* Same specificity fix as .confirmation-panel[hidden] / .signup__panel[hidden]:
+   a bare [hidden] loses to this class's display:flex rule on its own, so the
+   attribute is combined with the class to win the tie. */
+.book-card[hidden] {
+  display: none;
+}
+
 .book-card__cover {
   width: 100%;
   aspect-ratio: 2 / 3; /* standard book-cover proportions; the real covers are ~0.63-0.66 width:height, so this crops almost nothing */
