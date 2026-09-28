@@ -50,6 +50,9 @@ function initHeaderScroll() {
   const header = document.querySelector('header');
   if (!header) return;
 
+  // Only present on features.html -- every other page simply never docks it.
+  const anchorNav = document.querySelector('.anchor-buttons');
+
   const MOBILE_MAX_WIDTH = 768; // matches the CSS breakpoint; mobile never hides
   const HIDE_THRESHOLD = 5;     // px scrolled down before hiding
   const SHOW_THRESHOLD = 10;    // px scrolled up before showing again (stops trackpad jitter)
@@ -63,6 +66,15 @@ function initHeaderScroll() {
 
   function show() {
     header.classList.remove('header--hidden');
+    if (anchorNav) anchorNav.classList.remove('anchor-nav--docked');
+  }
+
+  function hide() {
+    header.classList.add('header--hidden');
+    // Moves the sticky anchor nav up by the header's own height so it
+    // closes the gap left behind, instead of floating with empty space
+    // above it where the header used to be.
+    if (anchorNav) anchorNav.classList.add('anchor-nav--docked');
   }
 
   function update() {
@@ -79,7 +91,7 @@ function initHeaderScroll() {
     if (isMobile || menuOpen || focusInHeader || nearTop) {
       show();
     } else if (delta > HIDE_THRESHOLD) {
-      header.classList.add('header--hidden');
+      hide();
     } else if (delta < -SHOW_THRESHOLD) {
       show();
     }
@@ -291,6 +303,53 @@ function initMoodFilter() {
 
 function initAnchorNav() {
   // Phase 5: Features anchor navigation.
+  const blocks = document.querySelectorAll('.feature-block');
+  const anchorButtons = document.querySelectorAll('.anchor-button');
+
+  if (!blocks.length || !anchorButtons.length) return;
+
+  const buttonList = Array.prototype.slice.call(anchorButtons);
+
+  function setActiveButton(id) {
+    buttonList.forEach(function (button) {
+      const isActive = button.getAttribute('href') === '#' + id;
+      button.classList.toggle('is-active', isActive);
+      if (isActive) {
+        button.setAttribute('aria-current', 'location');
+      } else {
+        button.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  buttonList.forEach(function (button) {
+    button.addEventListener('click', function () {
+      // Instant feedback on click, rather than waiting for the smooth
+      // scroll to finish and the observer below to catch up -- also
+      // covers the edge case where the last block might never fully
+      // cross the observer's center-crossing zone on a short viewport.
+      const targetId = button.getAttribute('href').slice(1);
+      setActiveButton(targetId);
+    });
+  });
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setActiveButton(entry.target.id);
+      }
+    });
+  }, {
+    // Shrinks the effective viewport to its middle 20% (-40% off the top
+    // and bottom), so a block only counts as "current" once it crosses
+    // near the center of the screen -- not the instant its edge appears,
+    // which would flicker between two adjacent blocks near the boundary.
+    rootMargin: '-40% 0px -40% 0px'
+  });
+
+  blocks.forEach(function (block) {
+    observer.observe(block);
+  });
 }
 
 function initJournalFilter() {

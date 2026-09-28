@@ -1,3 +1,11 @@
+/* Smooth-scrolls to #anchor targets (Features page nav buttons) instead of
+   jumping instantly. Left unconditional rather than guarded behind
+   prefers-reduced-motion -- same deliberate decision as skipping the
+   reduced-motion reset in Phase 0. */
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   box-sizing: border-box; /* padding + border count INSIDE the width you set, not added on top */
   margin: 0;

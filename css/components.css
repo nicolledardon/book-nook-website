@@ -206,6 +206,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-lg);
+  scroll-margin-top: var(--header-height); /* keeps the heading clear of the
+    sticky header when an anchor-button jump lands here */
 }
 
 .feature-block--reverse {

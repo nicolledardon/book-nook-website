@@ -53,8 +53,25 @@
 
 .anchor-buttons {
   display: flex;
+  justify-content: center;
   gap: var(--space-md-plus);
   flex-wrap: wrap;
+  position: sticky;
+  top: var(--header-height);
+  z-index: 90; /* below the header's 100, so header always wins if they ever overlap during the dock transition */
+  transition: transform 250ms ease; /* same speed as header--hidden, so the two bars move as one unit */
+  padding-block: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface-20);
+  backdrop-filter: blur(0.33125rem);
+  -webkit-backdrop-filter: blur(0.33125rem);
+}
+
+/* Toggled by initHeaderScroll() in main.js in step with header--hidden --
+   slides the nav up to close the gap left where the header used to be,
+   instead of leaving empty space above it. Desktop widths only, since
+   the header itself never hides on mobile. */
+.anchor-buttons.anchor-nav--docked {
+  transform: translateY(calc(-1 * var(--header-height)));
 }
 
 /* Figma sizes these links at 14px, not the button system's standard
@@ -64,6 +81,14 @@
    lower specificity, no risk of overriding .btn--tertiary elsewhere. */
 .anchor-button {
   font-size: var(--fs-small);
+}
+
+/* Marks whichever feature-block is on screen, per initAnchorNav()'s
+   IntersectionObserver. Same filled-pill treatment as .mood-chip.is-selected
+   for a consistent "this one's active" language across the site. */
+.anchor-button.is-active {
+  background-color: var(--color-accent-1);
+  color: var(--color-surface);
 }
 
 /* EXPLORE — MOOD-BASED BROWSE
