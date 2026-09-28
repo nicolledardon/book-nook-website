@@ -553,12 +553,22 @@ main {
   padding: var(--space-xs);
   background-color: var(--color-dominant);
   border-radius: 999px;
+  max-width: 100%; /* inline-flex otherwise sizes to its content and ignores
+    the container, which is what pushed the page wide on narrow screens */
+  overflow-x: auto; /* the bar itself scrolls sideways once its 5 tabs don't
+    fit, instead of the whole page -- same pattern as category pills on
+    Instagram/YouTube; keeps the reference's single-row pill shape intact
+    at every width, per Nicolle's decision (2026-09-28) */
+  -webkit-overflow-scrolling: touch;
 }
 
 .tab {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0; /* keeps each tab at its natural width inside the
+    scrollable bar, instead of getting squeezed */
+  white-space: nowrap;
   padding: 0.625rem 1.125rem;
   border-radius: 999px;
   border: none;
@@ -587,7 +597,13 @@ main {
 .post-grid {
   display: grid;
   width: 100%; /* same auto-fill-collapse fix .book-row needed -- .journal is a flex parent with align-items: flex-start */
-  grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+  /* min(18.75rem, 100%) instead of a bare 18.75rem -- self-adapts on narrow
+     screens without a breakpoint override: once 100% of the available width
+     is less than 300px, the column just becomes full-width (one post-card
+     per row) instead of forcing a 300px-minimum track that overflows.
+     Unlike .book-row's 320px fix, this reads as one column rather than two
+     narrow ones, since post-card is text content, not a book cover. */
+  grid-template-columns: repeat(auto-fill, minmax(min(18.75rem, 100%), 1fr));
   gap: var(--space-lg);
 }
 
