@@ -115,6 +115,11 @@ function initWaitlistForm() {
   const input = document.getElementById('email');
   const error = document.getElementById('email-error');
   const submitButton = form.querySelector('.signup__submit');
+  const queueBadge = document.querySelector('.queue-badge');
+  const ticketCode = document.querySelector('.ticket__code');
+  const signupPanel = document.querySelector('.signup__panel');
+  const confirmationPanel = document.querySelector('.confirmation-panel');
+  const ticketHeading = document.querySelector('.ticket__heading');
   let hasAttemptedSubmit = false;
 
   function getError() {
@@ -169,14 +174,11 @@ function initWaitlistForm() {
 
     // Generate one random queue number (1,000-3,000) that drives both
     // the queue badge and the ticket code, e.g. #1,847 and BN-2026-1847.
+    // queueBadge/ticketCode/signupPanel/confirmationPanel/ticketHeading are
+    // cached once above with input/error/submitButton, rather than queried
+    // fresh on every submit -- they never change between calls.
     const queueNumber = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
     const year = new Date().getFullYear();
-
-    const queueBadge = document.querySelector('.queue-badge');
-    const ticketCode = document.querySelector('.ticket__code');
-    const signupPanel = document.querySelector('.signup__panel');
-    const confirmationPanel = document.querySelector('.confirmation-panel');
-    const ticketHeading = document.querySelector('.ticket__heading');
 
     if (queueBadge) {
       queueBadge.textContent = "You're #" + queueNumber.toLocaleString('en-US') + ' in line';
