@@ -75,7 +75,7 @@
   /* Sticky header's rendered height, for scroll-margin-top on anchor targets
      (Features page). Header's vertical padding is a constant 2x1.5rem
      everywhere; the tallest content row is the "Join the Nook" button on
-     desktop/tablet (~88px) vs. the hamburger icon on mobile (~80px) --
+     desktop/tablet (~88px) vs. the hamburger icon on mobile (~80px) -
      rounded up to the larger case so mobile gets a few harmless extra px
      of margin instead of any risk of a heading landing under the header. */
   --header-height: 5.625rem; /* 90px */

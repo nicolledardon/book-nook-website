@@ -1,19 +1,12 @@
-// ============================================================
 // Book Nook — main.js
-// One file, one function per interaction (PEC 5). Every init
-// function checks that its elements exist before doing anything,
+// Every init function checks that its elements exist before doing anything,
 // so pages that don't have that markup see no console errors.
-// ============================================================
 
 function initMobileNav() {
   // Hamburger menu toggle
   // Visibility is driven entirely by CSS (body.is-nav-open .nav-links) —
-  // JS only toggles the class and the aria-expanded state. Setting
-  // navLinks.style.display directly here would fight the mobile
-  // stylesheet's ".nav-links { display: none }" rule on specificity
-  // terms (an inline style normally wins on specificity alone, which
-  // is exactly why the menu broke before this fix — the class-based
-  // approach avoids the fight instead of using !important to force it).
+  // JS only toggles the class and the aria-expanded state
+
   const navToggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
   const body = document.body;
@@ -50,7 +43,7 @@ function initHeaderScroll() {
   const header = document.querySelector('header');
   if (!header) return;
 
-  // Only present on features.html -- every other page simply never docks it.
+  // Only present on features.html - every other page simply never docks it.
   const anchorNav = document.querySelector('.anchor-buttons');
 
   const MOBILE_MAX_WIDTH = 768; // matches the CSS breakpoint; mobile never hides
@@ -268,7 +261,7 @@ function clearMoodFilter(chipList, cardList, status) {
 }
 
 function initMoodFilter() {
-  // Phase 4: mood-based Explore filter.
+  // mood-based Explore filter.
   const chips = document.querySelectorAll('.mood-chip');
   const cards = document.querySelectorAll('.mood-browse .book-card');
   const status = document.querySelector('.mood-browse__status');
@@ -304,7 +297,7 @@ function initMoodFilter() {
 }
 
 function initAnchorNav() {
-  // Phase 5: Features anchor navigation.
+  // Features anchor navigation.
   const blocks = document.querySelectorAll('.feature-block');
   const anchorButtons = document.querySelectorAll('.anchor-button');
 
@@ -327,7 +320,7 @@ function initAnchorNav() {
   buttonList.forEach(function (button) {
     button.addEventListener('click', function () {
       // Instant feedback on click, rather than waiting for the smooth
-      // scroll to finish and the observer below to catch up -- also
+      // scroll to finish and the observer below to catch up - also
       // covers the edge case where the last block might never fully
       // cross the observer's center-crossing zone on a short viewport.
       const targetId = button.getAttribute('href').slice(1);
@@ -373,7 +366,7 @@ function setSelectedTab(tabList, selectedTab, panel) {
 }
 
 function applyJournalFilter(tab, tabList, postList, status, panel) {
-  // Reuses filterCards() and announce() from Phase 4's mood filter, but
+  // Reuses filterCards() and announce() from mood filter, but
   // uses setSelectedTab() (not setSelectedChip()) since these are real
   // ARIA tabs now, not toggle buttons.
   const category = tab.dataset.category;
@@ -397,7 +390,7 @@ function applyJournalFilter(tab, tabList, postList, status, panel) {
 }
 
 function initJournalFilter() {
-  // Phase 6 + tabs retrofit: real ARIA tabs (role="tablist"/"tab",
+  // tabs retrofit: real ARIA tabs (role="tablist"/"tab",
   // aria-selected, roving tabindex, arrow-key navigation) instead of
   // toggle buttons. The Explore mood chips are a genuine filter, not
   // tabs, and are untouched -- they keep aria-pressed and setSelectedChip().
@@ -421,7 +414,7 @@ function initJournalFilter() {
   // Roving-tabindex arrow-key navigation, per the WAI-ARIA Tabs pattern:
   // Left/Right cycle through tabs (wrapping at the ends), Home/End jump to
   // the first/last tab, and moving focus also activates the tab immediately
-  // ("automatic activation") -- matches the existing click-to-filter
+  // ("automatic activation") - matches the existing click-to-filter
   // behavior instead of requiring a separate Enter/Space press.
   tablist.addEventListener('keydown', function (event) {
     const currentIndex = tabList.indexOf(document.activeElement);
@@ -446,7 +439,7 @@ function initJournalFilter() {
     applyJournalFilter(targetTab, tabList, postList, status, panel);
   });
 
-  // "All" ships pre-selected in the HTML -- apply it on load so the grid
+  // "All" ships pre-selected in the HTML - apply it on load so the grid
   // matches what the tab bar already shows, same reasoning as Phase 4's
   // default-to-Cozy fix.
   const defaultTab = tabList.find(function (tab) {
