@@ -407,9 +407,36 @@ function initJournalFilter() {
   }
 }
 
+function initFaqAccordion() {
+  // About page FAQ. Single-open: opening one item closes whichever other
+  // one was open, same pattern as the mood chips / journal tabs above.
+  const questions = document.querySelectorAll('.faq__question');
+  if (!questions.length) return;
+
+  const questionList = Array.prototype.slice.call(questions);
+
+  questionList.forEach(function (question) {
+    question.addEventListener('click', function () {
+      const isOpen = question.getAttribute('aria-expanded') === 'true';
+
+      questionList.forEach(function (other) {
+        if (other === question) return;
+        other.setAttribute('aria-expanded', 'false');
+        const otherAnswer = document.getElementById(other.getAttribute('aria-controls'));
+        if (otherAnswer) otherAnswer.hidden = true;
+      });
+
+      question.setAttribute('aria-expanded', String(!isOpen));
+      const answer = document.getElementById(question.getAttribute('aria-controls'));
+      if (answer) answer.hidden = isOpen;
+    });
+  });
+}
+
 initMobileNav();
 initHeaderScroll();
 initWaitlistForm();
 initMoodFilter();
 initAnchorNav();
 initJournalFilter();
+initFaqAccordion();

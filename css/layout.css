@@ -152,6 +152,74 @@
   background-color: var(--color-aux4);
 }
 
+/* ABOUT PAGE — FAQ
+   Single-open accordion under the creator bio. Left-aligned unlike
+   .meet-creator above it, since this is a list of Q&A pairs, not a
+   centered block of prose. No open/close transition — matches the
+   deliberate call (Phase 0) to skip a global prefers-reduced-motion
+   reset rather than adding one animated component that's the only
+   one covered by it. */
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 45rem;
+  margin: 0 auto;
+  padding: 0 0 var(--space-xxl);
+}
+
+.faq__heading {
+  text-align: center;
+}
+
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-aux8);
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--color-aux8);
+}
+
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-md) 0;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: var(--fs-body-1);
+  font-weight: var(--fw-semibold);
+  color: var(--color-dominant);
+}
+
+.faq__question:focus-visible {
+  outline: 2px solid var(--color-dominant);
+  outline-offset: 2px;
+}
+
+.faq__icon {
+  flex-shrink: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg); /* closed: chevron pointing down */
+}
+
+.faq__question[aria-expanded="true"] .faq__icon {
+  transform: rotate(-135deg); /* open: chevron pointing up */
+}
+
+.faq__answer {
+  padding: 0 0 var(--space-md);
+  color: var(--color-highlight-body);
+}
+
 /* WAITLIST — SIGN-UP
    Matches Figma's "waitlist-hero" node. */
 
