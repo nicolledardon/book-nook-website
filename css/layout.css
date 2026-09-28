@@ -70,7 +70,7 @@
    slides the nav up to close the gap left where the header used to be,
    instead of leaving empty space above it. Desktop widths only, since
    the header itself never hides on mobile. */
-.anchor-buttons.anchor-nav--docked {
+.anchor-buttons.is-docked {
   transform: translateY(calc(-1 * var(--header-height)));
 }
 

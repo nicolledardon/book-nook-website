@@ -66,7 +66,7 @@ function initHeaderScroll() {
 
   function show() {
     header.classList.remove('header--hidden');
-    if (anchorNav) anchorNav.classList.remove('anchor-nav--docked');
+    if (anchorNav) anchorNav.classList.remove('is-docked');
   }
 
   function hide() {
@@ -74,7 +74,7 @@ function initHeaderScroll() {
     // Moves the sticky anchor nav up by the header's own height so it
     // closes the gap left behind, instead of floating with empty space
     // above it where the header used to be.
-    if (anchorNav) anchorNav.classList.add('anchor-nav--docked');
+    if (anchorNav) anchorNav.classList.add('is-docked');
   }
 
   function update() {
