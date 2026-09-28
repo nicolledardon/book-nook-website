@@ -352,8 +352,57 @@ function initAnchorNav() {
   });
 }
 
+function applyJournalFilter(tab, tabList, postList, status) {
+  // Phase 6 reuses filterCards(), setSelectedChip(), and announce() from
+  // Phase 4's mood filter -- this is the actual reuse the plan called for,
+  // not just similarly-shaped new code.
+  const category = tab.dataset.category;
+  setSelectedChip(tabList, tab);
+
+  let visibleCount;
+  if (category === 'all') {
+    // filterCards() expects a real dataset value to match against; no post
+    // has data-category="all", so "All" is handled directly here instead.
+    postList.forEach(function (post) { post.hidden = false; });
+    visibleCount = postList.length;
+  } else {
+    visibleCount = filterCards(postList, 'category', category);
+  }
+
+  if (status) {
+    const label = tab.textContent.trim();
+    const postWord = visibleCount === 1 ? 'post' : 'posts';
+    announce(status, `Showing ${visibleCount} ${postWord} in ${label}`);
+  }
+}
+
 function initJournalFilter() {
   // Phase 6: Journal category filter.
+  const tabs = document.querySelectorAll('.tab');
+  const posts = document.querySelectorAll('.post-card');
+  const status = document.querySelector('.journal__status');
+
+  if (!tabs.length || !posts.length) return;
+
+  const tabList = Array.prototype.slice.call(tabs);
+  const postList = Array.prototype.slice.call(posts);
+
+  tabList.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      applyJournalFilter(tab, tabList, postList, status);
+    });
+  });
+
+  // "All" ships pre-selected in the HTML -- apply it on load so the grid
+  // matches what the tab bar already shows, same reasoning as Phase 4's
+  // default-to-Cozy fix.
+  const defaultTab = tabList.find(function (tab) {
+    return tab.classList.contains('is-selected');
+  });
+
+  if (defaultTab) {
+    applyJournalFilter(defaultTab, tabList, postList, status);
+  }
 }
 
 initMobileNav();

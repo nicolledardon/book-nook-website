@@ -529,6 +529,107 @@ main {
   padding: 0 15rem; /* 240px */
 }
 
+/* JOURNAL
+   Blog-style listing -- heading, category filter, and a responsive grid
+   of post cards. Structurally mirrors Explore's mood-based-browse
+   section (heading, filter row, card grid). */
+
+.journal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding-top: var(--space-xl);
+}
+
+/* Single rounded bar with the active tab as a light pill inside it,
+   per Nicolle's reference (2026-09-28) -- not individual chip buttons
+   like .mood-chip. Centered independently of .journal's own
+   left-aligned heading. */
+.category-tabs {
+  display: inline-flex;
+  align-self: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  background-color: var(--color-dominant);
+  border-radius: 999px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.125rem;
+  border-radius: 999px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.tab:hover {
+  background-color: rgba(251, 244, 234, 0.15); /* Bone @ 15% -- light tint against the dark bar */
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-surface); /* the usual dominant-colored ring would be invisible here since dominant IS this bar's own background */
+  outline-offset: 2px;
+}
+
+.tab.is-selected {
+  background-color: var(--color-surface);
+  color: var(--color-dominant);
+}
+
+.post-grid {
+  display: grid;
+  width: 100%; /* same auto-fill-collapse fix .book-row needed -- .journal is a flex parent with align-items: flex-start */
+  grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+  gap: var(--space-lg);
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-base);
+  background-color: var(--color-surface-60);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+/* Same specificity fix as .book-card[hidden] and friends: a bare [hidden]
+   loses to this class's own display:flex rule at equal specificity. */
+.post-card[hidden] {
+  display: none;
+}
+
+.post-card__category {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-accent-1);
+}
+
+.post-card__title {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-1);
+  font-weight: var(--fw-semibold);
+  line-height: 1.375;
+  color: var(--color-dominant);
+}
+
+.post-card__date {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
 /* HAMBURGER MENU & MOBILE NAVIGATION */
 
 .nav__toggle {
