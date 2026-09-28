@@ -354,12 +354,30 @@ function initAnchorNav() {
   });
 }
 
-function applyJournalFilter(tab, tabList, postList, status) {
-  // Phase 6 reuses filterCards(), setSelectedChip(), and announce() from
-  // Phase 4's mood filter -- this is the actual reuse the plan called for,
-  // not just similarly-shaped new code.
+function setSelectedTab(tabList, selectedTab, panel) {
+  // Tabs-specific counterpart to setSelectedChip(): uses aria-selected (the
+  // correct attribute for role="tab", vs. aria-pressed for toggle buttons
+  // like the mood chips) and roving tabindex (selected tab gets tabindex=0,
+  // the rest -1), and repoints the shared results panel's aria-labelledby
+  // at whichever tab is now active.
+  tabList.forEach(function (tab) {
+    const isSelected = tab === selectedTab;
+    tab.classList.toggle('is-selected', isSelected);
+    tab.setAttribute('aria-selected', String(isSelected));
+    tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+  });
+
+  if (panel && selectedTab) {
+    panel.setAttribute('aria-labelledby', selectedTab.id);
+  }
+}
+
+function applyJournalFilter(tab, tabList, postList, status, panel) {
+  // Reuses filterCards() and announce() from Phase 4's mood filter, but
+  // uses setSelectedTab() (not setSelectedChip()) since these are real
+  // ARIA tabs now, not toggle buttons.
   const category = tab.dataset.category;
-  setSelectedChip(tabList, tab);
+  setSelectedTab(tabList, tab, panel);
 
   let visibleCount;
   if (category === 'all') {
@@ -379,20 +397,53 @@ function applyJournalFilter(tab, tabList, postList, status) {
 }
 
 function initJournalFilter() {
-  // Phase 6: Journal category filter.
+  // Phase 6 + tabs retrofit: real ARIA tabs (role="tablist"/"tab",
+  // aria-selected, roving tabindex, arrow-key navigation) instead of
+  // toggle buttons. The Explore mood chips are a genuine filter, not
+  // tabs, and are untouched -- they keep aria-pressed and setSelectedChip().
+  const tablist = document.querySelector('.category-tabs');
   const tabs = document.querySelectorAll('.tab');
   const posts = document.querySelectorAll('.post-card');
   const status = document.querySelector('.journal__status');
+  const panel = document.querySelector('.post-grid');
 
-  if (!tabs.length || !posts.length) return;
+  if (!tablist || !tabs.length || !posts.length) return;
 
   const tabList = Array.prototype.slice.call(tabs);
   const postList = Array.prototype.slice.call(posts);
 
   tabList.forEach(function (tab) {
     tab.addEventListener('click', function () {
-      applyJournalFilter(tab, tabList, postList, status);
+      applyJournalFilter(tab, tabList, postList, status, panel);
     });
+  });
+
+  // Roving-tabindex arrow-key navigation, per the WAI-ARIA Tabs pattern:
+  // Left/Right cycle through tabs (wrapping at the ends), Home/End jump to
+  // the first/last tab, and moving focus also activates the tab immediately
+  // ("automatic activation") -- matches the existing click-to-filter
+  // behavior instead of requiring a separate Enter/Space press.
+  tablist.addEventListener('keydown', function (event) {
+    const currentIndex = tabList.indexOf(document.activeElement);
+    if (currentIndex === -1) return;
+
+    let targetIndex = null;
+    if (event.key === 'ArrowRight') {
+      targetIndex = (currentIndex + 1) % tabList.length;
+    } else if (event.key === 'ArrowLeft') {
+      targetIndex = (currentIndex - 1 + tabList.length) % tabList.length;
+    } else if (event.key === 'Home') {
+      targetIndex = 0;
+    } else if (event.key === 'End') {
+      targetIndex = tabList.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    const targetTab = tabList[targetIndex];
+    targetTab.focus();
+    applyJournalFilter(targetTab, tabList, postList, status, panel);
   });
 
   // "All" ships pre-selected in the HTML -- apply it on load so the grid
@@ -403,7 +454,7 @@ function initJournalFilter() {
   });
 
   if (defaultTab) {
-    applyJournalFilter(defaultTab, tabList, postList, status);
+    applyJournalFilter(defaultTab, tabList, postList, status, panel);
   }
 }
 

@@ -43,15 +43,15 @@
     <main>
         <section class="page-section journal">
         <h1>Journal</h1>
-        <div class="category-tabs">
-            <button type="button" class="tab is-selected" data-category="all" aria-pressed="true">All</button>
-            <button type="button" class="tab" data-category="reading" aria-pressed="false">Reading</button>
-            <button type="button" class="tab" data-category="design" aria-pressed="false">Design</button>
-            <button type="button" class="tab" data-category="privacy" aria-pressed="false">Privacy</button>
-            <button type="button" class="tab" data-category="behind-the-scenes" aria-pressed="false">Behind the Scenes</button>
+        <div class="category-tabs" role="tablist" aria-label="Journal categories">
+            <button type="button" class="tab is-selected" id="tab-all" data-category="all" role="tab" aria-selected="true" aria-controls="journal-panel" tabindex="0">All</button>
+            <button type="button" class="tab" id="tab-reading" data-category="reading" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Reading</button>
+            <button type="button" class="tab" id="tab-design" data-category="design" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Design</button>
+            <button type="button" class="tab" id="tab-privacy" data-category="privacy" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Privacy</button>
+            <button type="button" class="tab" id="tab-behind-the-scenes" data-category="behind-the-scenes" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Behind the Scenes</button>
         </div>
         <p class="journal__status sr-only" aria-live="polite"></p>
-        <div class="post-grid">
+        <div class="post-grid" id="journal-panel" role="tabpanel" aria-labelledby="tab-all" tabindex="0">
             <article class="post-card" data-category="reading">
                 <p class="post-card__category">Reading</p>
                 <h2 class="post-card__title">The Books We Can't Stop Rereading</h2>
