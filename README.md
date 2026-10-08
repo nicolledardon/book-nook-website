@@ -5,6 +5,7 @@ half-star ratings, genre stats and mood-based discovery. Plain HTML, CSS and van
 no framework and no build step. Built in stages across PEC 4 (HTML and CSS), PEC 5 (JavaScript) and
 a six-phase final audit, and deployed on Netlify.
 
+- **Live site:** https://nicolle-booknook.netlify.app/
 - **Repository:** https://github.com/nicolledardon/book-nook-website
 
 
