@@ -549,10 +549,11 @@ than by its position in the DOM.
   inside the declared width instead, so all three button variants stay visually consistent.
 - Rating stars are an inline SVG sprite, not image files. Each page that shows ratings carries a
   `<symbol>` for the full, half and empty star and draws them with
-  `<svg class="star"><use href="#star-half"/></svg>`. The Gold fill and dark outline are baked into
-  the symbols, which matches the Figma export exactly; the trade-off, noted honestly, is that if
-  Gold or the outline colour ever changes in `variables.css`, the symbols have to be edited too, not
-  just a token. The original star files and the other source icons are still in `assets/icons/`,
+  `<svg class="star"><use href="#star-half"/></svg>`. The symbols take their colours from tokens
+  (`fill="var(--color-gold)"`, `stroke="var(--color-star-outline)"`), so a colour change in
+  `variables.css` reaches every star without editing the symbols. `--color-star-outline`
+  (`#0E0E0D`) is the outline colour from the Figma export and sits outside the locked palette.
+  The original star files and the other source icons are still in `assets/icons/`,
   but no page loads them any more — the sprite replaced them in Phase 3.
 - `setFilterClass(container, prefix, value)`, `countMatches(...)`, `setSelectedChip(chipList, selectedChip)`
   and `announce(liveRegion, message)` in `js/main.js` are written once (for the Explore mood filter)
