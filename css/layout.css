@@ -27,7 +27,7 @@
 }
 
 .intro__subtitle {
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 /* FEATURES PAGE INTRO
@@ -76,6 +76,17 @@
   justify-content: center;
   gap: var(--space-md-plus);
   flex-wrap: wrap;
+}
+
+/* Wrapper that positions the dropdown on phones; on desktop it is just a
+   shrink-wrapped box around the row of links. */
+.anchor-buttons__menu {
+  position: relative;
+}
+
+/* Phone-only collapse button; shown in the 768px block below. */
+.anchor-buttons__toggle {
+  display: none;
 }
 
 .anchor-buttons.is-docked {
@@ -150,7 +161,7 @@
 }
 
 .meet-creator__bio {
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 .meet-creator__photo {
@@ -179,7 +190,7 @@
 }
 
 .legal__text {
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 /* ABOUT PAGE — FAQ
@@ -247,7 +258,7 @@
 
 .faq__answer {
   padding: 0 0 var(--space-md);
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 /* WAITLIST — SIGN-UP
@@ -271,7 +282,7 @@
 }
 
 .signup__subtitle {
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 .signup__form {
@@ -298,8 +309,12 @@
   color: var(--color-dominant);
 }
 
+.signup__submit {
+  height: 3.5rem; /* matches .signup__input so the two read as one control */
+}
+
 .signup__input::placeholder {
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 .signup__input:focus-visible {
@@ -367,13 +382,13 @@
 }
 
 .ticket__subtitle {
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 .queue-badge {
   display: inline-flex;
   padding: var(--space-xs) var(--space-base);
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
   background-color: var(--color-secondary-hover);
   color: var(--color-accent-1);
   font-family: var(--font-body);
@@ -405,7 +420,7 @@
 
 .ticket__code {
   font-size: var(--fs-micro);
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 
@@ -474,10 +489,6 @@ header {
    on desktop the header CTA is used instead. */
 .nav__cta {
   display: none;
-}
-
-.nav__toggle {
-  display: none; /* hidden by default — shown at mobile widths via the media query below */
 }
 
 /* FOOTER
@@ -656,7 +667,7 @@ main {
   gap: var(--space-xs);
   padding: var(--space-xs);
   background-color: var(--color-dominant);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   max-width: 100%; /* inline-flex otherwise sizes to its content and ignores
     the container, which is what pushed the page wide on narrow screens */
   overflow-x: auto; /* the bar itself scrolls sideways once its 5 tabs don't
@@ -674,7 +685,7 @@ main {
     scrollable bar, instead of getting squeezed */
   white-space: nowrap;
   padding: 0.625rem 1.125rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: none;
   background-color: transparent;
   color: var(--color-surface);
@@ -779,15 +790,6 @@ main {
   background-color: transparent;
 }
 
-.nav__links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-lg-sm);
-  font-size: var(--fs-body-1);
-  font-weight: var(--fw-regular);
-  color: var(--color-dominant);
-}
-
 body::before {
   content: '';
   position: fixed;
@@ -807,99 +809,55 @@ body.is-nav-open::before {
 }
 
 /* ========================================================================== */
-/* RESPONSIVE MEDIA QUERIES - MOBILE FIRST APPROACH */
+/* RESPONSIVE MEDIA QUERIES — DESKTOP-FIRST                                    */
+/* The base styles above are the desktop layout; each query below overrides   */
+/* them as the screen gets narrower (max-width). Blocks run widest to         */
+/* narrowest: 1025+ → 769–1024 → ≤768 → ≤480, so the narrowest match wins.     */
 /* ========================================================================== */
 
-/* EXTRA SMALL PHONES (≤480px) */
-@media (max-width: 480px) {
-  .page-section {
-    padding: 0 var(--space-md);
-  }
-  
-  header {
-    padding: var(--space-md) var(--space-md);
-  }
-  
-  .logo {
-    font-size: 1.125rem;
-    line-height: 1.3;
-  }
-  
-  main {
-    gap: var(--space-md);
-    padding-top: var(--space-sm);
-    padding-bottom: var(--space-md);
+/* DESKTOP (1025px+) */
+@media (min-width: 1025px) {
+  .highlights__list {
+    grid-template-columns: repeat(4, 1fr);
   }
   
   .book-row {
-    display: grid;
-    width: 100%;
-    /* 7.5rem (120px) + 0.75rem (12px) gap: 2*120+12=252px fits inside the
-       272px available at 320px (320 - 48px section padding), with 20px
-       to spare that 1fr distributes back to the cards. The previous
-       8rem/24px-gap combo needed 280px — 8px more than 320px actually has. */
-    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
-    gap: var(--space-sm);
-  }
-  
-  .book-card {
-    max-width: 7.5rem;
-  }
-  
-  .highlights__list {
-    grid-template-columns: 1fr;
-  }
-  
-  .feature-block,
-  .feature-block--reverse {
-    flex-direction: column;
-  }
-  
-  .feature-block > div:first-child {
-    aspect-ratio: 14 / 9;
-    width: 100%;
-    height: auto;
-  }
-  
-  footer {
-    padding: var(--space-md);
-  }
-  
-  .footer__inner {
-    flex-direction: column;
-    gap: var(--space-md);
-  }
-  
-  .signup__form {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .signup__input {
-    width: 100%;
-    max-width: 20rem;
-  }
-  
-  .signup__submit {
-    width: 100%;
-    max-width: 20rem;
-  }
-  
-  .ticket {
-    width: 100%;
-    max-width: 30rem;
-    padding: var(--space-md);
-  }
-  
-  .intro,
-  .features-intro,
-  .meet-creator,
-  .signup__panel {
-    padding: var(--space-md) 0;
+    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
   }
 }
 
-/* SMALL PHONES & TABLETS (481px - 768px) */
+/* TABLETS & SMALL DESKTOPS (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .highlights__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .book-row {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+  
+  .book-card {
+    max-width: 10rem;
+  }
+  
+  /* Nav collision fix: logo + 5 links + CTA is ~660px of content against
+     ~673px available at 769px (header padding 48px each side) — a ~13px
+     margin that breaks under real font rendering. Tighten padding + gap. */
+  header {
+    padding: var(--space-md) var(--space-lg-sm); /* 24px top/bottom, 32px sides (was 48px) */
+  }
+  
+  .nav__links {
+    gap: var(--space-md); /* 24px (was 32px) */
+    font-size: var(--fs-small); /* 14px (was 16px) */
+  }
+  
+  .logo {
+    font-size: 1.25rem; /* 20px (was 24px) */
+  }
+}
+
+/* PHONES & SMALL TABLETS (≤768px) */
 @media (max-width: 768px) {
   .page-section {
     padding: 0 var(--space-lg-sm);
@@ -928,6 +886,86 @@ body.is-nav-open::before {
     padding: 0 var(--space-lg-sm);
   }
   
+  /* FEATURES ANCHOR NAV — collapses to one slim bar on phones.
+     The four links become a dropdown, opened by the toggle button, so the
+     sticky bar no longer covers the feature blocks underneath. */
+  .anchor-buttons {
+    top: 5rem; /* the phone header is 80px tall, not the desktop 90px, so no gap shows above the bar */
+    padding-block: var(--space-xs);
+    /* Solid instead of the translucent blur: scrolling text showed through
+       the slim bar and made the label hard to read. */
+    background-color: var(--color-background);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .anchor-buttons__menu {
+    width: 100%;
+  }
+
+  .anchor-buttons__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    width: 100%;
+    padding: 0.625rem var(--space-base);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-secondary-hover);
+    color: var(--color-accent-1);
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .anchor-buttons__chevron {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-0.15rem) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .anchor-buttons.is-open .anchor-buttons__chevron {
+    transform: translateY(0.15rem) rotate(-135deg);
+  }
+
+  .anchor-buttons__list {
+    position: absolute;
+    top: calc(100% + var(--space-xs));
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: var(--space-xxs);
+    padding: var(--space-xs);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    opacity: 0;
+    visibility: hidden; /* also takes the closed links out of the tab order */
+    transform: translateY(-0.5rem);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+
+  .anchor-buttons.is-open .anchor-buttons__list {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .anchor-buttons__list .anchor-button {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* The sticky bar is now ~3.5rem tall; keep jumped-to headings clear of it. */
+  .feature-block {
+    scroll-margin-top: calc(5rem + 3.5rem);
+  }
+
   .nav__links {
     display: none; /* hidden by default at mobile widths */
     position: fixed;
@@ -956,14 +994,18 @@ body.is-nav-open::before {
   }
   
   .book-row {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
     gap: var(--space-lg-sm);
   }
   
+  /* Cards fill their grid track instead of sitting at a fixed width, so
+     there is no empty strip on the right. */
   .book-card {
-    max-width: 9rem;
+    max-width: none;
+  }
+  
+  .book-card__rating {
+    --star-size: 1rem;
   }
   
   .book-card__title {
@@ -971,7 +1013,7 @@ body.is-nav-open::before {
   }
   
   .book-card__author {
-    font-size: 0.75rem;
+    font-size: 0.875rem; /* 14px, not 12px */
   }
   
   .highlights__list {
@@ -1042,56 +1084,86 @@ body.is-nav-open::before {
   }
 }
 
-/* EXTRA SMALL OVERRIDE (≤480px) — Book card sizing only */
+/* EXTRA SMALL PHONES (≤480px)
+   Last on purpose: on a phone both this block and the 768px block match,
+   and the later one wins. */
 @media (max-width: 480px) {
-  .book-row {
-    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
-    gap: var(--space-sm);
+  .page-section {
+    padding: 0 var(--space-md);
   }
   
-  .book-card {
-    max-width: 7.5rem;
-  }
-}
-
-/* TABLETS & SMALL DESKTOPS (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .highlights__list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .book-row {
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  }
-  
-  .book-card {
-    max-width: 10rem;
-  }
-  
-  /* Nav collision fix: logo + 5 links + CTA is ~660px of content against
-     ~673px available at 769px (header padding 48px each side) — a ~13px
-     margin that breaks under real font rendering. Tighten padding + gap. */
   header {
-    padding: var(--space-md) var(--space-lg-sm); /* 24px top/bottom, 32px sides (was 48px) */
-  }
-  
-  .nav__links {
-    gap: var(--space-md); /* 24px (was 32px) */
-    font-size: var(--fs-small); /* 14px (was 16px) */
+    padding: var(--space-md) var(--space-md);
   }
   
   .logo {
-    font-size: 1.25rem; /* 20px (was 24px) */
+    font-size: 1.125rem;
+    line-height: 1.3;
   }
-}
-
-/* DESKTOP (1025px+) */
-@media (min-width: 1025px) {
-  .highlights__list {
-    grid-template-columns: repeat(4, 1fr);
+  
+  main {
+    gap: var(--space-md);
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-md);
   }
   
   .book-row {
-    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+    /* 7.5rem (120px) + 0.75rem (12px) gap: 2*120+12=252px fits inside the
+       272px available at 320px (320 - 48px section padding), and 1fr hands
+       the spare width back to the two cards. */
+    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+    gap: var(--space-sm);
+  }
+  
+  .highlights__list {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-block,
+  .feature-block--reverse {
+    flex-direction: column;
+  }
+  
+  .feature-block > div:first-child {
+    aspect-ratio: 14 / 9;
+    width: 100%;
+    height: auto;
+  }
+  
+  footer {
+    padding: var(--space-md);
+  }
+  
+  .footer__inner {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .signup__form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .signup__input {
+    width: 100%;
+    max-width: 20rem;
+  }
+  
+  .signup__submit {
+    width: 100%;
+    max-width: 20rem;
+  }
+  
+  .ticket {
+    width: 100%;
+    max-width: 30rem;
+    padding: var(--space-md);
+  }
+  
+  .intro,
+  .features-intro,
+  .meet-creator,
+  .signup__panel {
+    padding-block: var(--space-md); /* block only: the side padding comes from .page-section */
   }
 }

@@ -14,8 +14,7 @@
   /* Neutrals & tints (new, for book-card / feature-block) */
   --color-surface-60: rgba(251, 244, 234, 0.6); /* Bone @ 60% opacity */
   --color-aux4: #4A4E41;                        /* book cover placeholder */
-  --color-text-muted: #70746B;                  /* muted text — book-card author + feature-block body */
-  --color-highlight-body: #756F65;              /* Figma variable "aux4" (type b collection) — NOT the same as --color-aux4 below despite the name collision; used for .highlight card body text and muted body copy under page-intro headings (hero, features-intro, etc.) */
+  --color-text-muted: #58534B;                  /* the one muted-text colour (book-card author, feature/hero/intro body copy, placeholders). 4.6:1 on Apricot, 5.96:1 on the book-card surface — replaces the old #70746B and #756F65, which were 2.88–3.73:1 */
 
   /* Button system */
   --color-primary-default: var(--color-accent-1);   /* Accent 1 100% — Primary default fill */
@@ -98,4 +97,5 @@
   --radius-base: 0.625rem; /* 10px — highlight icon */
   --radius-md: 0.75rem;  /* 12px — book-card, highlight card */
   --radius-lg: 1.5rem;   /* 24px — buttons, feature-block image, ticket */
+  --radius-pill: 999px;  /* fully rounded ends — chips, badges, tab bar (a 50% radius draws an oval on wide elements) */
 }

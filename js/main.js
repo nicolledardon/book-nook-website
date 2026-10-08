@@ -305,11 +305,48 @@ function initAnchorNav() {
 
   const buttonList = Array.prototype.slice.call(anchorButtons);
 
+  // Phone layout: the links live in a dropdown opened by a toggle button
+  // (CSS shows the toggle at <=768px; on desktop it is hidden and these
+  // handlers never fire). The toggle's label mirrors the section in view.
+  const nav = document.querySelector('.anchor-buttons');
+  const toggle = document.getElementById('anchor-toggle');
+  const currentLabel = document.querySelector('.anchor-buttons__current');
+
+  function setMenuOpen(isOpen) {
+    if (!nav || !toggle) return;
+    nav.classList.toggle('is-open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  function handleAnchorToggleClick() {
+    setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  }
+
+  function handleAnchorOutsideClick(event) {
+    if (nav.classList.contains('is-open') && !nav.contains(event.target)) {
+      setMenuOpen(false);
+    }
+  }
+
+  function handleAnchorEscape(event) {
+    if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+      setMenuOpen(false);
+      toggle.focus();
+    }
+  }
+
+  if (nav && toggle) {
+    toggle.addEventListener('click', handleAnchorToggleClick);
+    document.addEventListener('click', handleAnchorOutsideClick);
+    document.addEventListener('keydown', handleAnchorEscape);
+  }
+
   function setActiveButton(id) {
     buttonList.forEach(function (button) {
       const isActive = button.getAttribute('href') === '#' + id;
       button.classList.toggle('is-active', isActive);
       if (isActive) {
+        if (currentLabel) currentLabel.textContent = button.textContent.trim();
         button.setAttribute('aria-current', 'location');
       } else {
         button.removeAttribute('aria-current');
@@ -325,6 +362,7 @@ function initAnchorNav() {
       // cross the observer's center-crossing zone on a short viewport.
       const targetId = button.getAttribute('href').slice(1);
       setActiveButton(targetId);
+      setMenuOpen(false);
     });
   });
 

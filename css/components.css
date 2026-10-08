@@ -171,16 +171,17 @@
 }
 
 .book-card__rating {
+  --star-size: 1.375rem; /* shrinks on mobile so five stars fit inside a narrow card */
   display: flex;
   gap: 0.1875rem;
 }
 
 .star {
   display: inline-block;
-  width: 1.375rem;
-  height: 1.3125rem;
+  width: var(--star-size);
+  height: calc(var(--star-size) * 0.9545); /* keeps the star's 22:21 proportions */
   background-repeat: no-repeat;
-  background-size: 1.375rem 1.3125rem;
+  background-size: 100% 100%;
 }
 
 .star--full {
@@ -323,7 +324,7 @@
 .highlight__text {
   font-size: var(--fs-small);
   line-height: 1.25;
-  color: var(--color-highlight-body);
+  color: var(--color-text-muted);
 }
 
 /* MOOD CHIP
@@ -337,7 +338,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.625rem 1.125rem;
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
   border: 2px solid transparent;
   background-color: var(--color-secondary-hover);
   color: var(--color-accent-1);

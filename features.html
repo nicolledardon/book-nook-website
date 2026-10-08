@@ -49,12 +49,18 @@
         <h1>Everything Book Nook does differently.</h1>
     </section>
     <nav class="page-section anchor-buttons" aria-label="Feature sections">
-        <ul class="anchor-buttons__list">
+        <div class="anchor-buttons__menu">
+            <button type="button" class="anchor-buttons__toggle" id="anchor-toggle" aria-expanded="false" aria-controls="anchor-list" title="Show or hide the feature sections">
+                <span class="anchor-buttons__current">Genre Tracking</span>
+                <span class="anchor-buttons__chevron" aria-hidden="true"></span>
+            </button>
+        <ul class="anchor-buttons__list" id="anchor-list">
             <li><a class="anchor-button btn btn--tertiary" href="#genre-tracking" title="Jump to Genre Tracking">Genre Tracking</a></li>
             <li><a class="anchor-button btn btn--tertiary" href="#half-star-ratings" title="Jump to Half-Star Ratings">Half-Star Ratings</a></li>
             <li><a class="anchor-button btn btn--tertiary" href="#anonymous-profiles" title="Jump to Anonymous Profiles">Anonymous Profiles</a></li>
             <li><a class="anchor-button btn btn--tertiary" href="#recommendations" title="Jump to Recommendations">Recommendations</a></li>
         </ul>
+        </div>
     </nav>
     <section class="page-section feature-block" id="genre-tracking">
         <div class="feature-block__media"></div>
