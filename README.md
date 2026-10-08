@@ -1,9 +1,31 @@
-# Book Nook — Final project (PEC 4 & PEC 5, plus final audit)
+# Book Nook — Final project
 
-Hand-coded build of the Book Nook site
+Hand-coded marketing site for Book Nook, a privacy-focused reading tracker with anonymous profiles,
+half-star ratings, genre stats and mood-based discovery. Plain HTML, CSS and vanilla JavaScript —
+no framework and no build step. Built in stages across PEC 4 (HTML and CSS), PEC 5 (JavaScript) and
+a six-phase final audit, and deployed on Netlify.
+
+- **Repository:** https://github.com/nicolledardon/book-nook-website
+
 
 ## FIGMA
 https://www.figma.com/design/C8CzTyhKqB1bXOBC3PZxYd/book-nook-website?node-id=117-599&t=c5oMHRM4X3DnWiP2-1
+
+## Project structure
+
+```
+book_nook_website/
+├── index.html · explore.html · features.html · waitlist.html
+├── about.html · journal.html · privacy.html · terms.html
+├── css/
+│   ├── variables.css    design tokens: colour, type, spacing, motion durations
+│   ├── base.css         reset, base typography, view transitions, reduced-motion rules
+│   ├── components.css   buttons, cards, chips, tabs, Feature mockups
+│   └── layout.css       page sections, grids, colour bands, shelf strip, media queries
+├── js/main.js           one file, one init*() function per interaction
+├── assets/              covers (WebP + JPG, -sm / -lg), icons, favicons, og-image.png
+└── _headers             Netlify cache rules
+```
 
 ## Pages built
 
@@ -13,6 +35,8 @@ https://www.figma.com/design/C8CzTyhKqB1bXOBC3PZxYd/book-nook-website?node-id=11
 - `waitlist.html` — Waitlist sign-up (includes the confirmation state — see Deviations below)
 - `about.html` — About Us
 - `journal.html` — Journal / Blog
+- `privacy.html` — Privacy, linked from the shared footer
+- `terms.html` — Terms, linked from the shared footer
 
 ## Navigation
 
@@ -25,6 +49,10 @@ flowchart TD
     Nav --> About[about.html<br/>About]
     Nav --> Journal[journal.html<br/>Journal]
 
+    Footer{{Shared footer — on every page}}
+    Footer --> Privacy[privacy.html<br/>Privacy]
+    Footer --> Terms[terms.html<br/>Terms]
+
     Home -.->|"Join the Nook" button| Waitlist
     Explore -.->|"Join the Nook" button| Waitlist
     Features -.->|"Join the Nook" button| Waitlist
@@ -36,18 +64,20 @@ flowchart TD
     end
 ```
 
-Every page shares one header with links to all five top-level pages (so the graph above uses a
-single nav node rather than drawing all 20 page-to-page edges). `waitlist.html` is reached from
-every page via the "Join the Nook" button and is the only page with internal state: the
-confirmation panel exists in the same document, hidden until JavaScript swaps it in on form
-submit — see Deviations below for why, and the Diagrams section for the full validation flow.
+Every page shares one header with links to all five top-level pages and one footer with links to
+Privacy and Terms (so the graph above uses a single node for each rather than drawing every
+page-to-page edge). `waitlist.html` is reached from every page via the "Join the Nook" button and
+is the only page with internal state: the confirmation panel exists in the same document, hidden
+until JavaScript swaps it in on form submit — see Deviations below for why, and the Diagrams
+section for the full validation flow.
 
-## JavaScript interactions (PEC 5)
+## JavaScript interactions
 
-Six interactions total — the brief requires at least three. Each `init*()` function in
-`js/main.js` checks that its elements exist and returns immediately if they don't, so every
-function runs safely on every page without throwing console errors on pages that don't have its
-markup.
+Thirteen `init*()` functions in `js/main.js` — the brief requires at least three. The first six
+were built for PEC 5 and are described first; the rest came with the final audit (see "Added in
+the final audit" below). Each function checks that its elements exist and returns immediately if
+they don't, so every function runs safely on every page without throwing console errors on pages
+that don't have its markup. Every event listener is a named `handleXxx` function.
 
 ### 1. Mobile hamburger nav
 **What:** opens/closes the mobile nav menu. **How:** `initMobileNav()` toggles an `is-nav-open`
@@ -73,8 +103,14 @@ checks for empty vs. invalid-format, sets `aria-invalid` plus a visible `aria-li
 message, and re-validates on every keystroke once the first attempt has failed (so the error
 clears the moment it's fixed). On success it generates one random number that drives both the
 queue badge and the ticket code, swaps the `hidden` sign-up/confirmation panels, moves focus to
-the confirmation heading, and disables the submit button so it can't be submitted twice. **Where:**
-`waitlist.html`. See the Diagrams section for the full flow.
+the confirmation heading, and disables the submit button so it can't be submitted twice. The
+ticket then "prints" in: a `clip-path` keyframe animation (`.is-printing`) reveals it from the top
+while `printTicket()` counts the queue number up from 0 over about 1.1 s with
+`requestAnimationFrame`. A screen-reader-only label carries the final number at once, so nobody
+hears a half-way count, and `drawBarcode()` builds the barcode as one SVG `<rect>` per bar from a
+small seeded random generator, so the same queue number always draws the same barcode. With reduced
+motion the final number appears straight away and nothing animates. **Where:** `waitlist.html`. See
+the Diagrams section for the full flow.
 
 ### 4. Explore mood-based Browse filter
 **What:** clicking a mood chip shows only the books tagged with that mood; clicking the already-
@@ -84,8 +120,13 @@ through a reusable `setFilterClass(container, prefix, value)` helper, and CSS hi
 whose `data-moods` doesn't contain that word (container pattern, see "FILTER MODIFIERS" in
 `layout.css`). They also update the chips' `is-selected` class and `aria-pressed` through
 `setSelectedChip()`, and announce the result count through an `aria-live` region via
-`announce()`. Cozy is filtered on page load to match the chip that ships
-pre-selected in the HTML. **Where:** `explore.html`.
+`announce()` (the same text is shown on screen as a status line under the chips, e.g. "Showing 4
+books for Cozy"). Cozy is filtered on page load to match the chip that ships pre-selected in the
+HTML. The filtering is animated with the FLIP technique and the Web Animations API: cards that
+don't match shrink and fade out, the class is applied so the grid reflows, the cards that stay
+glide from their old position to the new one, and cards that come back fade in. A newer click
+cancels whatever is still running, and reduced motion skips the animation entirely. **Where:**
+`explore.html`. See the Diagrams section for the sequence.
 
 ### 5. Features anchor navigation
 **What:** scrolling to (or clicking a link to) one of the four feature sections highlights its
@@ -104,7 +145,82 @@ grid to one category at a time. **How:** `initJournalFilter()` / `applyJournalFi
 mood filter above, swapping in `category` as the attribute instead of `moods` — this is the
 actual code reuse the brief calls for, not just similarly-shaped new code. The grid gets
 `.post-grid__list--category-design` and so on; "All" simply clears the class, since no post
-carries `data-category="all"`. **Where:** `journal.html`.
+carries `data-category="all"`. The bar is a real ARIA tabs widget: `role="tablist"` / `role="tab"`,
+`aria-selected`, roving `tabindex`, Left/Right (wrapping), Home and End keys with automatic
+activation (`setSelectedTab()` is the tabs counterpart of `setSelectedChip()`). The active "pill"
+slides between tabs: `movePill()` measures the selected tab and sets `--pill-x` / `--pill-width`
+on the bar, CSS does the sliding, and it re-measures on resize and once the web fonts have loaded.
+**Where:** `journal.html`.
+
+### Added in the final audit
+
+The first six interactions were built for PEC 5. The final audit added the seven below. Each is an
+enhancement: the page stays complete and readable without it, and every one is skipped or reduced
+under `prefers-reduced-motion`.
+
+### 7. FAQ accordion
+**What:** the About page's questions open and close, one at a time. **How:** `initFaqAccordion()`
+flips `aria-expanded` on the question button and an `.is-open` class on its item, closing whichever
+other item was open. CSS animates the answer's height with `grid-template-rows: 0fr → 1fr`, so
+JavaScript never sets a style. **Where:** `about.html`.
+
+### 8. Hero headline reveal
+**What:** the Home headline's words rise in one after another, then an SVG underline draws itself
+beneath the accent phrase. **How:** `initHeroHeadline()` wraps each word in `.intro__word` with a
+`--word-index` for CSS to stagger (spaces stay plain text, so wrapping and screen-reader output are
+unchanged). The underline is an SVG path with `pathLength="1"`, drawn by animating its dash offset.
+**Where:** `index.html`.
+
+### 9. Scroll reveal
+**What:** sections that start below the fold fade and slide up as they scroll into view, with
+their children staggered. **How:** `initScrollReveal()` only touches sections below the fold, so
+nothing visible on load is ever hidden (no flash, no hit to the largest-contentful-paint time). It
+tags them `.reveal` and their children, or list items, `.reveal-item` with an `--i` index; one
+`IntersectionObserver` adds `.is-revealed`, and 1.4 s later the helper classes are removed again.
+Only `opacity` and `translate` animate. **Where:** every page.
+
+### 10. Book card tilt and glare
+**What:** with a mouse, the book card under the pointer tilts toward it (up to 8°) and catches a
+moving highlight. **How:** `initCardTilt()` uses one delegated pair of pointer listeners per book
+row and sets `--tilt-x`, `--tilt-y`, `--glare-x` and `--glare-y` on the active card (`.is-tilting`);
+CSS does the rest. Skipped on touch screens. **Where:** Home and Explore.
+
+### 11. Genre donut chart
+**What:** the Features page's genre chart draws itself in. **How:** `initGenreDonut()` reads each
+percentage from the legend and sets the matching SVG segment's length and start (`pathLength="100"`
+plus `stroke-dasharray`), so the chart can never disagree with the numbers beside it. When the
+panel is at least half on screen, `.is-drawn` lets the segments grow one after another. Without
+JavaScript the CSS defaults draw the same chart in full. **Where:** `features.html`.
+
+### 12. Half-star rater
+**What:** a 0.5–5 star rating control. **How:** ten native radio inputs form the group, so arrow
+keys work for free; `initHalfStarRater()` only paints the stars (`--fill` per star), previews the
+value on hover, updates the number, announces "Rated 3.5 out of 5 stars" through a live region and
+plays a small sparkle on the chosen star. **Where:** `features.html`.
+
+### 13. Anonymous alias shuffle
+**What:** a "shuffle" button on the profile mockup generates a new example alias and avatar.
+**How:** `initAliasShuffle()` joins a random adjective and noun, hashes the alias into a seed and
+uses a small seeded generator to fill a mirrored 5×5 SVG avatar (the same alias always gives the
+same avatar), then announces the new alias. The button ships `hidden` and is shown by the script, so
+it never appears without JavaScript. It is illustrative only — nothing is stored or sent.
+**Where:** `features.html`.
+
+### Page transitions (CSS only)
+`@view-transition { navigation: auto }` in `base.css` crossfades between pages while the header
+keeps its own transition name (`site-header`) and stays put. Browsers without support just
+navigate normally.
+
+### Motion rules
+- Movement is limited to `transform` / `translate`, `opacity`, `clip-path` and SVG stroke
+  properties; hover states transition colours. The one transition that affects layout is the FAQ's
+  `grid-template-rows`, because a height can't be transitioned to `auto`.
+- Transitions sit on the element's base state (never `transition: all`), so they play in both
+  directions.
+- Durations are `--duration-*` tokens, zeroed by `prefers-reduced-motion`; JavaScript effects call
+  `prefersReducedMotion()` before starting.
+- Everything that changes information is also announced to screen readers and works from the
+  keyboard.
 
 ## Diagrams
 
@@ -149,6 +265,27 @@ On `features.html` only, hiding/showing the header also toggles `.is-docked` on 
 nav, sliding it up by the header's own height so it closes the gap left behind instead of
 floating with empty space above it.
 
+### Mood filter animation (FLIP)
+
+```mermaid
+flowchart TD
+    Click(["Mood chip clicked"]) --> Status["Update the chip state and announce<br/>the result count straight away"]
+    Status --> Cancel["Cancel any animation still running"]
+    Cancel --> RM{"Reduced motion or no<br/>Web Animations API?"}
+    RM -- yes --> Instant["Apply the filter class at once"]
+    RM -- no --> First["Measure the cards that stay<br/>(First rects)"]
+    First --> Exit["Cards that don't match shrink<br/>and fade out, 160 ms"]
+    Exit --> Newer{"Newer click<br/>in the meantime?"}
+    Newer -- yes --> Stop["Stop: the newer run takes over"]
+    Newer -- no --> Apply["Apply the filter class,<br/>the grid reflows"]
+    Apply --> Move["Cards that stay glide from their old<br/>position to the new one, 380 ms"]
+    Apply --> Enter["Cards that come back fade in, 260 ms"]
+```
+
+FLIP stands for First, Last, Invert, Play: measure where a card is, let the layout change, move the
+card back to where it was with a `transform`, then animate that transform away. The cards never
+animate `top` or `left`.
+
 ## PEC 4 corrections completed in PEC 5
 
 PEC 4 left several blocks flagged as pending. All are now resolved:
@@ -169,9 +306,9 @@ PEC 4 left several blocks flagged as pending. All are now resolved:
   added (checked for 4.5:1 contrast against both Apricot and Bone), and `.category-tabs__tab` / `.post-card` /
   `.category-tabs` had no styles at all before this PEC.
 
-## Final audit (Phases 1–4)
+## Final audit (Phases 1–6)
 
-After PEC 5 the whole site was audited against the final-project criteria and fixed in four
+After PEC 5 the whole site was audited against the final-project criteria and fixed in six
 phases. Each deviation from the Figma that came out of it is logged in the memoria.
 
 ### Phase 1 — HTML structure, links, SEO, form
@@ -191,12 +328,14 @@ phases. Each deviation from the Figma that came out of it is logged in the memor
 - Covers re-exported as `-sm` / `-lg` WebP + JPG, used through `<picture>` with a
   `(max-width: 768px)` source; `width` / `height` on every image; lazy loading below the fold.
 - One inline SVG sprite per page (`<symbol>` + `<use>`) for stars, menu, highlight, feature and
-  social icons; the waitlist barcode is one SVG instead of 20 spans.
-- `_headers` gives Netlify long cache times for images (`/assets/*`) and short ones for CSS/JS.
+  social icons; the waitlist barcode is one SVG instead of 20 spans (its bars are now generated from the queue number).
+- `_headers` gives Netlify long, immutable cache times for images (`/assets/*`) and makes CSS, JS and
+  HTML revalidate on every visit (`max-age=0, must-revalidate`). Those files keep the same name when
+  they change, so a long cache would keep serving old code after a deploy.
 
 ### Phase 4 — CSS cleanup, states, JavaScript
 - **CSS:** no raw colours (`--color-surface-15` token added), no `#id` selectors, no `!important`;
-  highest selector specificity is 0,3,0. `padding-top` + `padding-bottom` pairs became
+  highest selector specificity is 0,4,0 (re-checked after Phase 6). `padding-top` + `padding-bottom` pairs became
   `padding-block`; duplicate rule blocks and a duplicated 1025px+ media query were removed.
 - **BEM renames:** `.logo` → `.header__logo`, `.cta` → `.features-cta`, `.tab` →
   `.category-tabs__tab`, `.anchor-buttons` / `.anchor-button` → `.anchor-nav` / `.anchor-nav__link`,
@@ -209,13 +348,42 @@ phases. Each deviation from the Figma that came out of it is logged in the memor
 - **JavaScript:** every event listener is a named `handleXxx` function; the Explore and Journal
   filters set one class on the grid and CSS does the hiding.
 
+### Phase 5 — Visual polish
+- **Editorial type:** new type tokens for the Home hero headline (`--fs-display`, 40–72 px) and a
+  wide footer wordmark (`--fs-wordmark`), in Crimson Pro; body copy stays in Roboto Flex.
+- **Full-width colour bands:** content stays inside its 90rem container while the colour is
+  painted outwards with `box-shadow: 0 0 0 100vmax var(--band-color)` and `clip-path: inset(0 -100vmax)`.
+  A transparent `border-block` supplies the band's vertical padding (`--band-padding`). No wrapper
+  elements, and no horizontal scrollbar. Used for Home's highlights and Explore's second shelf.
+- **Shelf ledge:** a Chocolate Fondant strip under the last row of covers on book rows.
+- **Solid header colour:** `--color-header-bg` replaces the translucent header so dark bands
+  scrolling underneath don't wash out the nav links.
+- **Brand details:** text selection and caret in the brand colours, and a slim Bone-tinted
+  scrollbar on the scrolling tab bar.
+
+### Phase 6 — Feature mockups and interactions
+- **Coded mockups** on `features.html` replace the grey placeholders: half-star rater, genre donut
+  with legend, anonymous profile with alias shuffle, and a recommendations list.
+- **Interactions** listed under "Added in the final audit" in the JavaScript section, plus the
+  waitlist ticket print with its generated barcode and the animated mood filter.
+- **Page transitions** between documents with the View Transitions API.
+- **Reduced motion:** every duration is a token that `prefers-reduced-motion` sets to `0s`, and the
+  JavaScript effects check the same preference.
+
+### Extras on the Home page
+- **Hero book stack:** the intro became two columns on desktop, with three real covers fanned on
+  the right (see Deviations).
+- **Bookshelf strip:** a decorative row of book spines between the intro and the highlights,
+  restored from the PEC 2 wireframe (see Deviations).
+
 ## Components
 
 - **Book card** (`.book-card`) — cover, title, author, star rating. One shared component reused
   across Home's Popular Books row and all three Explore rows (Mood-based Browse results, Recent
   Releases, Popular Shelves) — matches the single "Book Row" / "Book Card" component in Figma,
   no size variants.
-- **Feature block** (`.feature-block`) — Features page, four instances.
+- **Feature block** (`.feature-block`) — Features page, four instances; each pairs its text with a
+  coded mockup (`.mock`) in `.feature-block__media`.
 - **Mood chip** (`.mood-chip`) — Explore's mood filter buttons, with an `.is-selected` state.
 - **Tab** (`.category-tabs__tab`) — Journal's category filter, styled as one segmented pill bar
   (`.category-tabs`: a dark rounded bar with the active tab as a light pill inside it) rather than
@@ -223,6 +391,14 @@ phases. Each deviation from the Figma that came out of it is logged in the memor
 - **Post card** (`.post-card`) — Journal's blog listing: category, title, date. Mirrors
   `.book-card`'s surface/shadow/radius treatment, left-aligned instead of centered since it's text
   content, not a poster.
+- **Mock panel** (`.mock`) — the shared Bone panel behind each coded Feature mockup on
+  `features.html` (`.mock--genre` and its siblings), so the four mockups share one surface,
+  radius and shadow.
+- **FAQ item** (`.faq__item`) — About page accordion; one open at a time, answer height animated
+  with `grid-template-rows`.
+- **Shelf strip** (`.shelf`, `.shelf__book`, `.shelf__ledge`) — Home's decorative row of book
+  spines. Each spine is a list item styled through custom properties (`--spine-bg`, `--spine-fg`,
+  `--spine-h`, `--lean`) with colour modifiers (`--cocoa`, `--bone`, `--tan`, `--slate`).
 
 ## Deviations from the Figma design
 
@@ -303,6 +479,28 @@ own Figma file — the shape/structure follows the reference, but the colors are
 tokens (`--color-dominant` for the bar, `--color-surface` for the active pill), not the
 reference's literal brown/gold palette.
 
+### Final-audit changes beyond the Figma
+
+The final audit added or changed the following relative to the PEC 3 Figma. Each one is also
+listed in the memoria.
+
+| Change | What was built | Why |
+| --- | --- | --- |
+| Two-column Home hero | Text on the left; on the right three real covers fanned like a hand of cards (`.intro__stack`) that spread on hover. At 1024 px and below the hero is one column and the stack is hidden. | Fills the right half of the desktop hero. Purely decorative, so it is `aria-hidden` with empty `alt` text. |
+| Bookshelf strip on Home | A decorative row of 22 book spines (real titles from "Popular right now", filler spines, two leaning books, a ledge) between the intro and the highlights. | The PEC 2 wireframe had a shelf there; the PEC 3 Figma dropped it. It brings that idea back. It is `aria-hidden` and uses the site palette only — Gold stays reserved for ratings. |
+| Full-width colour bands | A Dress Blues band behind Home's four highlights and a soft Bone band behind Explore's second shelf. | Gives the long pages a rhythm. Bone text on Dress Blues is 11.74:1. |
+| Shelf ledge under book rows | A Chocolate Fondant strip under the last row of covers (`.book-row::after`), hidden on phones and small tablets. | Makes the covers read as standing on a shelf; on narrow screens the cards stack into short rows and a ledge would look wrong. |
+| Oversized footer wordmark | The footer's brand text runs wide across its first row (`--fs-wordmark`). | Editorial finish. |
+| Solid header colour | `--color-header-bg: #E7CEB4`, which looks the same as Bone at 20% over Apricot. | The translucent header let dark bands show through when they scrolled underneath it, hurting the nav links' readability. |
+| Coded Feature mockups | The grey placeholders on Features are now small working UIs: a half-star rater, a genre donut chart with legend, an anonymous profile with a shuffle button, and a recommendations list. | Shows each feature instead of describing it. All built from HTML, CSS and inline SVG — no extra images. |
+| Real covers and icons | Placeholder boxes became real covers (`-sm` / `-lg`, WebP + JPG) and the icons became an inline SVG sprite. | Phase 3 image and SVG requirements. |
+| Visible filter status | The mood filter shows "Showing N books for Cozy" under the chips. | Sighted users get the same result count that screen readers hear. |
+| Ticket print and generated barcode | The confirmation ticket prints in with a counting queue number; the barcode is drawn from the queue number. | Replaces the static barcode and makes the confirmation feel like a result. |
+| Single-colour social icons | Instagram, Pinterest and TikTok are all one light colour. | They stay visible on the dark footer. |
+| Features anchor nav on phones | The four anchor buttons collapse into a dropdown bar at 768 px and below. | A row of four buttons is too wide for a phone. |
+| Motion and page transitions | Scroll reveal, hero headline, card tilt, tab pill, FAQ accordion, donut draw-in, rater sparkle, animated mood filter and cross-page View Transitions. | The Figma is static. Everything is optional and switches off under `prefers-reduced-motion`. |
+| Privacy and Terms pages | `privacy.html` and `terms.html`, linked from the shared footer. | So the footer's Privacy and Terms links open real pages. |
+
 ## CSS Methodology
 
 This project uses **BEM** (Block\_\_Element--Modifier) for CSS class naming.
@@ -320,13 +518,16 @@ This project uses **BEM** (Block\_\_Element--Modifier) for CSS class naming.
 - **State classes** — one deliberate exception to strict BEM: `.is-selected` (mood chip, journal
   tab), `.is-active` (anchor nav button), `.is-docked` (anchor nav, synced to the header hiding),
   and `.is-nav-open` (on `<body>`, mobile nav) all use the SUIT CSS `is-` prefix instead of a BEM
-  modifier. States like "currently open," "currently selected," or "currently docked" describe a
-  temporary condition toggled by JS, not a permanent variant of the component, so a state class
-  keeps that distinction visible in the markup and avoids implying the state is baked into the
-  component the way a real modifier (`--reverse`, `--primary`, `--hidden`) is.
+  modifier. The final audit added more of the same kind: `.is-open` (FAQ item), `.is-revealed`
+  (scroll reveal), `.is-drawn` (donut), `.is-printing` (waitlist ticket), `.is-tilting` (book
+  card), `.is-popping` (rater star), plus `.has-pill` (journal tab bar) and `.js-draw` (donut,
+  before it draws). States like "currently open," "currently selected," or "currently docked"
+  describe a temporary condition toggled by JS, not a permanent variant of the component, so a
+  state class keeps that distinction visible in the markup and avoids implying the state is baked
+  into the component the way a real modifier (`--reverse`, `--primary`, `--hidden`) is.
 - **`.page-section`** is a layout utility class, not a BEM block — it's applied to every
   top-level `<main> > <section>` (and, on `features.html`, the promoted `<nav class="anchor-nav">`)
-  across all six pages to give them a shared max-width/padding container.
+  across every page to give them a shared max-width/padding container.
 
 Selectors were also audited to avoid unnecessary specificity and structural (type/combinator)
 selectors that break the moment markup shifts: `header nav` → `.header__nav`,
@@ -345,17 +546,13 @@ than by its position in the DOM.
   the default box model (`content-box`) Secondary buttons would render wider than Primary even
   though `design.md` specs them at the same size. `border-box` makes padding and border count
   inside the declared width instead, so all three button variants stay visually consistent.
-- Book rating stars are three separate files in `assets/icons/` — `star.svg` (full, gold fill +
-  dark outline), `half_star.svg` (gold fill clipped to the left half via an internal
-  `clip-path`, same outline over the whole shape), and `empty_star.svg` (outline only, no fill).
-  Each `.star--full` / `.star--half` / `.star--empty` class just swaps `background-image` to the
-  matching file — no CSS color trick needed, since the compositing (including the half-fill) is
-  already baked into the SVGs themselves. This was a deliberate change from an earlier plan (one
-  shared icon recolored via `currentColor` from `variables.css`): these three files are exported
-  straight from Figma, so using them as-is matches Figma exactly rather than approximating it.
-  The trade-off, noted honestly: colors are now hardcoded inside the SVG files rather than
-  flowing from `variables.css` — if Gold or the outline gray ever changes there, these three
-  files need re-exporting to match, not just a token edit.
+- Rating stars are an inline SVG sprite, not image files. Each page that shows ratings carries a
+  `<symbol>` for the full, half and empty star and draws them with
+  `<svg class="star"><use href="#star-half"/></svg>`. The Gold fill and dark outline are baked into
+  the symbols, which matches the Figma export exactly; the trade-off, noted honestly, is that if
+  Gold or the outline colour ever changes in `variables.css`, the symbols have to be edited too, not
+  just a token. The original star files and the other source icons are still in `assets/icons/`,
+  but no page loads them any more — the sprite replaced them in Phase 3.
 - `setFilterClass(container, prefix, value)`, `countMatches(...)`, `setSelectedChip(chipList, selectedChip)`
   and `announce(liveRegion, message)` in `js/main.js` are written once (for the Explore mood filter)
   and reused as-is (not copy-pasted or adapted) by the Journal category filter, just parameterized
@@ -371,6 +568,19 @@ than by its position in the DOM.
   so its column self-adapts to full-width on narrow screens without a breakpoint override, and
   `.category-tabs` caps at `max-width: 100%` with `overflow-x: auto` so the pill bar scrolls
   internally instead of pushing the whole page wide.
+- Stylesheets load in the order `variables.css` → `base.css` → `components.css` → `layout.css`.
+  Tokens come first, then the reset and base rules; layout sits last so its section-level
+  overrides (colour bands, responsive media queries) win over the component defaults without
+  needing higher specificity.
+- The shelf spines use `writing-mode: vertical-rl`, which changes what "inline" means. Logical
+  margins (`margin-inline-*`) pushed the leaning books into their neighbours, so those margins are
+  physical `margin-left` / `margin-right`.
+- Enhancements degrade quietly. The genre donut is fully drawn by its CSS defaults if JavaScript
+  doesn't run; the alias shuffle button ships `hidden` and is shown by the script; cross-document
+  View Transitions only apply in browsers that support them (others navigate normally); the shelf
+  strip uses `overflow-x: clip` rather than `hidden`, so it doesn't turn into a scroll container.
+- Testing: scripted Chromium runs (Playwright) between 320 and 1440 px checking horizontal
+  overflow, console errors and every interaction listed above, plus a hands-on check on a phone.
 
 ## Credits
 
@@ -381,3 +591,5 @@ than by its position in the DOM.
   the project, recoloured to a single light colour so they stay visible on the dark footer. The
   Instagram glyph is redrawn as an outline to match them.
 - **Book covers** — shown for illustration only; they belong to their publishers and authors.
+- **Fonts** — Crimson Pro (headings) and Roboto Flex (body text), loaded from Google Fonts; both are
+  released under the SIL Open Font License.
