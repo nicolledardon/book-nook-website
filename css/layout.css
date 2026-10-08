@@ -33,12 +33,7 @@
   text-align: left;
 }
 
-/* HERO BOOK STACK (D1): three real covers fanned in 3D beside the headline.
-   Purely decorative (aria-hidden, empty alt). Each cover reads its own
-   rotation and offset from custom properties, so hover only swaps the
-   variables and the transition on the base state eases it back on mouseout.
-   Hidden at 1024px and below, where the hero returns to a centred column;
-   the images are loading="lazy", so a hidden stack is never downloaded. */
+/* book stack: three real covers fanned in 3D beside the headline (only for decoration) */
 .intro__stack {
   position: relative;
   height: 28rem;
