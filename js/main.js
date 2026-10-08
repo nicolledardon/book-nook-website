@@ -128,7 +128,10 @@ function initWaitlistForm() {
   const input = document.getElementById('email');
   const error = document.getElementById('email-error');
   const submitButton = form.querySelector('.signup__submit');
-  const queueBadge = document.querySelector('.ticket__badge');
+  const badgeLabel = document.querySelector('.ticket__badge-label');
+  const badgeCount = document.querySelector('.ticket__count');
+  const ticket = document.querySelector('.ticket');
+  const ticketBarcode = document.querySelector('.ticket__barcode');
   const ticketCode = document.querySelector('.ticket__code');
   const signupPanel = document.querySelector('.signup__panel');
   const confirmationPanel = document.querySelector('.confirmation-panel');
@@ -193,11 +196,16 @@ function initWaitlistForm() {
     const queueNumber = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
     const year = new Date().getFullYear();
 
-    if (queueBadge) {
-      queueBadge.textContent = "You're #" + queueNumber.toLocaleString('en-US') + ' in line';
+    // The screen-reader label gets the final text at once; the visible badge
+    // counts up from 0 (see printTicket below), so nobody hears a half-way number.
+    if (badgeLabel) {
+      badgeLabel.textContent = "You're #" + queueNumber.toLocaleString('en-US') + ' in line';
     }
     if (ticketCode) {
       ticketCode.textContent = 'BN-' + year + '-' + queueNumber;
+    }
+    if (ticketBarcode) {
+      drawBarcode(ticketBarcode, queueNumber);
     }
 
     if (signupPanel) signupPanel.hidden = true;
@@ -205,6 +213,71 @@ function initWaitlistForm() {
 
     window.scrollTo(0, 0);
     if (ticketHeading) ticketHeading.focus();
+    printTicket(queueNumber);
+  }
+
+  // Barcode (J7): one <rect> per bar, with widths and gaps drawn from a small
+  // seeded random generator, so the same queue number always gives the same
+  // barcode. Lives in the viewBox 0 0 88 48 the old static barcode used.
+  function drawBarcode(svg, seed) {
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const WIDTH = 88;
+    let state = seed;
+
+    function nextRandom() {
+      state = (state * 1664525 + 1013904223) % 4294967296;
+      return state / 4294967296;
+    }
+
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+    let x = 0;
+    while (x < WIDTH) {
+      const barWidth = 1 + Math.floor(nextRandom() * 3);  // 1 to 3 units
+      const gapWidth = 1 + Math.floor(nextRandom() * 2);  // 1 to 2 units
+      if (x + barWidth > WIDTH) break;
+      const bar = document.createElementNS(SVG_NS, 'rect');
+      bar.setAttribute('x', String(x));
+      bar.setAttribute('width', String(barWidth));
+      bar.setAttribute('height', '48');
+      svg.appendChild(bar);
+      x += barWidth + gapWidth;
+    }
+  }
+
+  // Ticket print (J7): the CSS animation reveals the ticket; this counts the
+  // queue number up from 0 in step with it. With reduced motion the final
+  // number is shown straight away and nothing animates.
+  function printTicket(queueNumber) {
+    if (!badgeCount) return;
+    const finalText = queueNumber.toLocaleString('en-US');
+
+    if (prefersReducedMotion() || !ticket) {
+      badgeCount.textContent = finalText;
+      return;
+    }
+
+    const DURATION_MS = 1100;
+    const startTime = performance.now();
+    badgeCount.textContent = '0';
+
+    function handleCountFrame(now) {
+      const progress = Math.min(1, (now - startTime) / DURATION_MS);
+      const eased = 1 - Math.pow(1 - progress, 3); // fast start, slow finish
+      badgeCount.textContent = Math.round(queueNumber * eased).toLocaleString('en-US');
+      if (progress < 1) window.requestAnimationFrame(handleCountFrame);
+    }
+
+    function handleTicketAnimationEnd() {
+      ticket.classList.remove('is-printing');
+      ticket.removeEventListener('animationend', handleTicketAnimationEnd);
+    }
+
+    ticket.addEventListener('animationend', handleTicketAnimationEnd);
+    ticket.classList.remove('is-printing');
+    void ticket.offsetWidth; // restart the animation if the ticket was printed before
+    ticket.classList.add('is-printing');
+    window.requestAnimationFrame(handleCountFrame);
   }
 
   // Only re-check while typing after a failed attempt, so someone isn't
@@ -267,13 +340,101 @@ function initMoodFilter() {
   const chipList = Array.prototype.slice.call(chips);
   const totalCount = grid.querySelectorAll('.book-card').length;
 
-  function applyMoodFilter(chip) {
+  // FLIP mood filter (J5). Keeping the one-class-on-the-grid pattern, the
+  // motion is added around it with the Web Animations API:
+  //   1. cards that don't match shrink and fade out (still in place),
+  //   2. the filter class is applied, so CSS removes them and the grid reflows,
+  //   3. cards that stay glide from their old position to the new one (FLIP:
+  //      First rect, Last rect, Invert with a transform, Play it back),
+  //   4. cards that come back fade in.
+  // A new click cancels whatever is still running. Reduced motion skips it.
+  const EXIT_MS = 160;
+  const MOVE_MS = 380;
+  const ENTER_MS = 260;
+  let runId = 0;
+  let runningAnimations = [];
+
+  function isShown(card) {
+    return window.getComputedStyle(card).display !== 'none';
+  }
+
+  function cardMatches(card, mood) {
+    return !mood || card.dataset.moods.split(' ').indexOf(mood) !== -1;
+  }
+
+  function track(animation) {
+    runningAnimations.push(animation);
+    return animation;
+  }
+
+  function cancelRunningAnimations() {
+    runningAnimations.forEach(function (animation) {
+      animation.cancel();
+    });
+    runningAnimations = [];
+  }
+
+  function setMoodFilter(mood, animate) {
+    runId += 1;
+    const thisRun = runId;
+    cancelRunningAnimations();
+
+    if (!animate || prefersReducedMotion() || !grid.animate) {
+      setFilterClass(grid, 'book-row--mood', mood);
+      return;
+    }
+
+    const cards = Array.prototype.slice.call(grid.querySelectorAll('.book-card'));
+    const shown = cards.filter(isShown);
+    const leaving = shown.filter(function (card) { return !cardMatches(card, mood); });
+    const staying = shown.filter(function (card) { return cardMatches(card, mood); });
+    const entering = cards.filter(function (card) {
+      return !isShown(card) && cardMatches(card, mood);
+    });
+    const firstRects = staying.map(function (card) { return card.getBoundingClientRect(); });
+
+    const exits = leaving.map(function (card) {
+      return track(card.animate(
+        [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0.92)' }],
+        { duration: EXIT_MS, easing: 'ease-in', fill: 'forwards' }
+      ));
+    });
+
+    function handleExitsDone() {
+      if (thisRun !== runId) return; // a newer click took over
+      exits.forEach(function (animation) { animation.cancel(); });
+      setFilterClass(grid, 'book-row--mood', mood);
+
+      staying.forEach(function (card, index) {
+        const last = card.getBoundingClientRect();
+        const dx = firstRects[index].left - last.left;
+        const dy = firstRects[index].top - last.top;
+        if (!dx && !dy) return;
+        track(card.animate(
+          [{ transform: 'translate(' + dx + 'px, ' + dy + 'px)' }, { transform: 'none' }],
+          { duration: MOVE_MS, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' }
+        ));
+      });
+
+      entering.forEach(function (card) {
+        track(card.animate(
+          [{ opacity: 0, transform: 'scale(0.92)' }, { opacity: 1, transform: 'scale(1)' }],
+          { duration: ENTER_MS, delay: 120, easing: 'ease-out', fill: 'backwards' }
+        ));
+      });
+    }
+
+    Promise.all(exits.map(function (animation) { return animation.finished; }))
+      .then(handleExitsDone, handleExitsDone);
+  }
+
+  function applyMoodFilter(chip, animate) {
     // Shared by the click handler and the on-load default below, so the
     // "select a chip, filter the cards, announce the result" sequence only
     // has to be written (and fixed, if it ever needs fixing) once.
     const mood = chip.dataset.mood;
     setSelectedChip(chipList, chip);
-    setFilterClass(grid, 'book-row--mood', mood);
+    setMoodFilter(mood, animate);
 
     if (status) {
       const visibleCount = countMatches(grid, '.book-card', 'data-moods', mood);
@@ -288,7 +449,7 @@ function initMoodFilter() {
     // is clicked again. Passing null reuses setSelectedChip's own loop to
     // deselect every chip, since chip === null is never true for any chip.
     setSelectedChip(chipList, null);
-    setFilterClass(grid, 'book-row--mood', null);
+    setMoodFilter(null, true);
 
     if (status) {
       announce(status, `Showing all ${totalCount} books`);
@@ -300,7 +461,7 @@ function initMoodFilter() {
     if (chip.classList.contains('is-selected')) {
       clearMoodFilter();
     } else {
-      applyMoodFilter(chip);
+      applyMoodFilter(chip, true);
     }
   }
 
@@ -318,7 +479,7 @@ function initMoodFilter() {
   });
 
   if (defaultChip) {
-    applyMoodFilter(defaultChip);
+    applyMoodFilter(defaultChip, false);
   }
 }
 

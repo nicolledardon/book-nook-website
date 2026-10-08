@@ -154,6 +154,15 @@
   color: var(--color-text-muted);
 }
 
+/* Result of the filter, e.g. "Showing 2 books for Cozy". Visible for everyone
+   and also announced by screen readers (aria-live in the HTML). The min-height
+   keeps the line from jumping while the text is empty. */
+.mood-browse__status {
+  min-height: 1.5em;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+}
+
 /* ABOUT PAGE
    Matches Figma's "about-content" node — centered single column:
    photo, heading, body copy, CTA — capped narrower than the hero
@@ -455,6 +464,26 @@
   font-family: var(--font-body);
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
+}
+
+/* Ticket "print" (J7): main.js adds .is-printing once, right after sign-up.
+   The ticket is revealed top to bottom with clip-path while it slides down
+   into place, like a receipt coming out of a printer. fill-mode "backwards"
+   means nothing is left over when the animation ends. */
+.ticket.is-printing {
+  animation: ticket-print calc(var(--duration-reveal) * 2) cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+@keyframes ticket-print {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-1.5rem);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
 }
 
 .ticket__divider {
