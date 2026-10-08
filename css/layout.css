@@ -26,6 +26,21 @@
   text-align: center;
 }
 
+/* Editorial headline: large display size, tight leading, and the second half
+   set in Crimson italic in the accent colour (Chocolate on Apricot = 7:1). */
+.intro__title {
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.intro__accent {
+  font-style: italic;
+  font-weight: var(--fw-medium);
+  color: var(--color-accent-1);
+}
+
 .intro__subtitle {
   color: var(--color-text-muted);
 }
@@ -280,9 +295,30 @@
   transform: rotate(-135deg); /* open: chevron pointing up */
 }
 
+/* Smooth open/close: the answer is a one-cell grid whose row animates from
+   0fr to 1fr, so the height eases without JS measuring anything. Closed
+   answers use visibility:hidden (not display:none), which keeps them out of
+   the tab order and away from screen readers but still lets the row animate. */
 .faq__answer {
-  padding: 0 0 var(--space-md);
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
   color: var(--color-text-muted);
+  transition: grid-template-rows var(--duration-base) ease, visibility var(--duration-base) ease;
+}
+
+.faq__item.is-open .faq__answer {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.faq__answer-inner {
+  min-height: 0; /* lets the grid row shrink to 0 */
+  overflow: hidden;
+}
+
+.faq__answer-text {
+  padding-bottom: var(--space-md);
 }
 
 /* WAITLIST — SIGN-UP
@@ -552,9 +588,17 @@ footer {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: var(--space-lg);
   width: 100%;
   max-width: 90rem;
   margin: 0 auto;
+}
+
+/* The brand block takes the full first row so the wordmark can run wide;
+   links, social icons and legal sit on the row below. */
+.footer__about {
+  flex-basis: 100%;
 }
 
 .footer__about,
@@ -566,13 +610,14 @@ footer {
 
 .footer__about-title {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: var(--fs-wordmark);
   font-weight: var(--fw-bold);
   font-style: normal;
-  line-height: 1.2;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
 }
 
-.footer__about p,
+.footer__tagline,
 .footer__links a,
 .footer__legal p {
   font-family: var(--font-body);
@@ -650,6 +695,29 @@ footer a:focus-visible {
    mood-based-browse / recent-releases / popular-shelves / user-shelves-cta,
    and between Home's feature-cards-section / popular-books-section. */
 
+/* FULL-BLEED COLOUR BANDS
+   Two sections get a background that runs edge to edge while their content
+   stays inside the 90rem container: the box-shadow paints the colour 100vmax
+   past both sides, and clip-path trims it back to the section's own height.
+   The transparent border is the band's vertical padding (the .page-section
+   padding shorthand would otherwise override padding-block). */
+.highlights,
+.popular-shelves {
+  border-block: var(--band-padding) solid transparent;
+  background-color: var(--band-color);
+  box-shadow: 0 0 0 100vmax var(--band-color);
+  clip-path: inset(0 -100vmax);
+  --band-padding: var(--space-xl-sm);
+}
+
+.highlights {
+  --band-color: var(--color-dominant); /* Home: Dress Blues band behind the four highlights */
+}
+
+.popular-shelves {
+  --band-color: var(--color-surface-20); /* Explore: soft Bone band behind the second shelf */
+}
+
 main {
   flex: 1; /* takes the spare height so the footer sits at the bottom (see body in base.css) */
   display: flex;
@@ -668,6 +736,7 @@ main {
    2, then 1 automatically — no media queries needed. */
 
 .book-row {
+  --book-row-gap: var(--space-lg);
   display: grid;
   width: 100%; /* explicit definite width — .mood-browse is display:flex with
                   align-items: flex-start, which shrink-wraps children instead of
@@ -676,7 +745,21 @@ main {
                   same root cause as the main > section fix above but for a flex parent
                   instead of a margin:auto block parent. */
   grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
-  gap: var(--space-lg);
+  gap: var(--book-row-gap);
+}
+
+/* Shelf ledge: a wooden strip under the last row of covers. It is a grid
+   item on its own row, pulled up with a negative margin so the cards look
+   like they stand on it. Decorative, so it has no content. Hidden on phones
+   and small tablets, where the cards stack into several short rows. */
+.book-row::after {
+  content: '';
+  grid-column: 1 / -1;
+  height: 0.875rem;
+  margin-top: calc(-1 * var(--book-row-gap) + var(--space-xs));
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent-1);
+  box-shadow: var(--shadow-card);
 }
 
 /* EXPLORE — RECENT RELEASES / POPULAR SHELVES
@@ -751,6 +834,8 @@ main {
     Instagram/YouTube; keeps the reference's single-row pill shape intact
     at every width, per Nicolle's decision (2026-09-28) */
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; /* slim scrollbar in a Bone tint instead of the default grey bar */
+  scrollbar-color: var(--color-surface-60) transparent;
 }
 
 .category-tabs__tab {
@@ -1109,8 +1194,17 @@ body.is-nav-open::before {
   }
   
   .book-row {
+    --book-row-gap: var(--space-lg-sm);
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-    gap: var(--space-lg-sm);
+  }
+
+  .book-row::after {
+    display: none;
+  }
+
+  .highlights,
+  .popular-shelves {
+    --band-padding: var(--space-lg);
   }
   
   /* Cards fill their grid track instead of sitting at a fixed width, so
@@ -1222,8 +1316,8 @@ body.is-nav-open::before {
     /* 7.5rem (120px) + 0.75rem (12px) gap: 2*120+12=252px fits inside the
        272px available at 320px (320 - 48px section padding), and 1fr hands
        the spare width back to the two cards. */
+    --book-row-gap: var(--space-sm);
     grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
-    gap: var(--space-sm);
   }
   
   .highlights__list {
@@ -1237,6 +1331,10 @@ body.is-nav-open::before {
   .footer__inner {
     flex-direction: column;
     gap: var(--space-md);
+  }
+
+  .footer__about {
+    flex-basis: auto; /* in a column, 100% would mean height */
   }
   
   .signup__form {

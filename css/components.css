@@ -253,6 +253,7 @@
 }
 
 .highlights__heading {
+  color: var(--color-aux10); /* the section is a Dress Blues band (layout.css), so text is light */
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   font-style: normal; /* base.css makes h2 italic + 32px by default — Figma's heading here is 24px, bold, not italic */
@@ -264,7 +265,7 @@
   flex-direction: column;
   gap: var(--space-sm);
   padding: var(--space-md) 1.25rem;
-  background-color: var(--color-surface-20);
+  background-color: var(--color-surface-15); /* light tint on the dark band */
   border-radius: var(--radius-md);
   min-width: 0; /* grid items default to min-width:auto, which refuses to
                    shrink below the content's intrinsic width — with real
@@ -301,13 +302,13 @@
   font-weight: var(--fw-semibold);
   font-style: normal;
   line-height: 1.375;
-  color: var(--color-dominant);
+  color: var(--color-aux10);
 }
 
 .highlight__text {
   font-size: var(--fs-small);
   line-height: 1.25;
-  color: var(--color-text-muted);
+  color: var(--color-aux8);
 }
 
 /* MOOD CHIP

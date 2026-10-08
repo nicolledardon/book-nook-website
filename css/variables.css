@@ -84,6 +84,10 @@
   --fs-small: 0.875rem;  /* 14px — used in footer, queue badge */
   --fs-micro: 0.8125rem; /* 13px — confirmation code */
 
+  /* Editorial display sizes (Phase 5 extras) — clamp() scales with the viewport, so no breakpoint is needed */
+  --fs-display: clamp(2.5rem, 8vw, 4.5rem);   /* Home hero headline: 40px on phones, 72px from ~900px up */
+  --fs-wordmark: clamp(3.5rem, 14vw, 9rem);   /* oversized footer wordmark: 56px up to 144px */
+
   /* Effects */
   --shadow-card: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.14); /* book-card drop shadow */
   --color-overlay-scrim: rgba(0, 0, 0, 0.2); /* mobile nav dropdown backdrop */

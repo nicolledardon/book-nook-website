@@ -5,6 +5,34 @@ html {
   scroll-behavior: smooth;
 }
 
+/* CROSS-PAGE VIEW TRANSITIONS
+   Browsers that support it (Chrome, Edge, Safari 18.2+) cross-fade between
+   pages instead of flashing white; the rest navigate normally. The header
+   gets its own name so it stays put while the page content fades. */
+@view-transition {
+  navigation: auto;
+}
+
+header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-slow);
+}
+
+/* Text selection in the brand colours */
+::selection {
+  background-color: var(--color-accent-1);
+  color: var(--color-surface);
+}
+
+input,
+textarea {
+  caret-color: var(--color-accent-1);
+}
+
 * {
   box-sizing: border-box; /* padding + border count INSIDE the width you set, not added on top */
   margin: 0;
@@ -137,5 +165,9 @@ p {
 
   html {
     scroll-behavior: auto;
+  }
+
+  @view-transition {
+    navigation: none;
   }
 }

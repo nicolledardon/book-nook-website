@@ -520,25 +520,28 @@ function initJournalFilter() {
 function initFaqAccordion() {
   // About page FAQ. Single-open: opening one item closes whichever other
   // one was open, same pattern as the mood chips / journal tabs above.
+  // The open/closed look is one class on the item (.is-open); CSS animates
+  // the answer's height with grid-template-rows, so JS never touches styles.
   const questions = document.querySelectorAll('.faq__question');
   if (!questions.length) return;
 
   const questionList = Array.prototype.slice.call(questions);
 
+  function setFaqItemOpen(question, isOpen) {
+    question.setAttribute('aria-expanded', String(isOpen));
+    const item = question.closest('.faq__item');
+    if (item) item.classList.toggle('is-open', isOpen);
+  }
+
   function handleFaqClick(event) {
     const question = event.currentTarget;
-    const isOpen = question.getAttribute('aria-expanded') === 'true';
+    const wasOpen = question.getAttribute('aria-expanded') === 'true';
 
     questionList.forEach(function (other) {
-      if (other === question) return;
-      other.setAttribute('aria-expanded', 'false');
-      const otherAnswer = document.getElementById(other.getAttribute('aria-controls'));
-      if (otherAnswer) otherAnswer.hidden = true;
+      if (other !== question) setFaqItemOpen(other, false);
     });
 
-    question.setAttribute('aria-expanded', String(!isOpen));
-    const answer = document.getElementById(question.getAttribute('aria-controls'));
-    if (answer) answer.hidden = isOpen;
+    setFaqItemOpen(question, !wasOpen);
   }
 
   questionList.forEach(function (question) {
