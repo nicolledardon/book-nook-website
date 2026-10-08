@@ -161,6 +161,8 @@ p {
     --duration-fast: 0s;
     --duration-base: 0s;
     --duration-slow: 0s;
+    --duration-reveal: 0s;
+    --stagger-step: 0s;
   }
 
   html {

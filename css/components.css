@@ -126,6 +126,28 @@
   background-color: var(--color-surface-60);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
+  position: relative;
+  /* Tilt (J8): main.js sets --tilt-x / --tilt-y while the pointer moves over
+     the card and removes them on leave. The transition is on the base state,
+     so the card eases back flat instead of snapping. */
+  transform: perspective(60rem) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform var(--duration-fast) ease;
+}
+
+/* Glare: a soft Bone highlight that follows the pointer (position set by main.js) */
+.book-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), var(--color-surface), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--duration-base) ease;
+}
+
+.book-card.is-tilting::after {
+  opacity: 0.5;
 }
 
 .book-card__cover {

@@ -483,7 +483,7 @@ header {
   z-index: 100;
   transition: transform var(--duration-slow) ease;
   padding: var(--space-md) var(--space-lg);
-  background-color: var(--color-surface-20);
+  background-color: var(--color-header-bg);
   backdrop-filter: blur(0.33125rem);
   -webkit-backdrop-filter: blur(0.33125rem); /* Safari requires the prefixed version */
   /*border-bottom: 1px solid var(--color-aux8);*/
@@ -760,6 +760,7 @@ main {
   border-radius: var(--radius-sm);
   background-color: var(--color-accent-1);
   box-shadow: var(--shadow-card);
+  transition: opacity var(--duration-reveal) ease;
 }
 
 /* EXPLORE — RECENT RELEASES / POPULAR SHELVES
@@ -834,11 +835,34 @@ main {
     Instagram/YouTube; keeps the reference's single-row pill shape intact
     at every width, per Nicolle's decision (2026-09-28) */
   -webkit-overflow-scrolling: touch;
+  position: relative; /* anchors the sliding pill (::before) */
   scrollbar-width: thin; /* slim scrollbar in a Bone tint instead of the default grey bar */
   scrollbar-color: var(--color-surface-60) transparent;
 }
 
+/* Sliding pill (J6): once main.js has measured the selected tab it adds
+   .has-pill and sets --pill-x / --pill-width on the bar. The pill slides
+   between tabs; the selected tab itself goes transparent so the pill shows.
+   Without JS the old per-tab pill (.is-selected) still works. */
+.category-tabs.has-pill::before {
+  content: '';
+  position: absolute;
+  top: var(--space-xs);
+  bottom: var(--space-xs);
+  left: 0;
+  width: var(--pill-width, 0);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  transform: translateX(var(--pill-x, 0));
+  transition: transform var(--duration-base) ease, width var(--duration-base) ease;
+}
+
+.category-tabs.has-pill .category-tabs__tab.is-selected {
+  background-color: transparent;
+}
+
 .category-tabs__tab {
+  position: relative; /* paints above the pill */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1006,6 +1030,101 @@ body::before {
 body.is-nav-open::before {
   opacity: 1;
   visibility: visible;
+}
+
+/* ==========================================================================
+   MOTION EXTRAS (Phase 5)
+   Only opacity, transform / translate and SVG strokes animate. Durations
+   come from the tokens in variables.css, which base.css zeroes for
+   prefers-reduced-motion.
+   ========================================================================== */
+
+/* HERO HEADLINE (J10): main.js wraps each word in .intro__word. The words
+   rise into place one after another; opacity starts at 0.25, not 0, so the
+   headline text is painted from the first frame (keeps Lighthouse LCP fast). */
+.intro__word {
+  display: inline-block;
+  animation: word-rise var(--duration-reveal) ease both;
+  animation-delay: calc(var(--word-index, 0) * var(--stagger-step));
+}
+
+@keyframes word-rise {
+  from {
+    opacity: 0.25;
+    transform: translateY(0.4em);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hand-drawn underline under the accent phrase: the path is normalised to
+   length 1 (pathLength), so one dash covers it, and the offset animates to 0. */
+.intro__accent {
+  position: relative;
+  display: inline-block;
+}
+
+.intro__underline {
+  position: absolute;
+  left: 0;
+  bottom: -0.12em;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.intro__underline path {
+  fill: none;
+  stroke: var(--color-accent-1);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: underline-draw calc(var(--duration-reveal) * 1.4) ease 0.7s forwards;
+}
+
+@keyframes underline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* SCROLL REVEAL (J1): below-the-fold sections get .reveal from main.js, and
+   each of their children .reveal-item with an --i index for the stagger.
+   One class on the section (.is-revealed) starts every child's transition.
+   main.js removes both classes afterwards so cards go back to their own
+   hover/tilt transitions. */
+.reveal-item {
+  opacity: 0;
+  translate: 0 1.5rem;
+  transition: opacity var(--duration-reveal) ease, translate var(--duration-reveal) ease;
+  transition-delay: calc(var(--i, 0) * var(--stagger-step));
+}
+
+.is-revealed .reveal-item {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.reveal:not(.is-revealed) .book-row::after {
+  opacity: 0; /* the shelf ledge waits for its books */
+}
+
+/* Reduced motion: the tokens already zero the durations, but the hero
+   animations have delays, so switch them off outright. */
+@media (prefers-reduced-motion: reduce) {
+  .intro__word {
+    animation: none;
+  }
+
+  .intro__underline path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
 }
 
 /* ========================================================================== */

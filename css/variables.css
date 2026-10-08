@@ -9,6 +9,7 @@
   /* Header & footer */
   --color-surface-20: rgba(251, 244, 234, 0.2); /* Bone @ 20% — translucent header background over the page */
   --color-surface-15: rgba(251, 244, 234, 0.15); /* Bone @ 15% — hover tint on the Journal tab bar (light on the dark bar) */
+  --color-header-bg: #E7CEB4;                   /* Bone @ 20% over Apricot, as a solid colour: looks the same on the page, but stays readable when a dark band scrolls under the sticky header */
   --color-aux8: #C8C3BA;                        /* header bottom border */
   --color-aux10: #E6E6E1;                       /* light text + icon color, used only on the dark footer background */
 
@@ -97,6 +98,8 @@
   --duration-fast: 0.15s; /* colour / tint changes on hover and press */
   --duration-base: 0.2s;  /* small movements: chevrons, dropdowns, menu fade */
   --duration-slow: 0.25s; /* header and anchor-nav slide */
+  --duration-reveal: 0.6s; /* scroll reveal, hero words, underline draw */
+  --stagger-step: 0.08s;   /* delay between siblings in a staggered reveal */
 
   /* Border radius scale — these were used throughout components.css via
      var(--radius-*) but never actually defined here, so every one of

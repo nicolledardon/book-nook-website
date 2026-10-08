@@ -449,6 +449,21 @@ function initJournalFilter() {
   const tabList = Array.prototype.slice.call(tabs);
   const totalCount = grid.querySelectorAll('.post-card').length;
 
+  // Sliding pill (J6): measure the selected tab and hand the numbers to CSS
+  // as custom properties on the bar. CSS does the actual sliding.
+  function movePill(tab) {
+    tablist.style.setProperty('--pill-x', tab.offsetLeft + 'px');
+    tablist.style.setProperty('--pill-width', tab.offsetWidth + 'px');
+    tablist.classList.add('has-pill');
+  }
+
+  function handleTabResize() {
+    const selected = tabList.find(function (tab) {
+      return tab.classList.contains('is-selected');
+    });
+    if (selected) movePill(selected);
+  }
+
   function applyJournalFilter(tab) {
     // Same container pattern as the mood filter: one class on the grid
     // (.post-grid__list--category-design), CSS does the hiding. "All" has no
@@ -456,6 +471,7 @@ function initJournalFilter() {
     const category = tab.dataset.category;
     const isAll = category === 'all';
     setSelectedTab(tabList, tab, panel);
+    movePill(tab);
     setFilterClass(grid, 'post-grid__list--category', isAll ? null : category);
 
     if (status) {
@@ -504,6 +520,10 @@ function initJournalFilter() {
     tab.addEventListener('click', handleTabClick);
   });
   tablist.addEventListener('keydown', handleTabKeydown);
+  window.addEventListener('resize', handleTabResize);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(handleTabResize); // web-font widths differ from the fallback font's
+  }
 
   // "All" ships pre-selected in the HTML - apply it on load so the status
   // text and aria state match what the tab bar already shows, same
@@ -549,6 +569,155 @@ function initFaqAccordion() {
   });
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function initHeroHeadline() {
+  // Home hero (J10): wrap every word of the h1 in a span so CSS can stagger
+  // them. Spaces stay as plain text nodes, so wrapping and screen-reader
+  // output are unchanged.
+  const title = document.querySelector('.intro__title');
+  if (!title || prefersReducedMotion()) return;
+
+  const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+  let wordIndex = 0;
+  textNodes.forEach(function (node) {
+    const fragment = document.createDocumentFragment();
+    node.textContent.split(/(\s+)/).forEach(function (part) {
+      if (!part) return;
+      if (/^\s+$/.test(part)) {
+        fragment.appendChild(document.createTextNode(part));
+        return;
+      }
+      const word = document.createElement('span');
+      word.className = 'intro__word';
+      word.style.setProperty('--word-index', wordIndex);
+      word.textContent = part;
+      wordIndex += 1;
+      fragment.appendChild(word);
+    });
+    node.parentNode.replaceChild(fragment, node);
+  });
+}
+
+function initScrollReveal() {
+  // Scroll reveal (J1). Only sections that start below the fold are touched,
+  // so nothing the visitor sees on load is ever hidden (no flash, no LCP hit).
+  // Each such section gets .reveal and its children (or, for a list, its
+  // items) get .reveal-item with an --i stagger index; one IntersectionObserver
+  // adds .is-revealed to the section when it scrolls into view.
+  if (!('IntersectionObserver' in window) || prefersReducedMotion()) return;
+
+  const MAX_STAGGER = 6;
+  const CLEANUP_MS = 1400; // longer than the slowest transition + stagger
+
+  const sections = Array.prototype.filter.call(
+    document.querySelectorAll('main > section'),
+    function (section) {
+      return section.getBoundingClientRect().top >= window.innerHeight;
+    }
+  );
+  if (!sections.length) return;
+
+  function finishReveal(section) {
+    section.classList.remove('reveal');
+    Array.prototype.forEach.call(section.querySelectorAll('.reveal-item'), function (item) {
+      item.classList.remove('reveal-item');
+      item.style.removeProperty('--i');
+    });
+  }
+
+  function handleRevealIntersect(entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      const section = entry.target;
+      observer.unobserve(section);
+      section.classList.add('is-revealed');
+      window.setTimeout(function () {
+        finishReveal(section);
+      }, CLEANUP_MS);
+    });
+  }
+
+  const observer = new IntersectionObserver(handleRevealIntersect, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -8% 0px'
+  });
+
+  sections.forEach(function (section) {
+    const targets = [];
+    Array.prototype.forEach.call(section.children, function (child) {
+      if (child.tagName === 'UL') {
+        Array.prototype.push.apply(targets, child.children);
+      } else {
+        targets.push(child);
+      }
+    });
+
+    targets.forEach(function (target, index) {
+      target.classList.add('reveal-item');
+      target.style.setProperty('--i', Math.min(index, MAX_STAGGER));
+    });
+
+    section.classList.add('reveal');
+    observer.observe(section);
+  });
+}
+
+function initCardTilt() {
+  // 3D tilt + glare on book cards (J8). One pair of listeners per book row
+  // (event delegation); the card under the pointer gets .is-tilting and its
+  // --tilt-x / --tilt-y / --glare-x / --glare-y custom properties. CSS does
+  // the rest. Skipped on touch screens and for reduced motion.
+  const rows = document.querySelectorAll('.book-row');
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!rows.length || !canHover || prefersReducedMotion()) return;
+
+  const MAX_TILT_DEG = 8;
+  let activeCard = null;
+
+  function resetCard(card) {
+    if (!card) return;
+    card.classList.remove('is-tilting');
+    ['--tilt-x', '--tilt-y', '--glare-x', '--glare-y'].forEach(function (name) {
+      card.style.removeProperty(name);
+    });
+  }
+
+  function handleBookRowPointerMove(event) {
+    const card = event.target.closest('.book-card');
+    if (card !== activeCard) {
+      resetCard(activeCard);
+      activeCard = card;
+    }
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;  // 0 (left) to 1 (right)
+    const y = (event.clientY - rect.top) / rect.height;  // 0 (top) to 1 (bottom)
+
+    card.style.setProperty('--tilt-y', ((x - 0.5) * 2 * MAX_TILT_DEG).toFixed(2) + 'deg');
+    card.style.setProperty('--tilt-x', ((0.5 - y) * 2 * MAX_TILT_DEG).toFixed(2) + 'deg');
+    card.style.setProperty('--glare-x', (x * 100).toFixed(1) + '%');
+    card.style.setProperty('--glare-y', (y * 100).toFixed(1) + '%');
+    card.classList.add('is-tilting');
+  }
+
+  function handleBookRowPointerLeave() {
+    resetCard(activeCard);
+    activeCard = null;
+  }
+
+  rows.forEach(function (row) {
+    row.addEventListener('pointermove', handleBookRowPointerMove);
+    row.addEventListener('pointerleave', handleBookRowPointerLeave);
+  });
+}
+
 initMobileNav();
 initHeaderScroll();
 initWaitlistForm();
@@ -556,3 +725,6 @@ initMoodFilter();
 initAnchorNav();
 initJournalFilter();
 initFaqAccordion();
+initHeroHeadline();
+initScrollReveal();
+initCardTilt();
