@@ -110,6 +110,158 @@
   }
 }
 
+/* HOME BOOKSHELF (restored from the PEC 2 wireframe's "book spines" strip,
+   which the PEC 3 design dropped). A row of spines standing on a wooden
+   ledge: ten real titles from the catalogue, thin filler spines and a few
+   leaning books. Purely decorative, so the section is aria-hidden; the same
+   books are listed properly below and on Explore. Spine colours are Dress
+   Blues, Chocolate and Bone for the labelled ones (text passes contrast);
+   the unlabelled fillers also use the two chart tones. Gold is not used:
+   it stays reserved for ratings, as in the colour system. Each spine reads its
+   lift and lean from custom properties, so hover only swaps a variable and
+   the transition on the base state eases it back on mouseout. On narrower
+   screens the same number of spines is trimmed from both ends, so the shelf
+   stays centred and never scrolls sideways. */
+.shelf {
+  max-width: 75rem;
+  margin-top: calc(-1 * var(--space-xl)); /* cancels main's gap above, so the shelf follows the hero's own bottom padding */
+  overflow-x: clip;
+}
+
+.shelf__books {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding-top: var(--space-base); /* room for the hover lift */
+}
+
+.shelf__book {
+  --spine-bg: var(--color-dominant);
+  --spine-fg: var(--color-surface);
+  --spine-h: 13rem;
+  --lift: 0rem;
+  --lean: 0deg;
+  flex: none;
+  box-sizing: border-box;
+  width: 3.5rem;
+  height: var(--spine-h);
+  padding: var(--space-sm) var(--space-xs);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  /* two thin bands near the top and bottom, then the spine colour */
+  background:
+    linear-gradient(var(--spine-fg), var(--spine-fg)) 0 0.375rem / 100% 0.125rem no-repeat,
+    linear-gradient(var(--spine-fg), var(--spine-fg)) 0 calc(100% - 0.375rem) / 100% 0.125rem no-repeat,
+    var(--spine-bg);
+  box-shadow: var(--shadow-card);
+  color: var(--spine-fg);
+  font-size: var(--fs-small);
+  line-height: 1.25;
+  writing-mode: vertical-rl; /* title and author read top to bottom, side by side */
+  transform: translateY(var(--lift)) rotate(var(--lean));
+  transition: transform var(--duration-base) ease;
+}
+
+.shelf__title,
+.shelf__author {
+  display: block;
+  max-height: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shelf__title {
+  font-weight: var(--fw-semibold);
+}
+
+.shelf__book--cocoa { --spine-bg: var(--color-accent-1); }
+.shelf__book--bone  { --spine-bg: var(--color-surface); --spine-fg: var(--color-dominant); }
+.shelf__book--tan   { --spine-bg: var(--color-chart-3); --spine-fg: var(--color-dominant); }
+.shelf__book--slate { --spine-bg: var(--color-chart-4); --spine-fg: var(--color-dominant); }
+
+.shelf__book:nth-child(4n + 1) { --spine-h: 12.5rem; }
+.shelf__book:nth-child(4n + 2) { --spine-h: 14.5rem; }
+.shelf__book:nth-child(4n + 3) { --spine-h: 13.5rem; }
+.shelf__book:nth-child(4n)     { --spine-h: 15rem; }
+
+/* Unlabelled filler spines: thinner and shorter than the labelled ones */
+.shelf__book--filler {
+  width: 1.5rem;
+  padding: 0;
+}
+
+.shelf__book--filler:nth-child(odd)  { --spine-h: 8rem; }
+.shelf__book--filler:nth-child(even) { --spine-h: 9.5rem; }
+
+/* Leaning books pivot on a bottom corner; the margin makes room for the slant */
+.shelf__book--lean-left {
+  --lean: -18deg;
+  margin-left: 2.75rem; /* physical: the spines use a vertical writing mode, so logical margins would point up and down */
+  transform-origin: bottom left;
+}
+
+.shelf__book--lean-right {
+  --lean: 18deg;
+  margin-right: 2.75rem;
+  transform-origin: bottom right;
+}
+
+.shelf__ledge {
+  height: 0.875rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent-1);
+  box-shadow: var(--shadow-card);
+}
+
+@media (hover: hover) {
+  .shelf__book:hover {
+    --lift: -0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shelf__book:hover {
+    --lift: 0rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .shelf__book:nth-child(-n + 2),
+  .shelf__book:nth-last-child(-n + 2) {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .shelf__book:nth-child(-n + 3),
+  .shelf__book:nth-last-child(-n + 3) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .shelf {
+    margin-top: calc(-1 * var(--space-lg)); /* main's gap is 48px here */
+  }
+
+  .shelf__book:nth-child(-n + 6),
+  .shelf__book:nth-last-child(-n + 6) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .shelf {
+    margin-top: calc(-1 * var(--space-md)); /* main's gap is 24px here */
+  }
+
+  .shelf__book:nth-child(-n + 8),
+  .shelf__book:nth-last-child(-n + 8) {
+    display: none;
+  }
+}
+
 /* Editorial headline: large display size, tight leading, and the second half
    set in Crimson italic in the accent colour (Chocolate on Apricot = 7:1). */
 .intro__title {
