@@ -37,13 +37,13 @@
     </svg>
     <header>
         <nav class="header__nav" aria-label="Main">
-            <a href="index.html" class="logo" title="Book Nook, back to the home page">Book Nook</a>
+            <a href="index.html" class="header__logo" title="Book Nook, back to the home page">Book Nook</a>
             <ul class="nav__links" id="nav-links">
-                <li><a href="index.html" title="Go to the home page">Home</a></li>
-                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
-                <li><a href="features.html" title="See what Book Nook does differently">Features</a></li>
-                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
-                <li><a href="journal.html" title="Read the Book Nook journal" aria-current="page">Journal</a></li>
+                <li><a class="nav__link" href="index.html" title="Go to the home page">Home</a></li>
+                <li><a class="nav__link" href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a class="nav__link" href="features.html" title="See what Book Nook does differently">Features</a></li>
+                <li><a class="nav__link" href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a class="nav__link" href="journal.html" title="Read the Book Nook journal" aria-current="page">Journal</a></li>
                 <li class="nav__cta"><a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a></li>
             </ul>
             <a href="waitlist.html" class="btn btn--primary header__cta" title="Join the Book Nook waitlist">Join the Nook</a>
@@ -54,11 +54,11 @@
         <section class="page-section journal">
         <h1>Journal</h1>
         <div class="category-tabs" role="tablist" aria-label="Journal categories">
-            <button type="button" class="tab is-selected" id="tab-all" data-category="all" title="Show all posts" role="tab" aria-selected="true" aria-controls="journal-panel" tabindex="0">All</button>
-            <button type="button" class="tab" id="tab-reading" data-category="reading" title="Show Reading posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Reading</button>
-            <button type="button" class="tab" id="tab-design" data-category="design" title="Show Design posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Design</button>
-            <button type="button" class="tab" id="tab-privacy" data-category="privacy" title="Show Privacy posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Privacy</button>
-            <button type="button" class="tab" id="tab-behind-the-scenes" data-category="behind-the-scenes" title="Show Behind the Scenes posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Behind the Scenes</button>
+            <button type="button" class="category-tabs__tab is-selected" id="tab-all" data-category="all" title="Show all posts" role="tab" aria-selected="true" aria-controls="journal-panel" tabindex="0">All</button>
+            <button type="button" class="category-tabs__tab" id="tab-reading" data-category="reading" title="Show Reading posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Reading</button>
+            <button type="button" class="category-tabs__tab" id="tab-design" data-category="design" title="Show Design posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Design</button>
+            <button type="button" class="category-tabs__tab" id="tab-privacy" data-category="privacy" title="Show Privacy posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Privacy</button>
+            <button type="button" class="category-tabs__tab" id="tab-behind-the-scenes" data-category="behind-the-scenes" title="Show Behind the Scenes posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Behind the Scenes</button>
         </div>
         <p class="journal__status sr-only" aria-live="polite"></p>
         <div class="post-grid" id="journal-panel" role="tabpanel" aria-labelledby="tab-all" tabindex="0">

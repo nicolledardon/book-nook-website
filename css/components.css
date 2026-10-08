@@ -15,7 +15,7 @@
   font-weight: var(--fw-semibold);
   line-height: normal;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; /* animate smoothly the state change of buttons */
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, color var(--duration-fast) ease; /* animate smoothly the state change of buttons */
   text-decoration: none;
   white-space: nowrap;
 }
@@ -128,13 +128,6 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Same specificity fix as .confirmation-panel[hidden] / .signup__panel[hidden]:
-   a bare [hidden] loses to this class's display:flex rule on its own, so the
-   attribute is combined with the class to win the tie. */
-.book-card[hidden] {
-  display: none;
-}
-
 .book-card__cover {
   width: 100%;
   aspect-ratio: 2 / 3; /* standard book-cover proportions; the real covers are ~0.63-0.66 width:height, so this crops almost nothing */
@@ -201,7 +194,7 @@
   justify-content: space-between;
   padding: var(--space-lg);
   scroll-margin-top: var(--header-height); /* keeps the heading clear of the
-    sticky header when an anchor-button jump lands here */
+    sticky header when an anchor-nav__link jump lands here */
 }
 
 .feature-block--reverse {
@@ -337,7 +330,7 @@
   font-weight: var(--fw-semibold);
   line-height: 1.25;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 
 .mood-chip:hover {
@@ -352,5 +345,12 @@
 
 .mood-chip.is-selected {
   background-color: var(--color-accent-1);
+  color: var(--color-surface);
+}
+
+/* After .is-selected on purpose: same specificity, so a press darkens the
+   chip whether or not it is the selected one. */
+.mood-chip:active {
+  background-color: var(--color-primary-active);
   color: var(--color-surface);
 }

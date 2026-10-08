@@ -49,13 +49,13 @@
     </svg>
     <header>
         <nav class="header__nav" aria-label="Main">
-            <a href="index.html" class="logo" title="Book Nook, back to the home page">Book Nook</a>
+            <a href="index.html" class="header__logo" title="Book Nook, back to the home page">Book Nook</a>
             <ul class="nav__links" id="nav-links">
-                <li><a href="index.html" title="Go to the home page">Home</a></li>
-                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
-                <li><a href="features.html" title="See what Book Nook does differently" aria-current="page">Features</a></li>
-                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
-                <li><a href="journal.html" title="Read the Book Nook journal">Journal</a></li>
+                <li><a class="nav__link" href="index.html" title="Go to the home page">Home</a></li>
+                <li><a class="nav__link" href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a class="nav__link" href="features.html" title="See what Book Nook does differently" aria-current="page">Features</a></li>
+                <li><a class="nav__link" href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a class="nav__link" href="journal.html" title="Read the Book Nook journal">Journal</a></li>
                 <li class="nav__cta"><a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a></li>
             </ul>
             <a href="waitlist.html" class="btn btn--primary header__cta" title="Join the Book Nook waitlist">Join the Nook</a>
@@ -66,17 +66,17 @@
         <section class="page-section features-intro">
         <h1>Everything Book Nook does differently.</h1>
     </section>
-    <nav class="page-section anchor-buttons" aria-label="Feature sections">
-        <div class="anchor-buttons__menu">
-            <button type="button" class="anchor-buttons__toggle" id="anchor-toggle" aria-expanded="false" aria-controls="anchor-list" title="Show or hide the feature sections">
-                <span class="anchor-buttons__current">Genre Tracking</span>
-                <span class="anchor-buttons__chevron" aria-hidden="true"></span>
+    <nav class="page-section anchor-nav" aria-label="Feature sections">
+        <div class="anchor-nav__menu">
+            <button type="button" class="anchor-nav__toggle" id="anchor-toggle" aria-expanded="false" aria-controls="anchor-list" title="Show or hide the feature sections">
+                <span class="anchor-nav__current">Genre Tracking</span>
+                <span class="anchor-nav__chevron" aria-hidden="true"></span>
             </button>
-        <ul class="anchor-buttons__list" id="anchor-list">
-            <li><a class="anchor-button btn btn--tertiary" href="#genre-tracking" title="Jump to Genre Tracking">Genre Tracking</a></li>
-            <li><a class="anchor-button btn btn--tertiary" href="#half-star-ratings" title="Jump to Half-Star Ratings">Half-Star Ratings</a></li>
-            <li><a class="anchor-button btn btn--tertiary" href="#anonymous-profiles" title="Jump to Anonymous Profiles">Anonymous Profiles</a></li>
-            <li><a class="anchor-button btn btn--tertiary" href="#recommendations" title="Jump to Recommendations">Recommendations</a></li>
+        <ul class="anchor-nav__list" id="anchor-list">
+            <li><a class="anchor-nav__link btn btn--tertiary" href="#genre-tracking" title="Jump to Genre Tracking">Genre Tracking</a></li>
+            <li><a class="anchor-nav__link btn btn--tertiary" href="#half-star-ratings" title="Jump to Half-Star Ratings">Half-Star Ratings</a></li>
+            <li><a class="anchor-nav__link btn btn--tertiary" href="#anonymous-profiles" title="Jump to Anonymous Profiles">Anonymous Profiles</a></li>
+            <li><a class="anchor-nav__link btn btn--tertiary" href="#recommendations" title="Jump to Recommendations">Recommendations</a></li>
         </ul>
         </div>
     </nav>
@@ -108,7 +108,7 @@
             <p>Get suggestions based on what you've actually read and rated, not what's trending this week.</p>
         </div>
     </section>
-    <section class="page-section cta">
+    <section class="page-section features-cta">
         <h2>Ready for a better way to read?</h2>
         <a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a>
     </section>

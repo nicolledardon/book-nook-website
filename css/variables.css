@@ -8,6 +8,7 @@
 
   /* Header & footer */
   --color-surface-20: rgba(251, 244, 234, 0.2); /* Bone @ 20% — translucent header background over the page */
+  --color-surface-15: rgba(251, 244, 234, 0.15); /* Bone @ 15% — hover tint on the Journal tab bar (light on the dark bar) */
   --color-aux8: #C8C3BA;                        /* header bottom border */
   --color-aux10: #E6E6E1;                       /* light text + icon color, used only on the dark footer background */
 
@@ -86,6 +87,12 @@
   /* Effects */
   --shadow-card: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.14); /* book-card drop shadow */
   --color-overlay-scrim: rgba(0, 0, 0, 0.2); /* mobile nav dropdown backdrop */
+
+  /* Motion — every transition reads these durations, so the
+     prefers-reduced-motion block in base.css can set them all to 0s in one place */
+  --duration-fast: 0.15s; /* colour / tint changes on hover and press */
+  --duration-base: 0.2s;  /* small movements: chevrons, dropdowns, menu fade */
+  --duration-slow: 0.25s; /* header and anchor-nav slide */
 
   /* Border radius scale — these were used throughout components.css via
      var(--radius-*) but never actually defined here, so every one of

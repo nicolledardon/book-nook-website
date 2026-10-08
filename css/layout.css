@@ -51,7 +51,7 @@
    Centered automatically because .features-intro (above) centers its
    flex children, and this div shrinks to fit its own content width. */
 
-.anchor-buttons {
+.anchor-nav {
   display: flex;
   justify-content: center;
   gap: var(--space-md-plus);
@@ -59,19 +59,15 @@
   position: sticky;
   top: var(--header-height);
   z-index: 90; /* below the header's 100, so header always wins if they ever overlap during the dock transition */
-  transition: transform 250ms ease; /* same speed as header--hidden, so the two bars move as one unit */
+  transition: transform var(--duration-slow) ease; /* same speed as header--hidden, so the two bars move as one unit */
   padding-block: var(--space-sm) var(--space-md);
   background-color: var(--color-surface-20);
   backdrop-filter: blur(0.33125rem);
   -webkit-backdrop-filter: blur(0.33125rem);
 }
 
-/* Toggled by initHeaderScroll() in main.js in step with header--hidden --
-   slides the nav up to close the gap left where the header used to be,
-   instead of leaving empty space above it. Desktop widths only, since
-   the header itself never hides on mobile. */
 /* The <ul> inside the sticky <nav> carries the row layout */
-.anchor-buttons__list {
+.anchor-nav__list {
   display: flex;
   justify-content: center;
   gap: var(--space-md-plus);
@@ -80,32 +76,36 @@
 
 /* Wrapper that positions the dropdown on phones; on desktop it is just a
    shrink-wrapped box around the row of links. */
-.anchor-buttons__menu {
+.anchor-nav__menu {
   position: relative;
 }
 
 /* Phone-only collapse button; shown in the 768px block below. */
-.anchor-buttons__toggle {
+.anchor-nav__toggle {
   display: none;
 }
 
-.anchor-buttons.is-docked {
+/* Toggled by initHeaderScroll() in main.js in step with header--hidden --
+   slides the nav up to close the gap left where the header used to be,
+   instead of leaving empty space above it. Desktop widths only, since
+   the header itself never hides on mobile. */
+.anchor-nav.is-docked {
   transform: translateY(calc(-1 * var(--header-height)));
 }
 
 /* Figma sizes these links at 14px, not the button system's standard
-   16px (--fs-body-2). .anchor-button is already a class directly on each
+   16px (--fs-body-2). .anchor-nav__link is already a class directly on each
    link (see features.html), so this targets it directly instead of the
-   .anchor-buttons .btn--tertiary descendant selector — same effect,
+   .anchor-nav .btn--tertiary descendant selector — same effect,
    lower specificity, no risk of overriding .btn--tertiary elsewhere. */
-.anchor-button {
+.anchor-nav__link {
   font-size: var(--fs-small);
 }
 
 /* Marks whichever feature-block is on screen, per initAnchorNav()'s
    IntersectionObserver. Same filled-pill treatment as .mood-chip.is-selected
    for a consistent "this one's active" language across the site. */
-.anchor-button.is-active {
+.anchor-nav__link.is-active {
   background-color: var(--color-accent-1);
   color: var(--color-surface);
 }
@@ -197,10 +197,7 @@
 /* ABOUT PAGE — FAQ
    Single-open accordion under the creator bio. Left-aligned unlike
    .meet-creator above it, since this is a list of Q&A pairs, not a
-   centered block of prose. No open/close transition — matches the
-   deliberate call (Phase 0) to skip a global prefers-reduced-motion
-   reset rather than adding one animated component that's the only
-   one covered by it. */
+   centered block of prose. */
 
 .faq {
   display: flex;
@@ -237,6 +234,31 @@
   font-size: var(--fs-body-1);
   font-weight: var(--fw-semibold);
   color: var(--color-dominant);
+  position: relative;
+  isolation: isolate; /* keeps the tint below behind the text without leaving the row */
+}
+
+/* Hover / press tint: a pseudo-element that bleeds past the row's sides, so
+   the tint looks like a pill without adding padding (which would shift the
+   text out of line with the heading). Only its opacity animates. */
+.faq__question::before {
+  content: '';
+  position: absolute;
+  inset: var(--space-xxs) calc(-1 * var(--space-sm));
+  z-index: -1;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-secondary-hover);
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease, background-color var(--duration-fast) ease;
+}
+
+.faq__question:hover::before {
+  opacity: 1;
+}
+
+.faq__question:active::before {
+  opacity: 1;
+  background-color: var(--color-secondary-active);
 }
 
 .faq__question:focus-visible {
@@ -251,6 +273,7 @@
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg); /* closed: chevron pointing down */
+  transition: transform var(--duration-base) ease;
 }
 
 .faq__question[aria-expanded="true"] .faq__icon {
@@ -308,6 +331,7 @@
   font-family: var(--font-body);
   font-size: var(--fs-body-1);
   color: var(--color-dominant);
+  transition: border-color var(--duration-fast) ease;
 }
 
 .signup__submit {
@@ -386,7 +410,7 @@
   color: var(--color-text-muted);
 }
 
-.queue-badge {
+.ticket__badge {
   display: inline-flex;
   padding: var(--space-xs) var(--space-base);
   border-radius: var(--radius-pill);
@@ -397,12 +421,12 @@
   font-weight: var(--fw-semibold);
 }
 
-.dashed-divider {
+.ticket__divider {
   width: 100%;
   border-top: 1px dashed var(--color-secondary-disabled);
 }
 
-.barcode {
+.ticket__barcode {
   width: 5.5rem;  /* 88 x 48 units, drawn as one SVG */
   height: 3rem;
   color: var(--color-dominant);
@@ -414,19 +438,6 @@
 }
 
 
-/* Footer pinned to the bottom of the viewport on short pages
-   (e.g. Waitlist Confirmation) */
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
-
 /* HEADER
    Translucent, blurred bar */
 
@@ -434,7 +445,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: transform 250ms ease;
+  transition: transform var(--duration-slow) ease;
   padding: var(--space-md) var(--space-lg);
   background-color: var(--color-surface-20);
   backdrop-filter: blur(0.33125rem);
@@ -458,12 +469,21 @@ header {
   margin: 0 auto;
 }
 
-.logo {
+.header__logo {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: var(--fw-bold);
   line-height: 1.2;
   color: var(--color-dominant);
+  transition: color var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.header__logo:hover {
+  color: var(--color-accent-1);
+}
+
+.header__logo:active {
+  opacity: 0.7;
 }
 
 .nav__links {
@@ -479,6 +499,40 @@ header {
    on desktop the header CTA is used instead. */
 .nav__cta {
   display: none;
+}
+
+/* Header text links: an underline that grows in from the left (only
+   transform animates), kept fully drawn on the page you are on. */
+.nav__link {
+  position: relative;
+  transition: color var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.25rem;
+  height: 2px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) ease;
+}
+
+.nav__link:hover::after,
+.nav__link:focus-visible::after,
+.nav__link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.nav__link:active {
+  color: var(--color-accent-1);
+}
+
+.nav__link[aria-current="page"] {
+  color: var(--color-accent-1);
 }
 
 /* FOOTER
@@ -532,6 +586,31 @@ footer {
   gap: var(--space-sm);
 }
 
+/* Footer text links (nav list + Privacy / Terms): underline fades in on hover.
+   Transitions sit here on the base state so they ease back out as well. */
+.footer__links a,
+.footer__legal a {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.25rem;
+  transition: text-decoration-color var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.footer__links a:hover,
+.footer__legal a:hover {
+  text-decoration-color: currentColor;
+}
+
+.footer__links a:active,
+.footer__legal a:active {
+  opacity: 0.7;
+}
+
+/* Dress Blues ring would vanish on the dark footer, so use the light text colour. */
+footer a:focus-visible {
+  outline-color: var(--color-aux10);
+}
+
 .footer__social {
   display: flex;
   align-items: center;
@@ -547,6 +626,16 @@ footer {
   border-radius: 50%;
   background-color: var(--color-secondary-hover);
   color: var(--color-aux10);
+  transition: background-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.footer__social-icon:hover {
+  background-color: var(--color-surface-20);
+  transform: translateY(-0.125rem);
+}
+
+.footer__social-icon:active {
+  transform: scale(0.92);
 }
 
 .footer__social-svg {
@@ -562,11 +651,11 @@ footer {
    and between Home's feature-cards-section / popular-books-section. */
 
 main {
+  flex: 1; /* takes the spare height so the footer sits at the bottom (see body in base.css) */
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
-  padding-top: var(--space-sm-plus);
-  padding-bottom: var(--space-xl-sm);
+  padding-block: var(--space-sm-plus) var(--space-xl-sm);
 }
 
 /* ==========================================================================
@@ -622,7 +711,7 @@ main {
    Button centered in the section, 240px side padding, per Figma
    (Nicolle, 2026-09-26). */
 
-.cta {
+.features-cta {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -664,7 +753,7 @@ main {
   -webkit-overflow-scrolling: touch;
 }
 
-.tab {
+.category-tabs__tab {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -680,18 +769,24 @@ main {
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
   cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-fast) ease;
 }
 
-.tab:hover {
-  background-color: rgba(251, 244, 234, 0.15); /* Bone @ 15% -- light tint against the dark bar */
+.category-tabs__tab:hover {
+  background-color: var(--color-surface-15); /* light tint against the dark bar */
 }
 
-.tab:focus-visible {
+.category-tabs__tab:active {
+  background-color: var(--color-surface-20);
+  transform: scale(0.96);
+}
+
+.category-tabs__tab:focus-visible {
   outline: 2px solid var(--color-surface); /* the usual dominant-colored ring would be invisible here since dominant IS this bar's own background */
   outline-offset: 2px;
 }
 
-.tab.is-selected {
+.category-tabs__tab.is-selected {
   background-color: var(--color-surface);
   color: var(--color-dominant);
 }
@@ -730,9 +825,27 @@ main {
   gap: var(--space-xs);
 }
 
-/* Same specificity fix as .book-card[hidden] and friends: a bare [hidden]
-   loses to this class's own display:flex rule at equal specificity. */
-.post-card[hidden] {
+/* FILTER MODIFIERS
+   Explore's mood filter and Journal's category filter use the container
+   pattern: main.js puts ONE class on the grid (e.g. .book-row--mood-cozy)
+   and these rules hide every card whose data attribute doesn't contain that
+   word. [data-moods~="cozy"] matches one whole word inside the space-separated
+   list, so "cozy heartfelt" matches both cozy and heartfelt. display:none
+   also removes hidden cards from the accessibility tree. With no modifier
+   class on the grid, nothing matches and every card shows. */
+
+.book-row--mood-cozy .book-card:not([data-moods~="cozy"]),
+.book-row--mood-thrilling .book-card:not([data-moods~="thrilling"]),
+.book-row--mood-heartfelt .book-card:not([data-moods~="heartfelt"]),
+.book-row--mood-mind-bending .book-card:not([data-moods~="mind-bending"]),
+.book-row--mood-uplifting .book-card:not([data-moods~="uplifting"]) {
+  display: none;
+}
+
+.post-grid__list--category-reading .post-card:not([data-category~="reading"]),
+.post-grid__list--category-design .post-card:not([data-category~="design"]),
+.post-grid__list--category-privacy .post-card:not([data-category~="privacy"]),
+.post-grid__list--category-behind-the-scenes .post-card:not([data-category~="behind-the-scenes"]) {
   display: none;
 }
 
@@ -772,6 +885,15 @@ main {
   border: none;
   background-color: transparent;
   color: var(--color-dominant);
+  transition: color var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.nav__toggle:hover {
+  color: var(--color-accent-1);
+}
+
+.nav__toggle:active {
+  opacity: 0.7;
 }
 
 .nav__toggle-icon {
@@ -790,30 +912,26 @@ body::before {
   backdrop-filter: blur(0.25rem);
   -webkit-backdrop-filter: blur(0.25rem);
   z-index: 98;
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--duration-base) ease, visibility var(--duration-base) ease;
 }
 
 body.is-nav-open::before {
-  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* ========================================================================== */
 /* RESPONSIVE MEDIA QUERIES — DESKTOP-FIRST                                    */
 /* The base styles above are the desktop layout; each query below overrides   */
 /* them as the screen gets narrower (max-width). Blocks run widest to         */
-/* narrowest: 1025+ → 769–1024 → ≤768 → ≤480, so the narrowest match wins.     */
+/* narrowest: base (1025+) → 769–1024 → ≤768 → ≤480, so the narrowest match wins. */
 /* ========================================================================== */
 
-/* DESKTOP (1025px+) */
-@media (min-width: 1025px) {
-  .highlights__list {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  
-  .book-row {
-    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
-  }
-}
+/* DESKTOP (1025px+) uses the base styles above as they are: 4-column
+   highlights, 300px book-card tracks. No query needed. */
 
 /* TABLETS & SMALL DESKTOPS (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -841,7 +959,7 @@ body.is-nav-open::before {
     font-size: var(--fs-small); /* 14px (was 16px) */
   }
   
-  .logo {
+  .header__logo {
     font-size: 1.25rem; /* 20px (was 24px) */
   }
 }
@@ -868,17 +986,17 @@ body.is-nav-open::before {
     display: flex;
   }
   
-  /* .cta's 240px side padding (desktop/Figma spec) would overflow badly
+  /* .features-cta's 240px side padding (desktop/Figma spec) would overflow badly
      on mobile — 480px of padding alone exceeds most phone viewports.
      Fall back to the same padding used by main > section elsewhere. */
-  .cta {
+  .features-cta {
     padding: 0 var(--space-lg-sm);
   }
   
   /* FEATURES ANCHOR NAV — collapses to one slim bar on phones.
      The four links become a dropdown, opened by the toggle button, so the
      sticky bar no longer covers the feature blocks underneath. */
-  .anchor-buttons {
+  .anchor-nav {
     top: 5rem; /* the phone header is 80px tall, not the desktop 90px, so no gap shows above the bar */
     padding-block: var(--space-xs);
     /* Solid instead of the translucent blur: scrolling text showed through
@@ -888,11 +1006,11 @@ body.is-nav-open::before {
     -webkit-backdrop-filter: none;
   }
 
-  .anchor-buttons__menu {
+  .anchor-nav__menu {
     width: 100%;
   }
 
-  .anchor-buttons__toggle {
+  .anchor-nav__toggle {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -907,20 +1025,20 @@ body.is-nav-open::before {
     font-weight: var(--fw-semibold);
   }
 
-  .anchor-buttons__chevron {
+  .anchor-nav__chevron {
     width: 0.5rem;
     height: 0.5rem;
     border-right: 2px solid currentColor;
     border-bottom: 2px solid currentColor;
     transform: translateY(-0.15rem) rotate(45deg);
-    transition: transform 0.2s ease;
+    transition: transform var(--duration-base) ease;
   }
 
-  .anchor-buttons.is-open .anchor-buttons__chevron {
+  .anchor-nav.is-open .anchor-nav__chevron {
     transform: translateY(0.15rem) rotate(-135deg);
   }
 
-  .anchor-buttons__list {
+  .anchor-nav__list {
     position: absolute;
     top: calc(100% + var(--space-xs));
     left: 0;
@@ -936,16 +1054,16 @@ body.is-nav-open::before {
     opacity: 0;
     visibility: hidden; /* also takes the closed links out of the tab order */
     transform: translateY(-0.5rem);
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    transition: opacity var(--duration-base) ease, transform var(--duration-base) ease, visibility var(--duration-base) ease;
   }
 
-  .anchor-buttons.is-open .anchor-buttons__list {
+  .anchor-nav.is-open .anchor-nav__list {
     opacity: 1;
     visibility: visible;
     transform: none;
   }
 
-  .anchor-buttons__list .anchor-button {
+  .anchor-nav__list .anchor-nav__link {
     width: 100%;
     justify-content: flex-start;
   }
@@ -956,7 +1074,13 @@ body.is-nav-open::before {
   }
 
   .nav__links {
-    display: none; /* hidden by default at mobile widths */
+    /* Closed state is invisible, not display:none, so opening can fade and
+       slide instead of snapping. visibility:hidden also keeps the closed
+       links out of the tab order. */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: opacity var(--duration-base) ease, transform var(--duration-base) ease, visibility var(--duration-base) ease;
     position: fixed;
     top: calc(var(--space-md) * 2 + 2rem);
     right: 0;
@@ -979,7 +1103,9 @@ body.is-nav-open::before {
      since nav__links is only styled here and in the desktop (non-media) rule,
      which this media query already outranks by being more specific+later. */
   body.is-nav-open .nav__links {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
   }
   
   .book-row {
@@ -1017,8 +1143,7 @@ body.is-nav-open::before {
     padding: var(--space-md);
   }
   
-  .feature-block > div:first-child {
-    aspect-ratio: 14 / 9;
+  .feature-block__media {
     height: auto;
     width: 100%;
   }
@@ -1045,7 +1170,6 @@ body.is-nav-open::before {
   .signup__input {
     width: 100%;
     max-width: 20rem;
-    height: 3.5rem;
   }
   
   .signup__submit {
@@ -1068,8 +1192,7 @@ body.is-nav-open::before {
   
   main {
     gap: var(--space-lg);
-    padding-top: var(--space-md);
-    padding-bottom: var(--space-md);
+    padding-block: var(--space-md);
   }
 }
 
@@ -1085,15 +1208,14 @@ body.is-nav-open::before {
     padding: var(--space-md) var(--space-md);
   }
   
-  .logo {
+  .header__logo {
     font-size: 1.125rem;
     line-height: 1.3;
   }
   
   main {
     gap: var(--space-md);
-    padding-top: var(--space-sm);
-    padding-bottom: var(--space-md);
+    padding-block: var(--space-sm) var(--space-md);
   }
   
   .book-row {
@@ -1108,17 +1230,6 @@ body.is-nav-open::before {
     grid-template-columns: 1fr;
   }
   
-  .feature-block,
-  .feature-block--reverse {
-    flex-direction: column;
-  }
-  
-  .feature-block > div:first-child {
-    aspect-ratio: 14 / 9;
-    width: 100%;
-    height: auto;
-  }
-  
   footer {
     padding: var(--space-md);
   }
@@ -1129,23 +1240,10 @@ body.is-nav-open::before {
   }
   
   .signup__form {
-    flex-direction: column;
     align-items: stretch;
   }
   
-  .signup__input {
-    width: 100%;
-    max-width: 20rem;
-  }
-  
-  .signup__submit {
-    width: 100%;
-    max-width: 20rem;
-  }
-  
   .ticket {
-    width: 100%;
-    max-width: 30rem;
     padding: var(--space-md);
   }
   

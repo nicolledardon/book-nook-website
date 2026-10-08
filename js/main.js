@@ -1,10 +1,12 @@
 // Book Nook — main.js
 // Every init function checks that its elements exist before doing anything,
 // so pages that don't have that markup see no console errors.
+// Every event listener is a named function (handleXxx), so each one can be
+// found, read and removed by name instead of being an anonymous callback.
 
 function initMobileNav() {
   // Hamburger menu toggle
-  // Visibility is driven entirely by CSS (body.is-nav-open .nav-links) —
+  // Visibility is driven entirely by CSS (body.is-nav-open .nav__links) —
   // JS only toggles the class and the aria-expanded state
 
   const navToggle = document.getElementById('nav-toggle');
@@ -13,30 +15,38 @@ function initMobileNav() {
 
   if (!navToggle || !navLinks) return;
 
-  navToggle.addEventListener('click', function () {
+  function setNavOpen(isOpen) {
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    body.classList.toggle('is-nav-open', isOpen);
+  }
+
+  function handleNavToggleClick() {
     const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-    navToggle.setAttribute('aria-expanded', !isExpanded);
-    body.classList.toggle('is-nav-open', !isExpanded);
-  });
+    setNavOpen(!isExpanded);
+  }
 
   // Close menu when a link is clicked
-  const links = navLinks.querySelectorAll('a');
-  links.forEach(link => {
-    link.addEventListener('click', function () {
-      navToggle.setAttribute('aria-expanded', 'false');
-      body.classList.remove('is-nav-open');
-    });
-  });
+  function handleNavLinkClick() {
+    setNavOpen(false);
+  }
 
-  // Close menu when clicking the overlay
-  document.addEventListener('click', function (event) {
+  // Close menu when clicking the overlay (anywhere outside the toggle + menu)
+  function handleNavOutsideClick(event) {
     if (body.classList.contains('is-nav-open') &&
         !navToggle.contains(event.target) &&
         !navLinks.contains(event.target)) {
-      navToggle.setAttribute('aria-expanded', 'false');
-      body.classList.remove('is-nav-open');
+      setNavOpen(false);
     }
+  }
+
+  navToggle.addEventListener('click', handleNavToggleClick);
+
+  const links = navLinks.querySelectorAll('a');
+  links.forEach(function (link) {
+    link.addEventListener('click', handleNavLinkClick);
   });
+
+  document.addEventListener('click', handleNavOutsideClick);
 }
 
 function initHeaderScroll() {
@@ -44,7 +54,7 @@ function initHeaderScroll() {
   if (!header) return;
 
   // Only present on features.html - every other page simply never docks it.
-  const anchorNav = document.querySelector('.anchor-buttons');
+  const anchorNav = document.querySelector('.anchor-nav');
 
   const MOBILE_MAX_WIDTH = 768; // matches the CSS breakpoint; mobile never hides
   const HIDE_THRESHOLD = 5;     // px scrolled down before hiding
@@ -53,9 +63,6 @@ function initHeaderScroll() {
   let lastScrollY = Math.max(window.scrollY, 0);
   let focusInHeader = false;
   let ticking = false;
-
-  header.addEventListener('focusin', function () { focusInHeader = true; });
-  header.addEventListener('focusout', function () { focusInHeader = false; });
 
   function show() {
     header.classList.remove('header--hidden');
@@ -70,7 +77,7 @@ function initHeaderScroll() {
     if (anchorNav) anchorNav.classList.add('is-docked');
   }
 
-  function update() {
+  function updateHeaderVisibility() {
     ticking = false;
 
     // iPhone's rubber-band bounce can report negative scrollY — treat as 0.
@@ -93,12 +100,25 @@ function initHeaderScroll() {
     lastScrollY = currentScrollY;
   }
 
-  window.addEventListener('scroll', function () {
+  function handleHeaderFocusIn() {
+    focusInHeader = true;
+  }
+
+  function handleHeaderFocusOut() {
+    focusInHeader = false;
+  }
+
+  // Scroll fires many times per frame; this only schedules one update per frame.
+  function handleHeaderScroll() {
     if (!ticking) {
-      window.requestAnimationFrame(update);
+      window.requestAnimationFrame(updateHeaderVisibility);
       ticking = true;
     }
-  }, { passive: true });
+  }
+
+  header.addEventListener('focusin', handleHeaderFocusIn);
+  header.addEventListener('focusout', handleHeaderFocusOut);
+  window.addEventListener('scroll', handleHeaderScroll, { passive: true });
 }
 
 function initWaitlistForm() {
@@ -108,7 +128,7 @@ function initWaitlistForm() {
   const input = document.getElementById('email');
   const error = document.getElementById('email-error');
   const submitButton = form.querySelector('.signup__submit');
-  const queueBadge = document.querySelector('.queue-badge');
+  const queueBadge = document.querySelector('.ticket__badge');
   const ticketCode = document.querySelector('.ticket__code');
   const signupPanel = document.querySelector('.signup__panel');
   const confirmationPanel = document.querySelector('.confirmation-panel');
@@ -153,7 +173,7 @@ function initWaitlistForm() {
     return message === '';
   }
 
-  form.addEventListener('submit', function (event) {
+  function handleWaitlistSubmit(event) {
     event.preventDefault();
     input.value = input.value.trim();
     hasAttemptedSubmit = true;
@@ -185,32 +205,37 @@ function initWaitlistForm() {
 
     window.scrollTo(0, 0);
     if (ticketHeading) ticketHeading.focus();
-  });
+  }
 
   // Only re-check while typing after a failed attempt, so someone isn't
   // shown "please enter your email" while they're still typing it the
   // first time around.
-  input.addEventListener('input', function () {
+  function handleEmailInput() {
     if (!hasAttemptedSubmit) return;
     revalidate();
-  });
+  }
+
+  form.addEventListener('submit', handleWaitlistSubmit);
+  input.addEventListener('input', handleEmailInput);
 }
 
-function filterCards(cardList, datasetKey, value) {
-  // Generic show/hide filter — takes the dataset key as a parameter (rather
-  // than hardcoding .dataset.moods) so Phase 6's Journal filter can reuse
-  // this same function with a different attribute (e.g. "category").
-  // Toggles the native `hidden` attribute instead of a CSS class, so the
-  // accessibility tree skips hidden cards automatically — no extra
-  // aria-hidden bookkeeping needed on top of it.
-  let visibleCount = 0;
-  cardList.forEach(function (card) {
-    const values = (card.dataset[datasetKey] || '').split(' ');
-    const matches = values.includes(value);
-    card.hidden = !matches;
-    if (matches) visibleCount += 1;
+function setFilterClass(container, prefix, value) {
+  // Container pattern: a filter is ONE class on the grid, e.g.
+  // .book-row--mood-cozy, and CSS hides the cards that don't match it
+  // (see "FILTER MODIFIERS" in layout.css). JS never touches the cards.
+  // Removes whichever "<prefix>-*" class was set before, then adds the new
+  // one; passing a falsy value clears the filter (all cards show).
+  Array.prototype.slice.call(container.classList).forEach(function (name) {
+    if (name.indexOf(prefix + '-') === 0) container.classList.remove(name);
   });
-  return visibleCount;
+  if (value) container.classList.add(prefix + '-' + value);
+}
+
+function countMatches(container, itemSelector, attribute, value) {
+  // Read-only: counts the cards CSS is currently showing, for the
+  // screen-reader announcement. Space-separated attribute lists work
+  // because [attr~="value"] matches one whole word in the list.
+  return container.querySelectorAll(itemSelector + '[' + attribute + '~="' + value + '"]').length;
 }
 
 function setSelectedChip(chipList, selectedChip) {
@@ -231,86 +256,87 @@ function announce(liveRegion, message) {
   liveRegion.textContent = message;
 }
 
-function applyMoodFilter(chip, chipList, cardList, status) {
-  // Shared by the click handler and the on-load default below, so the
-  // "select a chip, filter the cards, announce the result" sequence only
-  // has to be written (and fixed, if it ever needs fixing) once.
-  const mood = chip.dataset.mood;
-  setSelectedChip(chipList, chip);
-  const visibleCount = filterCards(cardList, 'moods', mood);
-
-  if (status) {
-    const label = chip.textContent.trim();
-    const bookWord = visibleCount === 1 ? 'book' : 'books';
-    announce(status, `Showing ${visibleCount} ${bookWord} for ${label}`);
-  }
-}
-
-function clearMoodFilter(chipList, cardList, status) {
-  // Counterpart to applyMoodFilter() — used when the already-selected chip
-  // is clicked again. Passing null reuses setSelectedChip's own loop to
-  // deselect every chip, since chip === null is never true for any chip.
-  setSelectedChip(chipList, null);
-  cardList.forEach(function (card) {
-    card.hidden = false;
-  });
-
-  if (status) {
-    announce(status, `Showing all ${cardList.length} books`);
-  }
-}
-
 function initMoodFilter() {
   // mood-based Explore filter.
   const chips = document.querySelectorAll('.mood-chip');
-  const cards = document.querySelectorAll('.mood-browse .book-card');
+  const grid = document.querySelector('.mood-browse .book-row');
   const status = document.querySelector('.mood-browse__status');
 
-  if (!chips.length || !cards.length) return;
+  if (!chips.length || !grid) return;
 
   const chipList = Array.prototype.slice.call(chips);
-  const cardList = Array.prototype.slice.call(cards);
+  const totalCount = grid.querySelectorAll('.book-card').length;
+
+  function applyMoodFilter(chip) {
+    // Shared by the click handler and the on-load default below, so the
+    // "select a chip, filter the cards, announce the result" sequence only
+    // has to be written (and fixed, if it ever needs fixing) once.
+    const mood = chip.dataset.mood;
+    setSelectedChip(chipList, chip);
+    setFilterClass(grid, 'book-row--mood', mood);
+
+    if (status) {
+      const visibleCount = countMatches(grid, '.book-card', 'data-moods', mood);
+      const label = chip.textContent.trim();
+      const bookWord = visibleCount === 1 ? 'book' : 'books';
+      announce(status, `Showing ${visibleCount} ${bookWord} for ${label}`);
+    }
+  }
+
+  function clearMoodFilter() {
+    // Counterpart to applyMoodFilter() — used when the already-selected chip
+    // is clicked again. Passing null reuses setSelectedChip's own loop to
+    // deselect every chip, since chip === null is never true for any chip.
+    setSelectedChip(chipList, null);
+    setFilterClass(grid, 'book-row--mood', null);
+
+    if (status) {
+      announce(status, `Showing all ${totalCount} books`);
+    }
+  }
+
+  function handleMoodChipClick(event) {
+    const chip = event.currentTarget;
+    if (chip.classList.contains('is-selected')) {
+      clearMoodFilter();
+    } else {
+      applyMoodFilter(chip);
+    }
+  }
 
   chipList.forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      if (chip.classList.contains('is-selected')) {
-        clearMoodFilter(chipList, cardList, status);
-      } else {
-        applyMoodFilter(chip, chipList, cardList, status);
-      }
-    });
+    chip.addEventListener('click', handleMoodChipClick);
   });
 
   // The HTML ships with the Cozy chip already marked is-selected /
-  // aria-pressed="true" — apply that filter on load so the grid matches
-  // what the chip visually claims, instead of showing all 9 cards under a
-  // chip that looks active. Reads the default from the markup rather than
-  // hardcoding 'cozy', so changing which chip ships pre-selected needs no
-  // JS edit.
+  // aria-pressed="true" and the grid already carrying .book-row--mood-cozy,
+  // so the page is correct before this script runs. Re-applying here keeps
+  // the screen-reader status text in sync, and reads the default from the
+  // markup rather than hardcoding 'cozy'.
   const defaultChip = chipList.find(function (chip) {
     return chip.classList.contains('is-selected');
   });
 
   if (defaultChip) {
-    applyMoodFilter(defaultChip, chipList, cardList, status);
+    applyMoodFilter(defaultChip);
   }
 }
 
 function initAnchorNav() {
   // Features anchor navigation.
   const blocks = document.querySelectorAll('.feature-block');
-  const anchorButtons = document.querySelectorAll('.anchor-button');
+  const anchorLinks = document.querySelectorAll('.anchor-nav__link');
 
-  if (!blocks.length || !anchorButtons.length) return;
+  if (!blocks.length || !anchorLinks.length) return;
 
-  const buttonList = Array.prototype.slice.call(anchorButtons);
+  const linkList = Array.prototype.slice.call(anchorLinks);
 
   // Phone layout: the links live in a dropdown opened by a toggle button
   // (CSS shows the toggle at <=768px; on desktop it is hidden and these
   // handlers never fire). The toggle's label mirrors the section in view.
-  const nav = document.querySelector('.anchor-buttons');
+  const nav = document.querySelector('.anchor-nav');
   const toggle = document.getElementById('anchor-toggle');
-  const currentLabel = document.querySelector('.anchor-buttons__current');
+  const currentLabel = document.querySelector('.anchor-nav__current');
 
   function setMenuOpen(isOpen) {
     if (!nav || !toggle) return;
@@ -335,44 +361,48 @@ function initAnchorNav() {
     }
   }
 
+  function setActiveLink(id) {
+    linkList.forEach(function (link) {
+      const isActive = link.getAttribute('href') === '#' + id;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) {
+        if (currentLabel) currentLabel.textContent = link.textContent.trim();
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  function handleAnchorLinkClick(event) {
+    // Instant feedback on click, rather than waiting for the smooth
+    // scroll to finish and the observer below to catch up - also
+    // covers the edge case where the last block might never fully
+    // cross the observer's center-crossing zone on a short viewport.
+    const targetId = event.currentTarget.getAttribute('href').slice(1);
+    setActiveLink(targetId);
+    setMenuOpen(false);
+  }
+
+  function handleBlockIntersect(entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setActiveLink(entry.target.id);
+      }
+    });
+  }
+
   if (nav && toggle) {
     toggle.addEventListener('click', handleAnchorToggleClick);
     document.addEventListener('click', handleAnchorOutsideClick);
     document.addEventListener('keydown', handleAnchorEscape);
   }
 
-  function setActiveButton(id) {
-    buttonList.forEach(function (button) {
-      const isActive = button.getAttribute('href') === '#' + id;
-      button.classList.toggle('is-active', isActive);
-      if (isActive) {
-        if (currentLabel) currentLabel.textContent = button.textContent.trim();
-        button.setAttribute('aria-current', 'location');
-      } else {
-        button.removeAttribute('aria-current');
-      }
-    });
-  }
-
-  buttonList.forEach(function (button) {
-    button.addEventListener('click', function () {
-      // Instant feedback on click, rather than waiting for the smooth
-      // scroll to finish and the observer below to catch up - also
-      // covers the edge case where the last block might never fully
-      // cross the observer's center-crossing zone on a short viewport.
-      const targetId = button.getAttribute('href').slice(1);
-      setActiveButton(targetId);
-      setMenuOpen(false);
-    });
+  linkList.forEach(function (link) {
+    link.addEventListener('click', handleAnchorLinkClick);
   });
 
-  const observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        setActiveButton(entry.target.id);
-      }
-    });
-  }, {
+  const observer = new IntersectionObserver(handleBlockIntersect, {
     // Shrinks the effective viewport to its middle 20% (-40% off the top
     // and bottom), so a block only counts as "current" once it crosses
     // near the center of the screen -- not the instant its edge appears,
@@ -403,58 +433,51 @@ function setSelectedTab(tabList, selectedTab, panel) {
   }
 }
 
-function applyJournalFilter(tab, tabList, postList, status, panel) {
-  // Reuses filterCards() and announce() from mood filter, but
-  // uses setSelectedTab() (not setSelectedChip()) since these are real
-  // ARIA tabs now, not toggle buttons.
-  const category = tab.dataset.category;
-  setSelectedTab(tabList, tab, panel);
-
-  let visibleCount;
-  if (category === 'all') {
-    // filterCards() expects a real dataset value to match against; no post
-    // has data-category="all", so "All" is handled directly here instead.
-    postList.forEach(function (post) { post.hidden = false; });
-    visibleCount = postList.length;
-  } else {
-    visibleCount = filterCards(postList, 'category', category);
-  }
-
-  if (status) {
-    const label = tab.textContent.trim();
-    const postWord = visibleCount === 1 ? 'post' : 'posts';
-    announce(status, `Showing ${visibleCount} ${postWord} in ${label}`);
-  }
-}
-
 function initJournalFilter() {
   // tabs retrofit: real ARIA tabs (role="tablist"/"tab",
   // aria-selected, roving tabindex, arrow-key navigation) instead of
   // toggle buttons. The Explore mood chips are a genuine filter, not
   // tabs, and are untouched -- they keep aria-pressed and setSelectedChip().
   const tablist = document.querySelector('.category-tabs');
-  const tabs = document.querySelectorAll('.tab');
-  const posts = document.querySelectorAll('.post-card');
+  const tabs = document.querySelectorAll('.category-tabs__tab');
+  const grid = document.querySelector('.post-grid__list');
   const status = document.querySelector('.journal__status');
   const panel = document.querySelector('.post-grid');
 
-  if (!tablist || !tabs.length || !posts.length) return;
+  if (!tablist || !tabs.length || !grid) return;
 
   const tabList = Array.prototype.slice.call(tabs);
-  const postList = Array.prototype.slice.call(posts);
+  const totalCount = grid.querySelectorAll('.post-card').length;
 
-  tabList.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      applyJournalFilter(tab, tabList, postList, status, panel);
-    });
-  });
+  function applyJournalFilter(tab) {
+    // Same container pattern as the mood filter: one class on the grid
+    // (.post-grid__list--category-design), CSS does the hiding. "All" has no
+    // matching data-category on any post, so it simply clears the class.
+    const category = tab.dataset.category;
+    const isAll = category === 'all';
+    setSelectedTab(tabList, tab, panel);
+    setFilterClass(grid, 'post-grid__list--category', isAll ? null : category);
+
+    if (status) {
+      const visibleCount = isAll
+        ? totalCount
+        : countMatches(grid, '.post-card', 'data-category', category);
+      const label = tab.textContent.trim();
+      const postWord = visibleCount === 1 ? 'post' : 'posts';
+      announce(status, `Showing ${visibleCount} ${postWord} in ${label}`);
+    }
+  }
+
+  function handleTabClick(event) {
+    applyJournalFilter(event.currentTarget);
+  }
 
   // Roving-tabindex arrow-key navigation, per the WAI-ARIA Tabs pattern:
   // Left/Right cycle through tabs (wrapping at the ends), Home/End jump to
   // the first/last tab, and moving focus also activates the tab immediately
   // ("automatic activation") - matches the existing click-to-filter
   // behavior instead of requiring a separate Enter/Space press.
-  tablist.addEventListener('keydown', function (event) {
+  function handleTabKeydown(event) {
     const currentIndex = tabList.indexOf(document.activeElement);
     if (currentIndex === -1) return;
 
@@ -474,18 +497,23 @@ function initJournalFilter() {
     event.preventDefault();
     const targetTab = tabList[targetIndex];
     targetTab.focus();
-    applyJournalFilter(targetTab, tabList, postList, status, panel);
-  });
+    applyJournalFilter(targetTab);
+  }
 
-  // "All" ships pre-selected in the HTML - apply it on load so the grid
-  // matches what the tab bar already shows, same reasoning as Phase 4's
-  // default-to-Cozy fix.
+  tabList.forEach(function (tab) {
+    tab.addEventListener('click', handleTabClick);
+  });
+  tablist.addEventListener('keydown', handleTabKeydown);
+
+  // "All" ships pre-selected in the HTML - apply it on load so the status
+  // text and aria state match what the tab bar already shows, same
+  // reasoning as the mood filter's default-to-Cozy.
   const defaultTab = tabList.find(function (tab) {
     return tab.classList.contains('is-selected');
   });
 
   if (defaultTab) {
-    applyJournalFilter(defaultTab, tabList, postList, status, panel);
+    applyJournalFilter(defaultTab);
   }
 }
 
@@ -497,21 +525,24 @@ function initFaqAccordion() {
 
   const questionList = Array.prototype.slice.call(questions);
 
-  questionList.forEach(function (question) {
-    question.addEventListener('click', function () {
-      const isOpen = question.getAttribute('aria-expanded') === 'true';
+  function handleFaqClick(event) {
+    const question = event.currentTarget;
+    const isOpen = question.getAttribute('aria-expanded') === 'true';
 
-      questionList.forEach(function (other) {
-        if (other === question) return;
-        other.setAttribute('aria-expanded', 'false');
-        const otherAnswer = document.getElementById(other.getAttribute('aria-controls'));
-        if (otherAnswer) otherAnswer.hidden = true;
-      });
-
-      question.setAttribute('aria-expanded', String(!isOpen));
-      const answer = document.getElementById(question.getAttribute('aria-controls'));
-      if (answer) answer.hidden = isOpen;
+    questionList.forEach(function (other) {
+      if (other === question) return;
+      other.setAttribute('aria-expanded', 'false');
+      const otherAnswer = document.getElementById(other.getAttribute('aria-controls'));
+      if (otherAnswer) otherAnswer.hidden = true;
     });
+
+    question.setAttribute('aria-expanded', String(!isOpen));
+    const answer = document.getElementById(question.getAttribute('aria-controls'));
+    if (answer) answer.hidden = isOpen;
+  }
+
+  questionList.forEach(function (question) {
+    question.addEventListener('click', handleFaqClick);
   });
 }
 

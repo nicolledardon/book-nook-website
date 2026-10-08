@@ -1,4 +1,4 @@
-# Book Nook — PEC 4 & PEC 5 (Maquetación + Interacción con JavaScript)
+# Book Nook — Final project (PEC 4 & PEC 5, plus final audit)
 
 Hand-coded build of the Book Nook site
 
@@ -52,8 +52,8 @@ markup.
 ### 1. Mobile hamburger nav
 **What:** opens/closes the mobile nav menu. **How:** `initMobileNav()` toggles an `is-nav-open`
 class on `<body>` and flips `aria-expanded` on the toggle button. Visibility is driven entirely by
-CSS (`body.is-nav-open .nav__links`), not an inline style, so it never fights the mobile
-stylesheet's own `display: none` rule on specificity terms. **Where:** every page, ≤768px widths.
+CSS (`body.is-nav-open .nav__links`), not an inline style. On phones the closed menu is
+`opacity: 0; visibility: hidden` (not `display: none`), so opening it fades and slides. **Where:** every page, ≤768px widths.
 
 ### 2. Header hide-on-scroll (desktop only)
 **What:** the header slides up out of view on scroll-down and reappears on scroll-up, above 768px
@@ -79,10 +79,12 @@ the confirmation heading, and disables the submit button so it can't be submitte
 ### 4. Explore mood-based Browse filter
 **What:** clicking a mood chip shows only the books tagged with that mood; clicking the already-
 selected chip again clears the filter and shows all books. **How:** `initMoodFilter()`,
-`applyMoodFilter()`, and `clearMoodFilter()` toggle each card's native `hidden` attribute through
-a reusable `filterCards(cardList, datasetKey, value)` helper, update the chips' `is-selected`
-class and `aria-pressed` through `setSelectedChip()`, and announce the result count through an
-`aria-live` region via `announce()`. Cozy is filtered on page load to match the chip that ships
+`applyMoodFilter()`, and `clearMoodFilter()` put **one class on the grid** (`.book-row--mood-cozy`)
+through a reusable `setFilterClass(container, prefix, value)` helper, and CSS hides the cards
+whose `data-moods` doesn't contain that word (container pattern, see "FILTER MODIFIERS" in
+`layout.css`). They also update the chips' `is-selected` class and `aria-pressed` through
+`setSelectedChip()`, and announce the result count through an `aria-live` region via
+`announce()`. Cozy is filtered on page load to match the chip that ships
 pre-selected in the HTML. **Where:** `explore.html`.
 
 ### 5. Features anchor navigation
@@ -98,11 +100,11 @@ jumps clear of the sticky header. **Where:** `features.html`.
 ### 6. Journal category filter
 **What:** five toggle buttons (All, Reading, Design, Privacy, Behind the Scenes) filter the post
 grid to one category at a time. **How:** `initJournalFilter()` / `applyJournalFilter()` reuse the
-*exact same* `filterCards()`, `setSelectedChip()`, and `announce()` functions written for the
-mood filter above, swapping in `category` as the dataset key instead of `moods` — this is the
-actual code reuse the brief calls for, not just similarly-shaped new code. "All" is handled as a
-direct show-everything branch, since no post carries `data-category="all"` for `filterCards()` to
-match against. **Where:** `journal.html`.
+*exact same* `setFilterClass()`, `countMatches()`, and `announce()` functions written for the
+mood filter above, swapping in `category` as the attribute instead of `moods` — this is the
+actual code reuse the brief calls for, not just similarly-shaped new code. The grid gets
+`.post-grid__list--category-design` and so on; "All" simply clears the class, since no post
+carries `data-category="all"`. **Where:** `journal.html`.
 
 ## Diagrams
 
@@ -164,8 +166,48 @@ PEC 4 left several blocks flagged as pending. All are now resolved:
   plus the missing "All" and "Behind the Scenes" tabs (the original build only had 3 of the 5
   categories wired up).
 - **Missing design tokens and component styles** — `--color-error` and `--color-success` were
-  added (checked for 4.5:1 contrast against both Apricot and Bone), and `.tab` / `.post-card` /
+  added (checked for 4.5:1 contrast against both Apricot and Bone), and `.category-tabs__tab` / `.post-card` /
   `.category-tabs` had no styles at all before this PEC.
+
+## Final audit (Phases 1–4)
+
+After PEC 5 the whole site was audited against the final-project criteria and fixed in four
+phases. Each deviation from the Figma that came out of it is logged in the memoria.
+
+### Phase 1 — HTML structure, links, SEO, form
+- Waitlist form has `action` / `method`; footer links, book rows, highlight cards, post grid and
+  social icons are real lists; header, footer and the Features anchor bar are labelled `<nav>`s.
+- Every `<a>` and `<button>` has a `title`; social links open in a new tab with
+  `rel="noreferrer noopener"`; current page marked with `aria-current="page"`.
+- Star ratings are `role="img"` with an `aria-label`; book titles are `<h3>`; scripts use `defer`.
+
+### Phase 2 — Responsive bugs and contrast
+- Media queries ordered widest to narrowest (base/1025+ → 769–1024 → ≤768 → ≤480) so the
+  narrowest block wins on phones; the Home highlights are one column on phones.
+- One muted-text token, `#58534B` (4.6:1 on Apricot), replaces two colours that failed 4.5:1.
+- `--radius-pill` token; Features anchor nav collapses to a dropdown bar on phones.
+
+### Phase 3 — Images and SVG
+- Covers re-exported as `-sm` / `-lg` WebP + JPG, used through `<picture>` with a
+  `(max-width: 768px)` source; `width` / `height` on every image; lazy loading below the fold.
+- One inline SVG sprite per page (`<symbol>` + `<use>`) for stars, menu, highlight, feature and
+  social icons; the waitlist barcode is one SVG instead of 20 spans.
+- `_headers` gives Netlify long cache times for images (`/assets/*`) and short ones for CSS/JS.
+
+### Phase 4 — CSS cleanup, states, JavaScript
+- **CSS:** no raw colours (`--color-surface-15` token added), no `#id` selectors, no `!important`;
+  highest selector specificity is 0,3,0. `padding-top` + `padding-bottom` pairs became
+  `padding-block`; duplicate rule blocks and a duplicated 1025px+ media query were removed.
+- **BEM renames:** `.logo` → `.header__logo`, `.cta` → `.features-cta`, `.tab` →
+  `.category-tabs__tab`, `.anchor-buttons` / `.anchor-button` → `.anchor-nav` / `.anchor-nav__link`,
+  `.queue-badge` / `.barcode` / `.dashed-divider` → `.ticket__badge` / `.ticket__barcode` /
+  `.ticket__divider`, and `.feature-block > div:first-child` → `.feature-block__media`.
+- **Interaction states:** every link and button has hover, active and keyboard-focus styles, each
+  with a transition on the base state (never `transition: all`). Header links draw an underline
+  with `transform: scaleX`; the mobile menu and its overlay fade and slide.
+- **Motion tokens:** `--duration-fast / base / slow`, zeroed by `prefers-reduced-motion`.
+- **JavaScript:** every event listener is a named `handleXxx` function; the Explore and Journal
+  filters set one class on the grid and CSS does the hiding.
 
 ## Components
 
@@ -175,7 +217,7 @@ PEC 4 left several blocks flagged as pending. All are now resolved:
   no size variants.
 - **Feature block** (`.feature-block`) — Features page, four instances.
 - **Mood chip** (`.mood-chip`) — Explore's mood filter buttons, with an `.is-selected` state.
-- **Tab** (`.tab`) — Journal's category filter, styled as one segmented pill bar
+- **Tab** (`.category-tabs__tab`) — Journal's category filter, styled as one segmented pill bar
   (`.category-tabs`: a dark rounded bar with the active tab as a light pill inside it) rather than
   individual chip buttons, based on a reference Nicolle provided — see Deviations.
 - **Post card** (`.post-card`) — Journal's blog listing: category, title, date. Mirrors
@@ -198,7 +240,7 @@ queue number). Keeping both states in one document means:
 - No full page reload between submitting the form and seeing the confirmation — the interaction
   stays client-side, which is the whole point of building it as a JS-driven flow rather than a
   server round trip.
-- The confirmation content (queue badge, barcode, ticket code) is generated and inserted by the
+- The confirmation content (queue badge, barcode, ticket code: `.ticket__badge`, `.ticket__barcode`, `.ticket__code`) is generated and inserted by the
   same script that handles the form submission, without needing to pass state between two
   separate HTML documents (e.g. via query strings or localStorage) just to simulate one.
 - One less page to keep the header/footer, styles, and script includes in sync across.
@@ -224,12 +266,13 @@ share one `.book-card` structure. Card counts per row were also corrected to mat
 "Book Row" component (Popular Shelves was previously coded as 8 cards across 2 rows; Mood-based
 Browse was missing its results row entirely).
 
-### Reduced motion skipped
+### Reduced motion (added in the final audit)
 
-Both a general `prefers-reduced-motion` reset (disabling transitions and smooth-scroll site-wide)
-and a narrower version scoped only to the Features page's `scroll-behavior: smooth` were proposed
-and explicitly skipped per Nicolle's decision (27–28 Sept 2026) — a deliberate scoping call made
-twice, not an oversight.
+During PEC 5 a `prefers-reduced-motion` reset was skipped on purpose (27–28 Sept 2026). The final
+audit reversed that: every transition now reads a `--duration-*` token, and a
+`prefers-reduced-motion: reduce` block in `base.css` sets those tokens to `0s` and turns smooth
+scrolling off. Tokens were used instead of a global `* { transition: none }` because overriding
+class rules from `*` would need `!important`, which this project bans.
 
 ### Hamburger menu polish skipped
 
@@ -265,7 +308,7 @@ reference's literal brown/gold palette.
 This project uses **BEM** (Block\_\_Element--Modifier) for CSS class naming.
 
 - **Block** — a standalone, reusable component: `.book-card`, `.feature-block`, `.highlight`,
-  `.ticket`, `.mood-chip`, `.tab`, `.post-card`. A hyphenated name (e.g. `.feature-block`,
+  `.ticket`, `.mood-chip`, `.category-tabs`, `.post-card`. A hyphenated name (e.g. `.feature-block`,
   `.mood-browse`) is still a single block, not a block+element split — the hyphen there is just
   part of the block's own name.
 - **Element** — a part of a block that has no standalone meaning outside it, written
@@ -282,7 +325,7 @@ This project uses **BEM** (Block\_\_Element--Modifier) for CSS class naming.
   keeps that distinction visible in the markup and avoids implying the state is baked into the
   component the way a real modifier (`--reverse`, `--primary`, `--hidden`) is.
 - **`.page-section`** is a layout utility class, not a BEM block — it's applied to every
-  top-level `<main> > <section>` (and, on `features.html`, the promoted `<nav class="anchor-buttons">`)
+  top-level `<main> > <section>` (and, on `features.html`, the promoted `<nav class="anchor-nav">`)
   across all six pages to give them a shared max-width/padding container.
 
 Selectors were also audited to avoid unnecessary specificity and structural (type/combinator)
@@ -313,10 +356,10 @@ than by its position in the DOM.
   The trade-off, noted honestly: colors are now hardcoded inside the SVG files rather than
   flowing from `variables.css` — if Gold or the outline gray ever changes there, these three
   files need re-exporting to match, not just a token edit.
-- `filterCards(cardList, datasetKey, value)`, `setSelectedChip(chipList, selectedChip)`, and
-  `announce(liveRegion, message)` in `js/main.js` are written once (for the Explore mood filter)
+- `setFilterClass(container, prefix, value)`, `countMatches(...)`, `setSelectedChip(chipList, selectedChip)`
+  and `announce(liveRegion, message)` in `js/main.js` are written once (for the Explore mood filter)
   and reused as-is (not copy-pasted or adapted) by the Journal category filter, just parameterized
-  by a different dataset key (`moods` vs. `category`) — one implementation, two features.
+  by a different prefix and attribute (`moods` vs. `category`) — one implementation, two features.
 - `--header-height` in `variables.css` is a hand-computed approximation (90px), not a live
   measurement: the header's vertical padding is a constant `2 × 1.5rem` at every breakpoint, but
   its tallest content row differs (~88px on desktop/tablet with the "Join the Nook" button vs.
