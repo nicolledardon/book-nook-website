@@ -16,14 +16,98 @@
    gap only applies BETWEEN sections, not above the first one). */
 
 .intro {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
   align-items: center;
-  gap: var(--space-md);
-  max-width: 60rem;
+  gap: var(--space-lg);
+  max-width: 75rem;
   margin: 0 auto;
   padding: var(--space-xl) 0;
-  text-align: center;
+}
+
+.intro__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  text-align: left;
+}
+
+/* HERO BOOK STACK (D1): three real covers fanned in 3D beside the headline.
+   Purely decorative (aria-hidden, empty alt). Each cover reads its own
+   rotation and offset from custom properties, so hover only swaps the
+   variables and the transition on the base state eases it back on mouseout.
+   Hidden at 1024px and below, where the hero returns to a centred column;
+   the images are loading="lazy", so a hidden stack is never downloaded. */
+.intro__stack {
+  position: relative;
+  height: 28rem;
+  perspective: 70rem;
+}
+
+.intro__book {
+  --x: 0rem;
+  --y: 0rem;
+  --rot: 0deg;
+  --ry: 0deg;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 13rem;
+  margin: -9.5rem 0 0 -6.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  transform: translate3d(var(--x), var(--y), 0) rotate(var(--rot)) rotateY(var(--ry));
+  transition: transform var(--duration-base) ease;
+  animation: book-fan var(--duration-reveal) ease both;
+  animation-delay: calc(var(--i) * var(--stagger-step) + 0.3s);
+}
+
+.intro__book img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+.intro__book--back  { --x: -7rem; --y: -1rem; --rot: -10deg; --ry: 14deg; }
+.intro__book--left  { --x: 6.5rem; --y: 1rem; --rot: 8deg;  --ry: -14deg; }
+.intro__book--front { --x: -0.5rem; --y: 2.5rem; --rot: -2deg; }
+
+.intro__stack:hover .intro__book--back  { --x: -9.5rem; --rot: -14deg; }
+.intro__stack:hover .intro__book--left  { --x: 9rem;   --rot: 12deg; }
+.intro__stack:hover .intro__book--front { --y: 1.5rem; }
+
+@keyframes book-fan {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0) rotate(0deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(var(--x), var(--y), 0) rotate(var(--rot)) rotateY(var(--ry));
+  }
+}
+
+/* Tablet and phone: back to the centred single column, no stack. */
+@media (max-width: 1024px) {
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 60rem;
+    gap: var(--space-md);
+  }
+
+  .intro__text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .intro__stack {
+    display: none;
+  }
 }
 
 /* Editorial headline: large display size, tight leading, and the second half
@@ -1147,6 +1231,10 @@ body.is-nav-open::before {
    animations have delays, so switch them off outright. */
 @media (prefers-reduced-motion: reduce) {
   .intro__word {
+    animation: none;
+  }
+
+  .intro__book {
     animation: none;
   }
 
