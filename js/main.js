@@ -880,11 +880,32 @@ function initCardTilt() {
 }
 
 function initGenreDonut() {
-  // Genre chart draw-in (J3). Without JS the donut is simply drawn in full.
-  // With JS, .js-draw collapses the segments and .is-drawn (added when the
-  // panel is mostly on screen) lets CSS grow them one after another.
+  // Genre chart (J3). The legend is the single source of truth: this reads
+  // each percentage from it and sets the matching donut segment's length and
+  // start, so the chart can never disagree with the numbers beside it.
+  // Without JS the CSS defaults draw the same chart in full.
   const panel = document.querySelector('.mock--genre');
-  if (!panel || !('IntersectionObserver' in window) || prefersReducedMotion()) return;
+  if (!panel) return;
+
+  const segments = Array.prototype.slice.call(panel.querySelectorAll('.donut__segment'));
+  const values = Array.prototype.slice.call(panel.querySelectorAll('.legend__value')).map(function (el) {
+    return parseFloat(el.textContent) || 0;
+  });
+  const total = values.reduce(function (sum, value) { return sum + value; }, 0);
+
+  if (total > 0 && segments.length === values.length) {
+    let start = 0;
+    segments.forEach(function (segment, index) {
+      const length = (values[index] / total) * 100;
+      segment.style.setProperty('--len', length.toFixed(2));
+      segment.style.setProperty('--start', start.toFixed(2));
+      start += length;
+    });
+  }
+
+  // Draw-in: .js-draw collapses the segments, .is-drawn (added when the panel
+  // is mostly on screen) lets CSS grow them one after another.
+  if (!('IntersectionObserver' in window) || prefersReducedMotion()) return;
 
   function handleDonutIntersect(entries) {
     entries.forEach(function (entry) {
@@ -897,6 +918,83 @@ function initGenreDonut() {
   const observer = new IntersectionObserver(handleDonutIntersect, { threshold: 0.5 });
   panel.classList.add('js-draw');
   observer.observe(panel);
+}
+
+function initAliasShuffle() {
+  // Anonymous alias generator (J4). Purely illustrative: it shows that a
+  // profile is a made-up handle plus a generated avatar, never a real name or
+  // photo. Nothing is stored or sent anywhere.
+  const button = document.querySelector('.profile__shuffle');
+  const aliasEl = document.querySelector('.profile__alias');
+  const avatar = document.querySelector('.profile__avatar');
+  const status = document.querySelector('.profile__status');
+  if (!button || !aliasEl || !avatar || !status) return;
+
+  const ADJECTIVES = ['quiet', 'paper', 'cozy', 'midnight', 'amber', 'wandering', 'gentle', 'velvet', 'late', 'hidden'];
+  const NOUNS = ['reader', 'moth', 'fox', 'lantern', 'owl', 'bookmark', 'page', 'willow', 'ember', 'otter'];
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const GRID = 5;
+  let currentAlias = aliasEl.textContent;
+
+  function hashString(text) {
+    let hash = 2166136261;
+    for (let i = 0; i < text.length; i += 1) {
+      hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
+    }
+    return hash >>> 0;
+  }
+
+  function pickAlias() {
+    let alias = currentAlias;
+    while (alias === currentAlias) {
+      const adjective = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+      const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
+      alias = adjective + '.' + noun;
+    }
+    return alias;
+  }
+
+  function buildAvatar(alias) {
+    // Mirrored 5x5 identicon: the same alias always gives the same picture.
+    let seed = hashString(alias);
+    function next() {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      return seed / 4294967296;
+    }
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('class', 'profile__avatar-art');
+    svg.setAttribute('viewBox', '0 0 ' + GRID + ' ' + GRID);
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    const half = Math.ceil(GRID / 2);
+    for (let row = 0; row < GRID; row += 1) {
+      for (let col = 0; col < half; col += 1) {
+        if (next() < 0.5) continue;
+        const tone = 1 + Math.floor(next() * 4);
+        [col, GRID - 1 - col].forEach(function (x, index) {
+          if (index === 1 && x === col) return;
+          const cell = document.createElementNS(SVG_NS, 'rect');
+          cell.setAttribute('x', String(x));
+          cell.setAttribute('y', String(row));
+          cell.setAttribute('width', '1');
+          cell.setAttribute('height', '1');
+          cell.setAttribute('class', 'profile__cell profile__cell--' + tone);
+          svg.appendChild(cell);
+        });
+      }
+    }
+    return svg;
+  }
+
+  function handleShuffleClick() {
+    currentAlias = pickAlias();
+    aliasEl.textContent = currentAlias;
+    avatar.replaceChildren(buildAvatar(currentAlias));
+    announce(status, 'New example alias: ' + currentAlias);
+  }
+
+  button.hidden = false;
+  button.addEventListener('click', handleShuffleClick);
 }
 
 function initHalfStarRater() {
@@ -990,3 +1088,4 @@ initScrollReveal();
 initCardTilt();
 initGenreDonut();
 initHalfStarRater();
+initAliasShuffle();
