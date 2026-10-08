@@ -70,6 +70,14 @@
    slides the nav up to close the gap left where the header used to be,
    instead of leaving empty space above it. Desktop widths only, since
    the header itself never hides on mobile. */
+/* The <ul> inside the sticky <nav> carries the row layout */
+.anchor-buttons__list {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md-plus);
+  flex-wrap: wrap;
+}
+
 .anchor-buttons.is-docked {
   transform: translateY(calc(-1 * var(--header-height)));
 }
@@ -150,6 +158,28 @@
   height: 8.75rem;
   border-radius: 50%;
   background-color: var(--color-aux4);
+}
+
+/* PRIVACY / TERMS
+   Plain single-column reading pages. */
+
+.legal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 45rem;
+  margin: 0 auto;
+  padding-block: var(--space-xl);
+}
+
+.legal__heading {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  font-style: normal;
+}
+
+.legal__text {
+  color: var(--color-highlight-body);
 }
 
 /* ABOUT PAGE — FAQ
@@ -440,6 +470,12 @@ header {
   color: var(--color-dominant);
 }
 
+/* In-menu CTA: only shown inside the mobile menu (see the 768px block);
+   on desktop the header CTA is used instead. */
+.nav__cta {
+  display: none;
+}
+
 .nav__toggle {
   display: none; /* hidden by default — shown at mobile widths via the media query below */
 }
@@ -663,6 +699,10 @@ main {
 }
 
 .post-grid {
+  width: 100%;
+}
+
+.post-grid__list {
   display: grid;
   width: 100%; /* same auto-fill-collapse fix .book-row needed -- .journal is a flex parent with align-items: flex-start */
   /* min(18.75rem, 100%) instead of a bare 18.75rem -- self-adapts on narrow
@@ -683,6 +723,13 @@ main {
   background-color: var(--color-surface-60);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
+}
+
+/* The <article> inside each <li class="post-card"> stacks category / title / date */
+.post-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
 }
 
 /* Same specificity fix as .book-card[hidden] and friends: a bare [hidden]
@@ -799,7 +846,7 @@ body.is-nav-open::before {
     max-width: 7.5rem;
   }
   
-  .highlights {
+  .highlights__list {
     grid-template-columns: 1fr;
   }
   
@@ -862,8 +909,12 @@ body.is-nav-open::before {
     padding: var(--space-md) var(--space-lg-sm);
   }
   
-  header .btn--primary {
+  .header__cta {
     display: none;
+  }
+
+  .nav__cta {
+    display: list-item;
   }
   
   .nav__toggle {
@@ -923,7 +974,7 @@ body.is-nav-open::before {
     font-size: 0.75rem;
   }
   
-  .highlights {
+  .highlights__list {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-md);
   }
@@ -1005,7 +1056,7 @@ body.is-nav-open::before {
 
 /* TABLETS & SMALL DESKTOPS (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .highlights {
+  .highlights__list {
     grid-template-columns: repeat(2, 1fr);
   }
   
@@ -1036,7 +1087,7 @@ body.is-nav-open::before {
 
 /* DESKTOP (1025px+) */
 @media (min-width: 1025px) {
-  .highlights {
+  .highlights__list {
     grid-template-columns: repeat(4, 1fr);
   }
   

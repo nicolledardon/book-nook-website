@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join the Waitlist | Book Nook</title>
-    <meta name="description" content="Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.">
+    <title>Privacy | Book Nook</title>
+    <meta name="description" content="How Book Nook handles your information while the site is a prototype.">
     <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-    <meta property="og:title" content="Join the Waitlist">
-    <meta property="og:description" content="Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.">
+    <meta property="og:title" content="Privacy">
+    <meta property="og:description" content="How Book Nook handles your information while the site is a prototype.">
     <meta property="og:image" content="https://book-nook.example/assets/og-image.png">
-    <meta property="og:url" content="https://book-nook.example/waitlist.html">
+    <meta property="og:url" content="https://book-nook.example/privacy.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Book Nook">
     <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Join the Waitlist">
-    <meta name="twitter:description" content="Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.">
+    <meta name="twitter:title" content="Privacy">
+    <meta name="twitter:description" content="How Book Nook handles your information while the site is a prototype.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
@@ -45,29 +45,16 @@
         </nav>
     </header>
     <main>
-        <section class="page-section signup__panel">
-            <h1>Be the first to know.</h1>
-            <p class="signup__subtitle">Join the waitlist and get early access when Book Nook launches — plus a first look at features before anyone else.</p>
-            <form class="signup__form" action="waitlist.html" method="post" novalidate>
-                <div class="signup__field">
-                    <label for="email" class="sr-only">Email address</label>
-                    <input type="email" id="email" name="email" class="signup__input" placeholder="you@email.com" required aria-describedby="email-error">
-                    <p class="signup__error" id="email-error" aria-live="polite"></p>
-                </div>
-                <button type="submit" class="signup__submit btn btn--primary" title="Join the Book Nook waitlist">Join Waitlist</button>
-            </form>
-        </section>
-        <section class="page-section confirmation-panel" hidden>
-            <div class="ticket">
-                <h2 class="ticket__heading" tabindex="-1">You're on the list!</h2>
-                <p class="ticket__subtitle">We'll email you the moment it's your turn.</p>
-                <div class="queue-badge">You're #1,204 in line</div>
-                <div class="dashed-divider"></div>
-                <div class="barcode">
-                    <span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span><span class="barcode__bar"></span>
-                </div>
-                <p class="ticket__code">BN-2026-1204</p>
-            </div>
+        <section class="page-section legal">
+            <h1>Privacy</h1>
+            <h2 class="legal__heading">A prototype, not a live service</h2>
+            <p class="legal__text">Book Nook is a student design project. The site shows what the product could look like; there is no app, no account system and no database behind it.</p>
+            <h2 class="legal__heading">The waitlist form</h2>
+            <p class="legal__text">The form checks in your browser that your email address looks valid. It does not send, store or share what you type, and the queue number on the confirmation ticket is randomly generated.</p>
+            <h2 class="legal__heading">Cookies and tracking</h2>
+            <p class="legal__text">This site sets no cookies and runs no analytics or advertising scripts.</p>
+            <h2 class="legal__heading">Third-party content</h2>
+            <p class="legal__text">Fonts are loaded from Google Fonts, so Google receives your IP address when a page loads. Nothing else is loaded from outside this site.</p>
         </section>
     </main>
     <footer>

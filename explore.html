@@ -15,7 +15,10 @@
     <meta property="og:url" content="https://book-nook.example/explore.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Book Nook">
+    <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Explore">
+    <meta name="twitter:description" content="Browse recent releases and popular shelves, or find your next read by mood — cozy, thrilling, heartfelt, and more.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
@@ -27,252 +30,254 @@
 </head>
 <body>
     <header>
-        <nav class="header__nav">
-            <a href="index.html" class="logo">Book Nook</a>
+        <nav class="header__nav" aria-label="Main">
+            <a href="index.html" class="logo" title="Book Nook, back to the home page">Book Nook</a>
             <ul class="nav__links" id="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="features.html">Features</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="journal.html">Journal</a></li>
+                <li><a href="index.html" title="Go to the home page">Home</a></li>
+                <li><a href="explore.html" title="Browse books by mood" aria-current="page">Explore</a></li>
+                <li><a href="features.html" title="See what Book Nook does differently">Features</a></li>
+                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a href="journal.html" title="Read the Book Nook journal">Journal</a></li>
+                <li class="nav__cta"><a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a></li>
             </ul>
-            <a href="waitlist.html" class="btn btn--primary">Join the Nook</a>
-            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
+            <a href="waitlist.html" class="btn btn--primary header__cta" title="Join the Book Nook waitlist">Join the Nook</a>
+            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" title="Open or close the menu" aria-expanded="false" aria-controls="nav-links"></button>
         </nav>
     </header>
     <main>
         <section class="page-section mood-browse">
         <h1 class="mood-browse__heading">Browse by mood</h1>
         <div class="mood-browse__list">
-            <button type="button" class="mood-chip is-selected" data-mood="cozy" aria-pressed="true">Cozy</button>
-            <button type="button" class="mood-chip" data-mood="thrilling" aria-pressed="false">Thrilling</button>
-            <button type="button" class="mood-chip" data-mood="heartfelt" aria-pressed="false">Heartfelt</button>
-            <button type="button" class="mood-chip" data-mood="mind-bending" aria-pressed="false">Mind-bending</button>
-            <button type="button" class="mood-chip" data-mood="uplifting" aria-pressed="false">Uplifting</button>
+            <button type="button" class="mood-chip is-selected" data-mood="cozy" title="Show cozy books" aria-pressed="true">Cozy</button>
+            <button type="button" class="mood-chip" data-mood="thrilling" title="Show thrilling books" aria-pressed="false">Thrilling</button>
+            <button type="button" class="mood-chip" data-mood="heartfelt" title="Show heartfelt books" aria-pressed="false">Heartfelt</button>
+            <button type="button" class="mood-chip" data-mood="mind-bending" title="Show mind-bending books" aria-pressed="false">Mind-bending</button>
+            <button type="button" class="mood-chip" data-mood="uplifting" title="Show uplifting books" aria-pressed="false">Uplifting</button>
         </div>
         <p class="mood-browse__hint">Tap a mood again to see all books.</p>
         <p class="mood-browse__status sr-only" aria-live="polite"></p>
-        <div class="book-row">
-            <div class="book-card" data-moods="mind-bending">
+        <h2 class="sr-only">Books for your mood</h2>
+        <ul class="book-row">
+            <li class="book-card" data-moods="mind-bending">
                 <div class="book-card__cover"><img src="assets/book_cover_img/4671.jpg" alt="The Great Gatsby cover"></div>
-                <p class="book-card__title">The Great Gatsby</p>
+                <h3 class="book-card__title">The Great Gatsby</h3>
                 <p class="book-card__author">F. Scott Fitzgerald</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="cozy heartfelt">
+            </li>
+            <li class="book-card" data-moods="cozy heartfelt">
                 <div class="book-card__cover"><img src="assets/book_cover_img/19063.jpg" alt="The Book Thief cover"></div>
-                <p class="book-card__title">The Book Thief</p>
+                <h3 class="book-card__title">The Book Thief</h3>
                 <p class="book-card__author">Markus Zusak</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="mind-bending thrilling">
+            </li>
+            <li class="book-card" data-moods="mind-bending thrilling">
                 <div class="book-card__cover"><img src="assets/book_cover_img/231126882.jpg" alt="The Age of Calamities cover"></div>
-                <p class="book-card__title">The Age of Calamities</p>
+                <h3 class="book-card__title">The Age of Calamities</h3>
                 <p class="book-card__author">Senaa Ahmad</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="cozy uplifting">
+            </li>
+            <li class="book-card" data-moods="cozy uplifting">
                 <div class="book-card__cover"><img src="assets/book_cover_img/28187.jpg" alt="The Lightning Thief cover"></div>
-                <p class="book-card__title">The Lightning Thief</p>
+                <h3 class="book-card__title">The Lightning Thief</h3>
                 <p class="book-card__author">Rick Riordan</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="uplifting heartfelt">
+            </li>
+            <li class="book-card" data-moods="uplifting heartfelt">
                 <div class="book-card__cover"><img src="assets/book_cover_img/30075802.jpg" alt="The Princess Saves Herself in This One cover"></div>
-                <p class="book-card__title">The Princess Saves Herself in This One</p>
+                <h3 class="book-card__title">The Princess Saves Herself in This One</h3>
                 <p class="book-card__author">Amanda Lovelace</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="heartfelt">
+            </li>
+            <li class="book-card" data-moods="heartfelt">
                 <div class="book-card__cover"><img src="assets/book_cover_img/50706476.jpg" alt="Dearly cover"></div>
-                <p class="book-card__title">Dearly</p>
+                <h3 class="book-card__title">Dearly</h3>
                 <p class="book-card__author">Margaret Atwood</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="thrilling">
+            </li>
+            <li class="book-card" data-moods="thrilling">
                 <div class="book-card__cover"><img src="assets/book_cover_img/528.jpg" alt="From Blood and Ash cover"></div>
-                <p class="book-card__title">From Blood and Ash</p>
+                <h3 class="book-card__title">From Blood and Ash</h3>
                 <p class="book-card__author">Jennifer L. Armentrout</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="mind-bending thrilling">
+            </li>
+            <li class="book-card" data-moods="mind-bending thrilling">
                 <div class="book-card__cover"><img src="assets/book_cover_img/62047984.jpg" alt="Yellowface cover"></div>
-                <p class="book-card__title">Yellowface</p>
+                <h3 class="book-card__title">Yellowface</h3>
                 <p class="book-card__author">R.F. Kuang</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card" data-moods="heartfelt uplifting">
+            </li>
+            <li class="book-card" data-moods="heartfelt uplifting">
                 <div class="book-card__cover"><img src="assets/book_cover_img/6313.jpg" alt="The Woman in Me cover"></div>
-                <p class="book-card__title">The Woman in Me</p>
+                <h3 class="book-card__title">The Woman in Me</h3>
                 <p class="book-card__author">Britney Spears</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </section>
     <section class="page-section recent-releases">
         <h2>Recent releases</h2>
-        <div class="book-row">
-            <div class="book-card">
+        <ul class="book-row">
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/41865.jpg" alt="Twilight cover"></div>
-                <p class="book-card__title">Twilight</p>
+                <h3 class="book-card__title">Twilight</h3>
                 <p class="book-card__author">Stephenie Meyer</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card">
+            </li>
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/4671.jpg" alt="The Great Gatsby cover"></div>
-                <p class="book-card__title">The Great Gatsby</p>
+                <h3 class="book-card__title">The Great Gatsby</h3>
                 <p class="book-card__author">F. Scott Fitzgerald</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card">
+            </li>
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/19063.jpg" alt="The Book Thief cover"></div>
-                <p class="book-card__title">The Book Thief</p>
+                <h3 class="book-card__title">The Book Thief</h3>
                 <p class="book-card__author">Markus Zusak</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card">
+            </li>
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/231126882.jpg" alt="The Age of Calamities cover"></div>
-                <p class="book-card__title">The Age of Calamities</p>
+                <h3 class="book-card__title">The Age of Calamities</h3>
                 <p class="book-card__author">Senaa Ahmad</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </section>
     <section class="page-section popular-shelves">
         <h2>Popular shelves</h2>
-        <div class="book-row">
-            <div class="book-card">
+        <ul class="book-row">
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/28187.jpg" alt="The Lightning Thief cover"></div>
-                <p class="book-card__title">The Lightning Thief</p>
+                <h3 class="book-card__title">The Lightning Thief</h3>
                 <p class="book-card__author">Rick Riordan</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card">
+            </li>
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/41865.jpg" alt="Twilight cover"></div>
-                <p class="book-card__title">Twilight</p>
+                <h3 class="book-card__title">Twilight</h3>
                 <p class="book-card__author">Stephenie Meyer</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card">
+            </li>
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/4671.jpg" alt="The Great Gatsby cover"></div>
-                <p class="book-card__title">The Great Gatsby</p>
+                <h3 class="book-card__title">The Great Gatsby</h3>
                 <p class="book-card__author">F. Scott Fitzgerald</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-            <div class="book-card">
+            </li>
+            <li class="book-card">
                 <div class="book-card__cover"><img src="assets/book_cover_img/19063.jpg" alt="The Book Thief cover"></div>
-                <p class="book-card__title">The Book Thief</p>
+                <h3 class="book-card__title">The Book Thief</h3>
                 <p class="book-card__author">Markus Zusak</p>
-                <div class="book-card__rating">
+                <div class="book-card__rating" role="img" aria-label="4.5 out of 5 stars">
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--full"></span>
                     <span class="star star--half"></span>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </section>
     <section class="page-section user-shelves-cta">
         <h2>Build your own shelves.</h2>
         <p>Thousands of readers are already organizing their reading their way. Join the waitlist to start yours.</p>
-        <a href="waitlist.html" class="btn btn--secondary">Join the Nook</a>
+        <a href="waitlist.html" class="btn btn--secondary" title="Join the Book Nook waitlist">Join the Nook</a>
     </section>
     </main>
     <footer>
@@ -281,25 +286,27 @@
             <p class="footer__about-title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
-        <div class="footer__links">
-            <p><a href="index.html">Home</a></p>
-            <p><a href="explore.html">Explore</a></p>
-            <p><a href="features.html">Features</a></p>
-            <p><a href="about.html">About</a></p>
-            <p><a href="journal.html">Journal</a></p>
-        </div>
-        <div class="footer__social">
-            <a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a>
-            <a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a>
-            <a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a>
-        </div>
+        <nav aria-label="Footer">
+            <ul class="footer__links">
+                <li><a href="index.html" title="Go to the home page">Home</a></li>
+                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a href="features.html" title="See what Book Nook does differently">Features</a></li>
+                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a href="journal.html" title="Read the Book Nook journal">Journal</a></li>
+            </ul>
+        </nav>
+        <ul class="footer__social">
+            <li><a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a></li>
+            <li><a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a></li>
+            <li><a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a></li>
+        </ul>
         <div class="footer__legal">
             <p>&copy; 2026 Book Nook</p>
-            <p>Privacy &middot; Terms</p>
+            <p><a href="privacy.html" title="Read the privacy notice">Privacy</a> &middot; <a href="terms.html" title="Read the terms of use">Terms</a></p>
         </div>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

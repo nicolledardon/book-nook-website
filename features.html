@@ -15,7 +15,10 @@
     <meta property="og:url" content="https://book-nook.example/features.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Book Nook">
+    <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Features">
+    <meta name="twitter:description" content="Genre tracking and visualizations, half-star ratings, anonymous profiles, and personalized recommendations — everything Book Nook does differently.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
@@ -27,17 +30,18 @@
 </head>
 <body>
     <header>
-        <nav class="header__nav">
-            <a href="index.html" class="logo">Book Nook</a>
+        <nav class="header__nav" aria-label="Main">
+            <a href="index.html" class="logo" title="Book Nook, back to the home page">Book Nook</a>
             <ul class="nav__links" id="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="features.html">Features</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="journal.html">Journal</a></li>
+                <li><a href="index.html" title="Go to the home page">Home</a></li>
+                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a href="features.html" title="See what Book Nook does differently" aria-current="page">Features</a></li>
+                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a href="journal.html" title="Read the Book Nook journal">Journal</a></li>
+                <li class="nav__cta"><a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a></li>
             </ul>
-            <a href="waitlist.html" class="btn btn--primary">Join the Nook</a>
-            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
+            <a href="waitlist.html" class="btn btn--primary header__cta" title="Join the Book Nook waitlist">Join the Nook</a>
+            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" title="Open or close the menu" aria-expanded="false" aria-controls="nav-links"></button>
         </nav>
     </header>
     <main>
@@ -45,10 +49,12 @@
         <h1>Everything Book Nook does differently.</h1>
     </section>
     <nav class="page-section anchor-buttons" aria-label="Feature sections">
-        <a class="anchor-button btn btn--tertiary" href="#genre-tracking">Genre Tracking</a>
-        <a class="anchor-button btn btn--tertiary" href="#half-star-ratings">Half-Star Ratings</a>
-        <a class="anchor-button btn btn--tertiary" href="#anonymous-profiles">Anonymous Profiles</a>
-        <a class="anchor-button btn btn--tertiary" href="#recommendations">Recommendations</a>
+        <ul class="anchor-buttons__list">
+            <li><a class="anchor-button btn btn--tertiary" href="#genre-tracking" title="Jump to Genre Tracking">Genre Tracking</a></li>
+            <li><a class="anchor-button btn btn--tertiary" href="#half-star-ratings" title="Jump to Half-Star Ratings">Half-Star Ratings</a></li>
+            <li><a class="anchor-button btn btn--tertiary" href="#anonymous-profiles" title="Jump to Anonymous Profiles">Anonymous Profiles</a></li>
+            <li><a class="anchor-button btn btn--tertiary" href="#recommendations" title="Jump to Recommendations">Recommendations</a></li>
+        </ul>
     </nav>
     <section class="page-section feature-block" id="genre-tracking">
         <div class="feature-block__media"></div>
@@ -80,7 +86,7 @@
     </section>
     <section class="page-section cta">
         <h2>Ready for a better way to read?</h2>
-        <a href="waitlist.html" class="btn btn--primary">Join the Nook</a>
+        <a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a>
     </section>
     </main>
     <footer>
@@ -89,25 +95,27 @@
             <p class="footer__about-title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
-        <div class="footer__links">
-            <p><a href="index.html">Home</a></p>
-            <p><a href="explore.html">Explore</a></p>
-            <p><a href="features.html">Features</a></p>
-            <p><a href="about.html">About</a></p>
-            <p><a href="journal.html">Journal</a></p>
-        </div>
-        <div class="footer__social">
-            <a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a>
-            <a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a>
-            <a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a>
-        </div>
+        <nav aria-label="Footer">
+            <ul class="footer__links">
+                <li><a href="index.html" title="Go to the home page">Home</a></li>
+                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a href="features.html" title="See what Book Nook does differently">Features</a></li>
+                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a href="journal.html" title="Read the Book Nook journal">Journal</a></li>
+            </ul>
+        </nav>
+        <ul class="footer__social">
+            <li><a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a></li>
+            <li><a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a></li>
+            <li><a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a></li>
+        </ul>
         <div class="footer__legal">
             <p>&copy; 2026 Book Nook</p>
-            <p>Privacy &middot; Terms</p>
+            <p><a href="privacy.html" title="Read the privacy notice">Privacy</a> &middot; <a href="terms.html" title="Read the terms of use">Terms</a></p>
         </div>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

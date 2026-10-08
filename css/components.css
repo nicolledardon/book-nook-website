@@ -255,6 +255,12 @@
    48px Accent-1 icon placeholder, 12px radius). */
 
 .highlights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg-sm);
+}
+
+.highlights__list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   column-gap: var(--space-md);
@@ -262,7 +268,6 @@
 }
 
 .highlights__heading {
-  grid-column: 1 / -1;
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   font-style: normal; /* base.css makes h2 italic + 32px by default — Figma's heading here is 24px, bold, not italic */

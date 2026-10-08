@@ -15,7 +15,10 @@
     <meta property="og:url" content="https://book-nook.example/journal.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Book Nook">
+    <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Journal">
+    <meta name="twitter:description" content="Notes on reading, design, and privacy from the team building Book Nook.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
@@ -27,61 +30,76 @@
 </head>
 <body>
     <header>
-        <nav class="header__nav">
-            <a href="index.html" class="logo">Book Nook</a>
+        <nav class="header__nav" aria-label="Main">
+            <a href="index.html" class="logo" title="Book Nook, back to the home page">Book Nook</a>
             <ul class="nav__links" id="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="features.html">Features</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="journal.html">Journal</a></li>
+                <li><a href="index.html" title="Go to the home page">Home</a></li>
+                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a href="features.html" title="See what Book Nook does differently">Features</a></li>
+                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a href="journal.html" title="Read the Book Nook journal" aria-current="page">Journal</a></li>
+                <li class="nav__cta"><a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a></li>
             </ul>
-            <a href="waitlist.html" class="btn btn--primary">Join the Nook</a>
-            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links"></button>
+            <a href="waitlist.html" class="btn btn--primary header__cta" title="Join the Book Nook waitlist">Join the Nook</a>
+            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" title="Open or close the menu" aria-expanded="false" aria-controls="nav-links"></button>
         </nav>
     </header>
     <main>
         <section class="page-section journal">
         <h1>Journal</h1>
         <div class="category-tabs" role="tablist" aria-label="Journal categories">
-            <button type="button" class="tab is-selected" id="tab-all" data-category="all" role="tab" aria-selected="true" aria-controls="journal-panel" tabindex="0">All</button>
-            <button type="button" class="tab" id="tab-reading" data-category="reading" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Reading</button>
-            <button type="button" class="tab" id="tab-design" data-category="design" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Design</button>
-            <button type="button" class="tab" id="tab-privacy" data-category="privacy" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Privacy</button>
-            <button type="button" class="tab" id="tab-behind-the-scenes" data-category="behind-the-scenes" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Behind the Scenes</button>
+            <button type="button" class="tab is-selected" id="tab-all" data-category="all" title="Show all posts" role="tab" aria-selected="true" aria-controls="journal-panel" tabindex="0">All</button>
+            <button type="button" class="tab" id="tab-reading" data-category="reading" title="Show Reading posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Reading</button>
+            <button type="button" class="tab" id="tab-design" data-category="design" title="Show Design posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Design</button>
+            <button type="button" class="tab" id="tab-privacy" data-category="privacy" title="Show Privacy posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Privacy</button>
+            <button type="button" class="tab" id="tab-behind-the-scenes" data-category="behind-the-scenes" title="Show Behind the Scenes posts" role="tab" aria-selected="false" aria-controls="journal-panel" tabindex="-1">Behind the Scenes</button>
         </div>
         <p class="journal__status sr-only" aria-live="polite"></p>
         <div class="post-grid" id="journal-panel" role="tabpanel" aria-labelledby="tab-all" tabindex="0">
-            <article class="post-card" data-category="reading">
+            <ul class="post-grid__list">
+            <li class="post-card" data-category="reading">
+                <article class="post-card__body">
                 <p class="post-card__category">Reading</p>
                 <h2 class="post-card__title">The Books We Can't Stop Rereading</h2>
                 <p class="post-card__date">March 3, 2026</p>
             </article>
-            <article class="post-card" data-category="design">
+            </li>
+            <li class="post-card" data-category="design">
+                <article class="post-card__body">
                 <p class="post-card__category">Design</p>
                 <h2 class="post-card__title">Why We Chose Half-Star Ratings Over a 10-Point Scale</h2>
                 <p class="post-card__date">February 10, 2026</p>
             </article>
-            <article class="post-card" data-category="privacy">
+            </li>
+            <li class="post-card" data-category="privacy">
+                <article class="post-card__body">
                 <p class="post-card__category">Privacy</p>
                 <h2 class="post-card__title">How Book Nook Handles Your Reading Data</h2>
                 <p class="post-card__date">April 7, 2026</p>
             </article>
-            <article class="post-card" data-category="reading">
+            </li>
+            <li class="post-card" data-category="reading">
+                <article class="post-card__body">
                 <p class="post-card__category">Reading</p>
                 <h2 class="post-card__title">Slow Reading in a Fast-Feed World</h2>
                 <p class="post-card__date">May 18, 2026</p>
             </article>
-            <article class="post-card" data-category="design">
+            </li>
+            <li class="post-card" data-category="design">
+                <article class="post-card__body">
                 <p class="post-card__category">Design</p>
                 <h2 class="post-card__title">Designing Anonymous Profiles Without Losing Personality</h2>
                 <p class="post-card__date">June 22, 2026</p>
             </article>
-            <article class="post-card" data-category="behind-the-scenes">
+            </li>
+            <li class="post-card" data-category="behind-the-scenes">
+                <article class="post-card__body">
                 <p class="post-card__category">Behind the Scenes</p>
                 <h2 class="post-card__title">Building Book Nook: Our First Six Months</h2>
                 <p class="post-card__date">July 30, 2026</p>
             </article>
+            </li>
+            </ul>
         </div>
     </section>
     </main>
@@ -91,25 +109,27 @@
             <p class="footer__about-title">Book Nook</p>
             <p>A quieter place for your books.</p>
         </div>
-        <div class="footer__links">
-            <p><a href="index.html">Home</a></p>
-            <p><a href="explore.html">Explore</a></p>
-            <p><a href="features.html">Features</a></p>
-            <p><a href="about.html">About</a></p>
-            <p><a href="journal.html">Journal</a></p>
-        </div>
-        <div class="footer__social">
-            <a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a>
-            <a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a>
-            <a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a>
-        </div>
+        <nav aria-label="Footer">
+            <ul class="footer__links">
+                <li><a href="index.html" title="Go to the home page">Home</a></li>
+                <li><a href="explore.html" title="Browse books by mood">Explore</a></li>
+                <li><a href="features.html" title="See what Book Nook does differently">Features</a></li>
+                <li><a href="about.html" title="Meet the creator and read the FAQ">About</a></li>
+                <li><a href="journal.html" title="Read the Book Nook journal">Journal</a></li>
+            </ul>
+        </nav>
+        <ul class="footer__social">
+            <li><a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a></li>
+            <li><a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a></li>
+            <li><a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a></li>
+        </ul>
         <div class="footer__legal">
             <p>&copy; 2026 Book Nook</p>
-            <p>Privacy &middot; Terms</p>
+            <p><a href="privacy.html" title="Read the privacy notice">Privacy</a> &middot; <a href="terms.html" title="Read the terms of use">Terms</a></p>
         </div>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>
