@@ -18,6 +18,14 @@
   --color-aux4: #4A4E41;                        /* book cover placeholder */
   --color-text-muted: #58534B;                  /* the one muted-text colour (book-card author, feature/hero/intro body copy, placeholders). 4.6:1 on Apricot, 5.96:1 on the book-card surface — replaces the old #70746B and #756F65, which were 2.88–3.73:1 */
 
+  /* Chart colours for the Features mockups (Bone panel behind them).
+     The legend labels every segment with its name and value, so colour is
+     never the only way to read the chart. */
+  --color-chart-1: var(--color-dominant);
+  --color-chart-2: var(--color-accent-1);
+  --color-chart-3: #B5835A; /* caramel */
+  --color-chart-4: #8F9BB3; /* dusty blue */
+
   /* Button system */
   --color-primary-default: var(--color-accent-1);   /* Accent 1 100% — Primary default fill */
   --color-accent-1-80: rgba(86, 53, 45, 0.8);        /* Accent 1 @ 80% — Primary hover fill / Tertiary hover text */

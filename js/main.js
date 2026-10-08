@@ -718,6 +718,105 @@ function initCardTilt() {
   });
 }
 
+function initGenreDonut() {
+  // Genre chart draw-in (J3). Without JS the donut is simply drawn in full.
+  // With JS, .js-draw collapses the segments and .is-drawn (added when the
+  // panel is mostly on screen) lets CSS grow them one after another.
+  const panel = document.querySelector('.mock--genre');
+  if (!panel || !('IntersectionObserver' in window) || prefersReducedMotion()) return;
+
+  function handleDonutIntersect(entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      panel.classList.add('is-drawn');
+      observer.unobserve(panel);
+    });
+  }
+
+  const observer = new IntersectionObserver(handleDonutIntersect, { threshold: 0.5 });
+  panel.classList.add('js-draw');
+  observer.observe(panel);
+}
+
+function initHalfStarRater() {
+  // Half-star rater (J2). The ten radios are a native group, so keyboard
+  // users get arrow keys for free; this code only paints the stars, updates
+  // the readout, announces the choice and plays the sparkle.
+  const rater = document.querySelector('.rater');
+  if (!rater) return;
+
+  const stars = Array.prototype.slice.call(rater.querySelectorAll('.rater__star'));
+  const inputs = Array.prototype.slice.call(rater.querySelectorAll('.rater__input'));
+  const number = rater.querySelector('.rater__number');
+  const status = rater.querySelector('.rater__status');
+  const SPARK_COUNT = 6;
+
+  const checkedInput = inputs.find(function (input) {
+    return input.checked;
+  });
+  let committed = checkedInput ? Number(checkedInput.value) : 0;
+
+  function paint(value) {
+    stars.forEach(function (star, index) {
+      star.style.setProperty('--fill', String(Math.min(1, Math.max(0, value - index))));
+    });
+    number.textContent = value ? String(value) : '0';
+  }
+
+  function sparkle(value) {
+    const star = stars[Math.ceil(value) - 1];
+    if (!star) return;
+
+    star.classList.remove('is-popping');
+    void star.offsetWidth; // restart the animation if it is already running
+    star.classList.add('is-popping');
+
+    for (let i = 0; i < SPARK_COUNT; i += 1) {
+      const angle = (Math.PI * 2 * i) / SPARK_COUNT;
+      const spark = document.createElement('span');
+      spark.className = 'rater__spark';
+      spark.style.setProperty('--dx', (Math.cos(angle) * 22).toFixed(1) + 'px');
+      spark.style.setProperty('--dy', (Math.sin(angle) * 22).toFixed(1) + 'px');
+      spark.addEventListener('animationend', handleSparkEnd);
+      star.appendChild(spark);
+    }
+  }
+
+  function handleSparkEnd(event) {
+    event.currentTarget.remove();
+  }
+
+  function handleStarAnimationEnd(event) {
+    if (event.animationName === 'star-pop') event.currentTarget.classList.remove('is-popping');
+  }
+
+  // Hover preview: the stars follow the pointer, and snap back on leave.
+  function handleRaterPointerOver(event) {
+    const half = event.target.closest('.rater__half');
+    if (half && half.control) paint(Number(half.control.value));
+  }
+
+  function handleRaterPointerLeave() {
+    paint(committed);
+  }
+
+  function handleRaterChange(event) {
+    committed = Number(event.target.value);
+    paint(committed);
+    announce(status, 'Rated ' + committed + ' out of 5 stars');
+    if (!prefersReducedMotion()) sparkle(committed);
+  }
+
+  rater.addEventListener('pointerover', handleRaterPointerOver);
+  rater.addEventListener('pointerleave', handleRaterPointerLeave);
+  rater.addEventListener('change', handleRaterChange);
+  stars.forEach(function (star) {
+    star.addEventListener('animationend', handleStarAnimationEnd);
+  });
+
+  paint(committed);
+}
+
 initMobileNav();
 initHeaderScroll();
 initWaitlistForm();
@@ -728,3 +827,5 @@ initFaqAccordion();
 initHeroHeadline();
 initScrollReveal();
 initCardTilt();
+initGenreDonut();
+initHalfStarRater();

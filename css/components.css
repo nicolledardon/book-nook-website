@@ -224,20 +224,16 @@
 }
 
 .feature-block__media {
-  background-color: var(--color-disabled-text);
+  background-color: var(--color-dominant); /* Dress Blues tile; the Bone mockup panel sits on it */
+  padding: var(--space-lg-sm);
   border-radius: var(--radius-lg);
-  aspect-ratio: 14 / 9;
+  /* no fixed aspect ratio: the mockup panels set the height. A 14:9 ratio made
+     the tile's minimum width exceed max-width and pushed the text column over it. */
   flex: 1 1 0;
   max-width: 35rem;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Placeholder illustrations (inline SVG, not final art) */
-.feature-block__icon {
-  width: 6rem;
-  height: 6rem;
 }
 
 .feature-block__text {
@@ -376,4 +372,388 @@
 .mood-chip:active {
   background-color: var(--color-primary-active);
   color: var(--color-surface);
+}
+
+
+/* FEATURE MOCKUPS
+   The four tiles on the Features page hold small coded "app screens"
+   instead of illustrations: a Bone panel (.mock) on the Dress Blues tile.
+   All sample content is labelled "Example" (.mock__tag). */
+
+.mock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-base);
+  width: 100%;
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  color: var(--color-dominant);
+}
+
+.mock__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.mock__title {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+}
+
+.mock__tag {
+  padding: var(--space-xxs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-secondary-hover);
+  color: var(--color-text-muted);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+}
+
+/* Genre donut (J3). Each segment is a circle whose dash covers --len percent
+   of the ring (pathLength is 100) starting at --start. The ring is rotated so
+   it starts at 12 o'clock. main.js adds .js-draw, then .is-drawn when the
+   panel scrolls into view, and the segments grow from 0 to their length. */
+.mock__body--genre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.donut {
+  flex-shrink: 0;
+  width: 8.5rem;
+  height: 8.5rem;
+  transform: rotate(-90deg);
+}
+
+.donut__track,
+.donut__segment {
+  fill: none;
+  stroke-width: 6;
+}
+
+.donut__track {
+  stroke: var(--color-secondary-hover);
+}
+
+.donut__segment {
+  stroke-dasharray: calc(var(--len) - 0.8) 100; /* the 0.8 leaves a hairline gap between segments */
+  stroke-dashoffset: calc(-1 * var(--start));
+  transition: stroke-dasharray calc(var(--duration-reveal) * 1.5) ease;
+  transition-delay: calc(var(--seg) * var(--stagger-step) * 2);
+}
+
+.mock--genre.js-draw:not(.is-drawn) .donut__segment {
+  stroke-dasharray: 0 100;
+}
+
+.donut__segment--1 { --len: 38; --start: 0;  --seg: 0; stroke: var(--color-chart-1); }
+.donut__segment--2 { --len: 27; --start: 38; --seg: 1; stroke: var(--color-chart-2); }
+.donut__segment--3 { --len: 20; --start: 65; --seg: 2; stroke: var(--color-chart-3); }
+.donut__segment--4 { --len: 15; --start: 85; --seg: 3; stroke: var(--color-chart-4); }
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 8rem;
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--fs-small);
+}
+
+.legend__swatch {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radius-pill);
+}
+
+.legend__swatch--1 { background-color: var(--color-chart-1); }
+.legend__swatch--2 { background-color: var(--color-chart-2); }
+.legend__swatch--3 { background-color: var(--color-chart-3); }
+.legend__swatch--4 { background-color: var(--color-chart-4); }
+
+.legend__name {
+  flex: 1;
+}
+
+.legend__value {
+  font-weight: var(--fw-semibold);
+}
+
+/* Half-star rater (J2). Ten visually hidden radios (0.5 to 5) form one
+   native radio group, so arrow keys step through half stars. Every star has
+   two invisible label halves on top of it for the mouse. main.js sets --fill
+   (0 to 1) on each star; the gold star underneath is clipped to that share. */
+.rate-book {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.rate-book__cover {
+  flex-shrink: 0;
+  width: 2.75rem;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-aux4);
+}
+
+.rate-book__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rate-book__title {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+}
+
+.rate-book__author {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.rater {
+  --rater-star: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 0;
+  border: none;
+}
+
+.rater__stars {
+  display: flex;
+  gap: var(--space-xxs);
+}
+
+.rater__star {
+  position: relative;
+  width: var(--rater-star);
+  height: calc(var(--rater-star) * 0.9545);
+}
+
+.rater__base,
+.rater__fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rater__fill {
+  clip-path: inset(0 calc((1 - var(--fill, 0)) * 100%) 0 0);
+  transition: clip-path var(--duration-fast) ease;
+}
+
+.rater__input {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rater__half {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  cursor: pointer;
+}
+
+.rater__half--left {
+  left: 0;
+}
+
+.rater__half--right {
+  right: 0;
+}
+
+.rater__input:focus-visible + .rater__half {
+  outline: 2px solid var(--color-dominant);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.rater__star.is-popping {
+  animation: star-pop var(--duration-base) ease;
+}
+
+@keyframes star-pop {
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+.rater__readout {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.rater__number {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  color: var(--color-dominant);
+}
+
+/* Sparkle burst when a rating is chosen: six gold dots fly out from the
+   edge of the filled part of the star and fade. Removed when done. */
+.rater__spark {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--fill, 1) * 100%);
+  width: 0.375rem;
+  height: 0.375rem;
+  margin: -0.1875rem 0 0 -0.1875rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-gold);
+  pointer-events: none;
+  animation: spark var(--duration-reveal) ease-out forwards;
+}
+
+@keyframes spark {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.4);
+  }
+}
+
+/* Anonymous profile card */
+.profile__id {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.profile__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-dominant);
+}
+
+.profile__avatar-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.profile__alias {
+  font-weight: var(--fw-semibold);
+}
+
+.profile__note {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.privacy-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.privacy-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  border-top: 1px solid var(--color-aux8);
+  font-size: var(--fs-small);
+}
+
+.privacy-list__value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xxs);
+  font-weight: var(--fw-semibold);
+  text-align: right;
+}
+
+.privacy-list__icon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* Recommendations card */
+.recs__reason {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.recs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.recs__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.recs__cover {
+  flex-shrink: 0;
+  width: 2.25rem;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-aux4);
+}
+
+.recs__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recs__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.recs__title {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+}
+
+.recs__author {
+  font-size: var(--fs-micro);
+  color: var(--color-text-muted);
+}
+
+.recs__chip {
+  flex-shrink: 0;
+  padding: var(--space-xxs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-secondary-hover);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
 }
