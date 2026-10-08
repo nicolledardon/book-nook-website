@@ -53,6 +53,16 @@ img {
   border: 0;
 }
 
+/* Inline SVG sprite holding every <symbol> the page uses (icons are drawn
+   with <svg><use href="#id">). Kept at 0x0 instead of display:none, because
+   gradients and clip-paths inside a display:none SVG fail to render. */
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 /* BODY DEFAULTS
    Sets the page-wide font, colors, and line
    spacing that everything else inherits */

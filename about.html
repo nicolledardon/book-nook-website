@@ -29,6 +29,12 @@
 
 </head>
 <body>
+    <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <symbol id="icon-menu" viewBox="0 0 100 100" fill="currentColor"><path d="M50,92.739l43.795-21.356V8.069L51.36,28.763h-1.451L50,92.739z M50,99.294c-0.465,0-0.93-0.104-1.36-0.314L1.743,76.108  C0.678,75.591,0,74.508,0,73.321V3.104c0-1.07,0.551-2.065,1.459-2.633c0.907-0.566,2.044-0.626,3.004-0.156L50,22.522L95.537,0.314  c0.962-0.47,2.099-0.41,3.005,0.156C99.449,1.038,100,2.033,100,3.104v70.218c0,1.187-0.677,2.27-1.741,2.787L51.36,98.979  C50.93,99.189,50.467,99.294,50,99.294"/><path d="M61.619,42.04c-1.149,0-2.254-0.641-2.791-1.743c-0.753-1.541-0.111-3.396,1.428-4.148L81.76,25.66  c1.539-0.751,3.396-0.11,4.148,1.43c0.751,1.54,0.111,3.398-1.429,4.148L62.977,41.728C62.539,41.94,62.074,42.04,61.619,42.04"/><path d="M61.619,58.599c-1.149,0-2.254-0.641-2.791-1.743c-0.753-1.54-0.111-3.396,1.428-4.148L81.76,42.22  c1.539-0.751,3.396-0.111,4.148,1.429c0.751,1.541,0.111,3.399-1.429,4.148L62.977,58.285  C62.539,58.498,62.074,58.599,61.619,58.599"/><path d="M61.619,75.156c-1.149,0-2.254-0.641-2.791-1.743c-0.753-1.54-0.111-3.396,1.428-4.148L81.76,58.779  c1.539-0.752,3.396-0.113,4.148,1.427c0.751,1.542,0.111,3.399-1.429,4.15L62.977,74.843C62.539,75.057,62.074,75.156,61.619,75.156  "/></symbol>
+        <symbol id="social-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></symbol>
+        <symbol id="social-pinterest" viewBox="0 0 32 32" fill="currentColor"><path d="M16.132 0a16 16 0 0 0-5.771 30.952c-.13-1.312-.262-3.148 0-4.6l1.836-8a5.771 5.771 0 0 1-.525-2.361c0-2.23 1.312-3.935 2.885-3.935s1.967 1.05 1.967 2.23-.918 3.4-1.312 5.377.787 2.885 2.36 2.885 4.984-3.016 4.984-7.344-2.754-6.558-6.69-6.558-7.082 3.54-7.082 7.082c0 1.312.525 2.885 1.18 3.672a.525.525 0 0 1 .131.393l-.393 1.836c-.13.262-.262.393-.525.262-1.967-.918-3.28-3.803-3.28-6.164 0-4.984 3.672-9.705 10.623-9.705s9.836 3.935 9.836 9.18-3.54 9.968-8.263 9.968c-1.574 0-3.148-.787-3.672-1.836l-1.05 3.803c-.393 1.443-1.312 3.148-1.967 4.197A16 16 0 1 0 16.132 0z"/></symbol>
+        <symbol id="social-tiktok" viewBox="0 0 128 128" fill="currentColor"><path d="M85.79 41.084a50.3 50.3 0 0 0 29.326 9.38V33.907a29.44 29.44 0 0 1-15.57-8.921C92.592 20.65 87.582 13.495 86.113 5.12h-15.33v84.003c-.034 9.793-7.986 17.723-17.791 17.723-5.779 0-10.912-2.753-14.164-7.018-5.805-2.928-9.786-8.94-9.786-15.884 0-9.82 7.964-17.783 17.791-17.783 1.883 0 3.698.293 5.4.833V50.258c-21.103.436-38.075 17.67-38.075 38.866 0 10.58 4.226 20.172 11.086 27.18a38.73 38.73 0 0 0 21.652 6.576c21.481 0 38.895-17.405 38.895-38.875v-42.92Z"/></symbol>
+    </svg>
     <header>
         <nav class="header__nav" aria-label="Main">
             <a href="index.html" class="logo" title="Book Nook, back to the home page">Book Nook</a>
@@ -41,12 +47,17 @@
                 <li class="nav__cta"><a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a></li>
             </ul>
             <a href="waitlist.html" class="btn btn--primary header__cta" title="Join the Book Nook waitlist">Join the Nook</a>
-            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" title="Open or close the menu" aria-expanded="false" aria-controls="nav-links"></button>
+            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" title="Open or close the menu" aria-expanded="false" aria-controls="nav-links"><svg class="nav__toggle-icon" aria-hidden="true" focusable="false"><use href="#icon-menu"/></svg></button>
         </nav>
     </header>
     <main>
         <section class="page-section meet-creator">
-            <div class="meet-creator__photo"></div>
+            <picture>
+                <source media="(max-width: 768px)" srcset="assets/creator-sm.webp" type="image/webp">
+                <source media="(max-width: 768px)" srcset="assets/creator-sm.jpg" type="image/jpeg">
+                <source srcset="assets/creator-lg.webp" type="image/webp">
+                <img class="meet-creator__photo" src="assets/creator-lg.jpg" alt="Illustrated portrait of the creator of Book Nook, wearing a cap" width="420" height="420" fetchpriority="high" decoding="async">
+            </picture>
             <h1 class="meet-creator__heading">Meet the creator</h1>
             <p class="meet-creator__bio">Book Nook started as a personal project — a reading tracker built for the way I actually read: quietly, without followers or feeds. I wanted something aesthetic, honest about my reading habits, and mine alone. Now I'm building it for anyone who feels the same.</p>
             <a href="waitlist.html" class="btn btn--primary" title="Join the Book Nook waitlist">Join the Nook</a>
@@ -140,9 +151,9 @@
             </ul>
         </nav>
         <ul class="footer__social">
-            <li><a href="#" class="footer__social-icon footer__social-icon--heart" aria-label="Book Nook on social media"></a></li>
-            <li><a href="#" class="footer__social-icon footer__social-icon--share" aria-label="Share Book Nook"></a></li>
-            <li><a href="#" class="footer__social-icon footer__social-icon--at" aria-label="Contact Book Nook"></a></li>
+            <li><a href="https://www.instagram.com/" class="footer__social-icon" target="_blank" rel="noreferrer noopener" aria-label="Book Nook on Instagram" title="Book Nook on Instagram (opens in a new tab)"><svg class="footer__social-svg" aria-hidden="true" focusable="false"><use href="#social-instagram"/></svg></a></li>
+            <li><a href="https://www.tiktok.com/" class="footer__social-icon" target="_blank" rel="noreferrer noopener" aria-label="Book Nook on TikTok" title="Book Nook on TikTok (opens in a new tab)"><svg class="footer__social-svg" aria-hidden="true" focusable="false"><use href="#social-tiktok"/></svg></a></li>
+            <li><a href="https://www.pinterest.com/" class="footer__social-icon" target="_blank" rel="noreferrer noopener" aria-label="Book Nook on Pinterest" title="Book Nook on Pinterest (opens in a new tab)"><svg class="footer__social-svg" aria-hidden="true" focusable="false"><use href="#social-pinterest"/></svg></a></li>
         </ul>
         <div class="footer__legal">
             <p>&copy; 2026 Book Nook</p>

@@ -328,3 +328,13 @@ than by its position in the DOM.
   so its column self-adapts to full-width on narrow screens without a breakpoint override, and
   `.category-tabs` caps at `max-width: 100%` with `overflow-x: auto` so the pill bar scrolls
   internally instead of pushing the whole page wide.
+
+## Credits
+
+- **Menu icon** — "Created by Miguel C Balandrano, from the Noun Project". The credit text that was
+  baked into `assets/icons/menu.svg` is not part of the inline SVG sprite, so it is credited here
+  instead.
+- **Social icons** — the Pinterest and TikTok shapes come from the official brand files supplied for
+  the project, recoloured to a single light colour so they stay visible on the dark footer. The
+  Instagram glyph is redrawn as an outline to match them.
+- **Book covers** — shown for illustration only; they belong to their publishers and authors.
