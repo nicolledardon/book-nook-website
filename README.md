@@ -24,8 +24,7 @@ book_nook_website/
 │   ├── components.css   buttons, cards, chips, tabs, Feature mockups
 │   └── layout.css       page sections, grids, colour bands, shelf strip, media queries
 ├── js/main.js           one file, one init*() function per interaction
-├── assets/              covers (WebP + JPG, -sm / -lg), icons, favicons, og-image.png
-└── _headers             Netlify cache rules
+└── assets/              covers (WebP + JPG, -sm / -lg), icons, favicons, og-image.png
 ```
 
 ## Pages built
@@ -330,9 +329,6 @@ phases. Each deviation from the Figma that came out of it is logged in the memor
   `(max-width: 768px)` source; `width` / `height` on every image; lazy loading below the fold.
 - One inline SVG sprite per page (`<symbol>` + `<use>`) for stars, menu, highlight, feature and
   social icons; the waitlist barcode is one SVG instead of 20 spans (its bars are now generated from the queue number).
-- `_headers` gives Netlify long, immutable cache times for images (`/assets/*`) and makes CSS, JS and
-  HTML revalidate on every visit (`max-age=0, must-revalidate`). Those files keep the same name when
-  they change, so a long cache would keep serving old code after a deploy.
 
 ### Phase 4 — CSS cleanup, states, JavaScript
 - **CSS:** no raw colours (`--color-surface-15` token added), no `#id` selectors, no `!important`;
