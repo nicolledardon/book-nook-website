@@ -133,7 +133,7 @@ p {
   font-weight: var(--fw-regular);
 }
 
-/* reduced motion: every transition reads these tokens, so zeroing them here covers the site without !important */
+/* reduced motion: every transition reads these tokens, so zeroing them here covers the site */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0s;

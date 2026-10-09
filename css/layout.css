@@ -1412,8 +1412,7 @@ body.is-nav-open::before {
     z-index: 99;
   }
 
-  /* JS toggles body.is-nav-open; this selector (0,2,1) beats the plain .nav__links rule (0,1,0) on specificity alone,
-     so no !important is needed */
+  /* JS toggles body.is-nav-open; this selector (0,2,1) beats the plain .nav__links rule (0,1,0) on specificity alone */
   body.is-nav-open .nav__links {
     opacity: 1;
     visibility: visible;
