@@ -1,20 +1,15 @@
-/* Smooth-scrolls to #anchor targets (Features page nav buttons) instead of
-   jumping instantly. Switched back to instant in the prefers-reduced-motion
-   block at the bottom of this file. */
+/* smooth scroll for the Features anchor buttons, instant again under reduced motion (bottom of this file) */
 html {
   scroll-behavior: smooth;
 }
 
-/* CROSS-PAGE VIEW TRANSITIONS
-   Browsers that support it (Chrome, Edge, Safari 18.2+) cross-fade between
-   pages instead of flashing white; the rest navigate normally. The header
-   gets its own name so it stays put while the page content fades. */
+/* cross-fade between pages where the browser supports it, the rest navigate normally */
 @view-transition {
   navigation: auto;
 }
 
 header {
-  view-transition-name: site-header;
+  view-transition-name: site-header; /* own name so the header stays put while the page fades */
 }
 
 ::view-transition-old(root),
@@ -28,13 +23,12 @@ header {
   color: var(--color-surface);
 }
 
-input,
-textarea {
+input {
   caret-color: var(--color-accent-1);
 }
 
 * {
-  box-sizing: border-box; /* padding + border count INSIDE the width you set, not added on top */
+  box-sizing: border-box; /* padding and border count inside the width, not on top */
   margin: 0;
   padding: 0;
 }
@@ -50,17 +44,14 @@ a {
   text-decoration: none;
 }
 
-/* Keyboard focus ring for every link that has no focus style of its own
-   (buttons and chips define theirs in components.css). Footer overrides the
-   colour in layout.css, because Dress Blues is invisible on the dark footer. */
+/* keyboard focus ring, the footer swaps the colour in layout.css because Dress Blues vanishes on the dark footer */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-dominant);
   outline-offset: 3px;
 }
 
-/* <button> elements (nav__toggle, Join the Nook, mood chips,
-   book ratings) lose their native OS chrome */
+/* buttons lose the native OS look, each component restyles its own */
 button {
   font: inherit;
   color: inherit;
@@ -75,8 +66,7 @@ img {
   display: block;
 }
 
-/* Visually hides an element while keeping it readable to screen readers —
-   used for form <label>s that Figma shows only as an input placeholder. */
+/* hidden on screen but still read by screen readers: labels, live status messages, legends */
 .sr-only {
   position: absolute;
   width: 0.0625rem;
@@ -89,9 +79,7 @@ img {
   border: 0;
 }
 
-/* Inline SVG sprite holding every <symbol> the page uses (icons are drawn
-   with <svg><use href="#id">). Kept at 0x0 instead of display:none, because
-   gradients and clip-paths inside a display:none SVG fail to render. */
+/* SVG sprite kept at 0x0 instead of display:none, because gradients and clip-paths inside a display:none svg don't render */
 .sprite {
   position: absolute;
   width: 0;
@@ -99,33 +87,26 @@ img {
   overflow: hidden;
 }
 
-/* BODY DEFAULTS
-   Sets the page-wide font, colors, and line
-   spacing that everything else inherits */
+/* page defaults everything else inherits */
 body {
   font-family: var(--font-body);
   background-color: var(--color-background);
   color: var(--color-dominant);
   line-height: var(--lh-body);
-  /* Column layout + full viewport height pins the footer to the bottom on
-     short pages (e.g. Waitlist Confirmation); main below takes the spare space. */
+  /* column and full height pin the footer to the bottom on short pages, main takes the spare space */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* TYPE SCALE - headings
-   Crimson Pro across all headings, with each
-   level's own size/weight from variables.css */
+/* heading scale */
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   line-height: var(--lh-display);
 }
 
 h1 {
-  /* clamp() scales smoothly with viewport instead of jumping at a
-     breakpoint: 1.75rem floor on small phones, var(--fs-h1) (2.25rem)
-     ceiling from ~720px up, linear in between via 5vw. */
+  /* clamp(): 1.75rem floor on small phones, the full h1 size from ~720px up, 5vw in between */
   font-size: clamp(1.75rem, 5vw, var(--fs-h1));
   font-weight: var(--fw-bold);
 }
@@ -146,16 +127,13 @@ h4 {
   font-weight: var(--fw-extrabold);
 }
 
-/* TYPE SCALE - body text  */
+/* body text scale */
 p {
   font-size: var(--fs-body-1);
   font-weight: var(--fw-regular);
 }
 
-/* REDUCED MOTION
-   People who ask their OS to reduce motion get instant state changes: every
-   transition in the site reads these duration tokens, so zeroing them here
-   covers everything without !important. */
+/* reduced motion: every transition reads these tokens, so zeroing them here covers the site without !important */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0s;

@@ -1,56 +1,51 @@
 :root {
   /* Book Nook color system */
   --color-dominant: #2A3244;   /* Dress Blues - text / nav / headers / thin banners */
-  --color-background: #E2C4A6; /* Apricot Illusion — page background */
-  --color-surface: #FBF4EA;    /* Bone — cards / elevated surfaces */
-  --color-accent-1: #56352D;   /* Chocolate Fondant — CTA / links / secondary+tertiary buttons */
-  --color-gold: #FFC233;       /* Gold — ratings/stars only, never on backgrounds directly */
+  --color-background: #E2C4A6; /* Apricot Illusion, page background */
+  --color-surface: #FBF4EA;    /* Bone, cards and raised surfaces */
+  --color-accent-1: #56352D;   /* Chocolate Fondant, CTA, links, secondary and tertiary buttons */
+  --color-gold: #FFC233;       /* Gold, only for rating stars, never as a background */
 
-  /* Rating-star outline (inline SVG sprite). Not part of the locked palette: a near-black
-     stroke that keeps the gold readable on Bone and Apricot. */
+  /* star outline, not in the locked palette: near-black so the gold reads on Bone and Apricot */
   --color-star-outline: #0E0E0D;
 
   /* Header & footer */
-  --color-surface-20: rgba(251, 244, 234, 0.2); /* Bone @ 20% — translucent header background over the page */
-  --color-surface-15: rgba(251, 244, 234, 0.15); /* Bone @ 15% — hover tint on the Journal tab bar (light on the dark bar) */
-  --color-header-bg: #E7CEB4;                   /* Bone @ 20% over Apricot, as a solid colour: looks the same on the page, but stays readable when a dark band scrolls under the sticky header */
+  --color-surface-20: rgba(251, 244, 234, 0.2); /* Bone at 20%, translucent header background */
+  --color-surface-15: rgba(251, 244, 234, 0.15); /* Bone at 15%, hover tint on the journal tab bar */
+  --color-header-bg: #E7CEB4;                   /* Bone at 20% over Apricot as a solid colour, so a dark band under the sticky header doesn't show through */
   --color-aux8: #C8C3BA;                        /* header bottom border */
   --color-aux10: #E6E6E1;                       /* light text + icon color on dark backgrounds (footer; highlight icons in the SVG sprite) */
 
-  /* Neutrals & tints (new, for book-card / feature-block) */
-  --color-surface-60: rgba(251, 244, 234, 0.6); /* Bone @ 60% opacity */
+  /* Neutrals and tints */
+  --color-surface-60: rgba(251, 244, 234, 0.6); /* Bone at 60% */
   --color-aux4: #4A4E41;                        /* book cover placeholder */
-  --color-text-muted: #58534B;                  /* the one muted-text colour (book-card author, feature/hero/intro body copy, placeholders). 4.6:1 on Apricot, 5.96:1 on the book-card surface — replaces the old #70746B and #756F65, which were 2.88–3.73:1 */
+  --color-text-muted: #58534B;                  /* the one muted-text colour (book-card author, body copy, placeholders), 4.6:1 on Apricot and 5.96:1 on the card surface */
 
-  /* Chart colours for the Features mockups (Bone panel behind them).
-     The legend labels every segment with its name and value, so colour is
-     never the only way to read the chart. */
+  /* chart colours for the Features mockups; the legend names every segment, so colour is never the only cue */
   --color-chart-1: var(--color-dominant);
   --color-chart-2: var(--color-accent-1);
   --color-chart-3: #B5835A; /* caramel */
   --color-chart-4: #8F9BB3; /* dusty blue */
 
   /* Button system */
-  --color-primary-default: var(--color-accent-1);   /* Accent 1 100% — Primary default fill */
-  --color-accent-1-80: rgba(86, 53, 45, 0.8);        /* Accent 1 @ 80% — Primary hover fill / Tertiary hover text */
-  --color-disabled-fill: #CACCC6;                    /* aux9 — disabled fill, all variants */
-  --color-disabled-text: #938C81;                    /* aux5 — disabled text, all variants */
-  --color-primary-active: rgba(42, 50, 68, 0.8);     /* Dominant @ 80% — Primary active fill */
-  --color-secondary-active: rgba(42, 50, 68, 0.2);   /* Dominant @ 20% — Secondary active tint */
-  --color-secondary-hover: rgba(86, 53, 45, 0.1);    /* Accent 1 @ 10% — Secondary hover tint */
-  --color-secondary-disabled: #B8B4AD;               /* aux7 — Secondary disabled border; also reused for the waitlist email-input border and the confirmation ticket's dashed divider */
+  --color-primary-default: var(--color-accent-1);   /* Accent 1, primary default fill */
+  --color-accent-1-80: rgba(86, 53, 45, 0.8);        /* Accent 1 at 80%, primary hover fill and tertiary hover text */
+  --color-disabled-fill: #CACCC6;                    /* aux9, disabled fill for every variant */
+  --color-disabled-text: #938C81;                    /* aux5, disabled text for every variant */
+  --color-primary-active: rgba(42, 50, 68, 0.8);     /* Dominant at 80%, primary active fill */
+  --color-secondary-active: rgba(42, 50, 68, 0.2);   /* Dominant at 20%, secondary active tint */
+  --color-secondary-hover: rgba(86, 53, 45, 0.1);    /* Accent 1 at 10%, secondary hover tint */
+  --color-secondary-disabled: #B8B4AD;               /* aux7, secondary disabled border; also the waitlist email input border and the ticket's dashed divider */
 
-  /* Status colors (PEC 5) — checked against both Apricot (#E2C4A6) and
-     Bone (#FBF4EA), the two surfaces error/success text can appear on.
-     Both clear 4.5:1 body-text contrast. */
+  /* status colors, both clear 4.5:1 on Apricot and on Bone */
   --color-error: #8a2f1c;   /* 5.06:1 on Apricot, 7.67:1 on Bone */
   --color-success: #2f5d3a; /* 4.61:1 on Apricot, 7.00:1 on Bone */
 
-  /* Typography — Font families */
+  /* Typography: font families */
   --font-heading: 'Crimson Pro', serif;
   --font-body: 'Roboto Flex', sans-serif;
 
-  /* Typography — Font sizes (converted to rem: 16px base) */
+  /* Typography: font sizes in rem, 16px base */
   --fs-h1: 2.25rem;   /* 36px */
   --fs-h2: 2rem;      /* 32px */
   --fs-h3: 1.5rem;    /* 24px */
@@ -58,14 +53,14 @@
   --fs-body-1: 1rem;  /* 16px */
   --fs-body-2: 1rem;  /* 16px */
 
-  /* Typography — Font weights */
+  /* Typography: font weights */
   --fw-bold: 700;      /* H1, H3 */
   --fw-extrabold: 800; /* H4 */
   --fw-medium: 500;    /* H2 (italic) */
   --fw-regular: 400;   /* Body 1 */
   --fw-semibold: 600;  /* Body 2 */
 
-  /* Typography — Line heights (unitless) */
+  /* Typography: line heights, unitless */
   --lh-display: 1.2;
   --lh-body: 1.55;
 
@@ -80,24 +75,18 @@
   --space-lg-sm: 2rem;   /* 32px */
   --space-lg-offset: 2.5rem; /* 40px */
   --space-lg: 3rem;      /* 48px */
-  --space-lg-plus: 3.5rem; /* 56px */
   --space-xl-sm: 4rem;   /* 64px */
   --space-xl: 6rem;      /* 96px */
   --space-xxl: 8rem;     /* 128px */
 
-  /* Sticky header's rendered height, for scroll-margin-top on anchor targets
-     (Features page). Header's vertical padding is a constant 2x1.5rem
-     everywhere; the tallest content row is the "Join the Nook" button on
-     desktop/tablet (~88px) vs. the hamburger icon on mobile (~80px) -
-     rounded up to the larger case so mobile gets a few harmless extra px
-     of margin instead of any risk of a heading landing under the header. */
+  /* sticky header height for scroll-margin-top, rounded up to the desktop ~88px so mobile just gets a little extra */
   --header-height: 5.625rem; /* 90px */
 
-  /* Font sizes for specific use cases (not part of the heading/body scale) */
-  --fs-small: 0.875rem;  /* 14px — used in footer, queue badge */
-  --fs-micro: 0.8125rem; /* 13px — confirmation code */
+  /* extra sizes outside the heading and body scale */
+  --fs-small: 0.875rem;  /* 14px, footer and queue badge */
+  --fs-micro: 0.8125rem; /* 13px, confirmation code */
 
-  /* Editorial display sizes (Phase 5 extras) — clamp() scales with the viewport, so no breakpoint is needed */
+  /* display sizes, clamp() scales with the viewport so no breakpoint is needed */
   --fs-display: clamp(2.5rem, 8vw, 4.5rem);   /* Home hero headline: 40px on phones, 72px from ~900px up */
   --fs-wordmark: clamp(3.5rem, 14vw, 9rem);   /* oversized footer wordmark: 56px up to 144px */
 
@@ -105,23 +94,17 @@
   --shadow-card: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.14); /* book-card drop shadow */
   --color-overlay-scrim: rgba(0, 0, 0, 0.2); /* mobile nav dropdown backdrop */
 
-  /* Motion — every transition reads these durations, so the
-     prefers-reduced-motion block in base.css can set them all to 0s in one place */
+  /* every transition reads these durations, so the reduced-motion block in base.css can zero them in one place */
   --duration-fast: 0.15s; /* colour / tint changes on hover and press */
   --duration-base: 0.2s;  /* small movements: chevrons, dropdowns, menu fade */
   --duration-slow: 0.25s; /* header and anchor-nav slide */
   --duration-reveal: 0.6s; /* scroll reveal, hero words, underline draw */
   --stagger-step: 0.08s;   /* delay between siblings in a staggered reveal */
 
-  /* Border radius scale — these were used throughout components.css via
-     var(--radius-*) but never actually defined here, so every one of
-     those elements was rendering with 0 border-radius (square corners)
-     instead of rounded. Values recovered from the original px scale
-     (8/10/12/16/24px) noted in the corrections checklist and confirmed
-     against the .highlights build notes (10px icon, 12px card). */
-  --radius-sm: 0.5rem;   /* 8px — book-card__cover */
-  --radius-base: 0.625rem; /* 10px — highlight icon */
-  --radius-md: 0.75rem;  /* 12px — book-card, highlight card */
-  --radius-lg: 1.5rem;   /* 24px — buttons, feature-block image, ticket */
-  --radius-pill: 999px;  /* fully rounded ends — chips, badges, tab bar (a 50% radius draws an oval on wide elements) */
+  /* border radius scale */
+  --radius-sm: 0.5rem;   /* 8px, book-card__cover */
+  --radius-base: 0.625rem; /* 10px, highlight icon */
+  --radius-md: 0.75rem;  /* 12px, book-card and highlight card */
+  --radius-lg: 1.5rem;   /* 24px, buttons, feature-block image, ticket */
+  --radius-pill: 999px;  /* fully rounded ends, 50% would draw an oval on wide elements */
 }

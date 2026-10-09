@@ -1,7 +1,4 @@
-/*
-   BUTTON SYSTEM
-   Three variants — primary, secondary, tertiary — each with 5 states:
-   default, hover, active, focus-visible, disabled */
+/* buttons: primary, secondary and tertiary, each with default, hover, active, focus-visible and disabled states */
 
 .btn {
   display: inline-flex; /* button only takes up as much horizontal space as its content needs, instead of stretching */
@@ -14,9 +11,7 @@
   font-size: var(--fs-body-2);
   font-weight: var(--fw-semibold);
   line-height: normal;
-  cursor: pointer;
   transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, color var(--duration-fast) ease; /* animate smoothly the state change of buttons */
-  text-decoration: none;
   white-space: nowrap;
 }
 
@@ -50,7 +45,6 @@
 }
 
 .btn--secondary {
-  background-color: transparent;
   border-color: var(--color-accent-1);
   color: var(--color-accent-1);
 }
@@ -82,10 +76,7 @@
 }
 
 .btn--tertiary {
-  background-color: transparent;
-  border-color: transparent;
   color: var(--color-accent-1);
-  text-decoration: none;
 }
 
 .btn--tertiary:hover {
@@ -111,9 +102,7 @@
   cursor: not-allowed;
 }
 
-/* BOOK CARD
-   Reused as-is on Home's Popular Books row and all three
-   Explore rows — cover, title, author, star rating. */
+/* book card, reused on the Home popular books row and all three Explore rows */
 
 .book-card {
   display: flex;
@@ -121,15 +110,13 @@
   align-items: center;
   gap: var(--space-sm);
   width: 100%;
-  max-width: 18.75rem; /* corrected 2026-09-20 — was a 200px placeholder; the real Figma Book Card is 300px (18.75rem) wide */
+  max-width: 18.75rem;
   padding: var(--space-base);
   background-color: var(--color-surface-60);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   position: relative;
-  /* Tilt (J8): main.js sets --tilt-x / --tilt-y while the pointer moves over
-     the card and removes them on leave. The transition is on the base state,
-     so the card eases back flat instead of snapping. */
+  /* main.js sets --tilt-x and --tilt-y while the pointer is over the card; the transition sits on the base state so it eases back flat instead of snapping */
   transform: perspective(60rem) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   transition: transform var(--duration-fast) ease;
 }
@@ -168,7 +155,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .book-card__title {
@@ -204,17 +190,12 @@
   flex-shrink: 0;
 }
 
-/* FEATURE BLOCK
-   Features page only — 4 full-width instances that alternate
-   image-left/text-right, then text-left/image-right. Markup
-   order never changes; feature-block--reverse (on blocks 2 & 4
-   in features.html) flips the visual order purely in CSS. */
+/* feature block: 4 on the Features page, alternating image sides; --reverse (blocks 2 and 4) flips the order in CSS so the markup order never changes */
 
 .feature-block {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-lg);
   scroll-margin-top: var(--header-height); /* keeps the heading clear of the
     sticky header when an anchor-nav__link jump lands here */
 }
@@ -249,13 +230,7 @@
   color: var(--color-text-muted);
 }
 
-
-/* HIGHLIGHTS
-   Home only — "What makes Book Nook different" heading + 4
-   feature-card-compact cards, laid out as a 4-column grid matching
-   the live Figma feature-cards-section/feature-cards-row exactly
-   (318px cards, 24px column gap, 32px row gap, Surface@20% fill,
-   48px Accent-1 icon placeholder, 12px radius). */
+/* highlights, Home only: the "What makes Book Nook different" heading and 4 compact cards in a 4-column grid */
 
 .highlights {
   display: flex;
@@ -274,7 +249,7 @@
   color: var(--color-aux10); /* the section is a Dress Blues band (layout.css), so text is light */
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
-  font-style: normal; /* base.css makes h2 italic + 32px by default — Figma's heading here is 24px, bold, not italic */
+  font-style: normal; /* base.css makes h2 italic by default, this heading stays upright */
   text-align: center;
 }
 
@@ -285,11 +260,7 @@
   padding: var(--space-md) 1.25rem;
   background-color: var(--color-surface-15); /* light tint on the dark band */
   border-radius: var(--radius-md);
-  min-width: 0; /* grid items default to min-width:auto, which refuses to
-                   shrink below the content's intrinsic width — with real
-                   text inside, whichever card's content is widest forces
-                   its whole column past its 1fr share, causing uneven
-                   column widths and horizontal overflow of the grid */
+  min-width: 0; /* grid items default to min-width:auto, so the widest card content would push its column past 1fr and overflow the grid */
 }
 
 .highlight__icon {
@@ -329,11 +300,7 @@
   color: var(--color-aux8);
 }
 
-/* MOOD CHIP
-   Explore page only — a filter chip that behaves like a button
-   (default / hover / focus / selected). "Cozy" carries .is-selected
-   by default to match Figma's pre-selected state; PEC5 will move that
-   class on click. */
+/* mood chip, Explore only: a filter chip that acts like a button (default, hover, focus, selected); Cozy ships with .is-selected and main.js moves it on click */
 
 .mood-chip {
   display: inline-flex;
@@ -348,7 +315,6 @@
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
   line-height: 1.25;
-  cursor: pointer;
   transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 
@@ -374,11 +340,7 @@
   color: var(--color-surface);
 }
 
-
-/* FEATURE MOCKUPS
-   The four tiles on the Features page hold small coded "app screens"
-   instead of illustrations: a Bone panel (.mock) on the Dress Blues tile.
-   All sample content is labelled "Example" (.mock__tag). */
+/* feature mockups: small coded app screens instead of illustrations, a Bone panel (.mock) on the Dress Blues tile, all sample content tagged "Example" (.mock__tag) */
 
 .mock {
   display: flex;
@@ -413,10 +375,7 @@
   font-weight: var(--fw-semibold);
 }
 
-/* Genre donut (J3). Each segment is a circle whose dash covers --len percent
-   of the ring (pathLength is 100) starting at --start. The ring is rotated so
-   it starts at 12 o'clock. main.js adds .js-draw, then .is-drawn when the
-   panel scrolls into view, and the segments grow from 0 to their length. */
+/* genre donut: each segment's dash covers --len percent of the ring (pathLength is 100) from --start, rotated to start at 12 o'clock; main.js adds .js-draw, then .is-drawn on scroll, so the segments grow in */
 .mock__body--genre {
   display: flex;
   flex-wrap: wrap;
@@ -491,10 +450,7 @@
   font-weight: var(--fw-semibold);
 }
 
-/* Half-star rater (J2). Ten visually hidden radios (0.5 to 5) form one
-   native radio group, so arrow keys step through half stars. Every star has
-   two invisible label halves on top of it for the mouse. main.js sets --fill
-   (0 to 1) on each star; the gold star underneath is clipped to that share. */
+/* half-star rater: ten hidden radios (0.5 to 5) make one native group so arrow keys step by half stars; two invisible label halves per star catch the mouse; main.js sets --fill (0 to 1) to clip the gold star */
 .rate-book {
   display: flex;
   align-items: center;
@@ -564,7 +520,6 @@
   position: absolute;
   width: 0.0625rem;
   height: 0.0625rem;
-  margin: 0;
   opacity: 0;
   pointer-events: none;
 }

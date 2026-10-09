@@ -1,13 +1,12 @@
-// Book Nook — main.js
-// Every init function checks that its elements exist before doing anything,
-// so pages that don't have that markup see no console errors.
-// Every event listener is a named function (handleXxx), so each one can be
-// found, read and removed by name instead of being an anonymous callback.
+// Book Nook main.js
+// Every init function checks its elements exist first, so pages without that markup
+// show no console errors. Every listener is a named handleXxx function so it can be
+// found and removed by name
 
 function initMobileNav() {
   // Hamburger menu toggle
-  // Visibility is driven entirely by CSS (body.is-nav-open .nav__links) —
-  // JS only toggles the class and the aria-expanded state
+  // Visibility is driven by CSS (body.is-nav-open .nav__links), JS only toggles the
+  // class and aria-expanded
 
   const navToggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
@@ -71,16 +70,14 @@ function initHeaderScroll() {
 
   function hide() {
     header.classList.add('header--hidden');
-    // Moves the sticky anchor nav up by the header's own height so it
-    // closes the gap left behind, instead of floating with empty space
-    // above it where the header used to be.
+    // Slide the sticky anchor nav up by the header's height to close the gap it leaves
     if (anchorNav) anchorNav.classList.add('is-docked');
   }
 
   function updateHeaderVisibility() {
     ticking = false;
 
-    // iPhone's rubber-band bounce can report negative scrollY — treat as 0.
+    // iPhone's rubber-band bounce can report a negative scrollY, treat it as 0
     const currentScrollY = Math.max(window.scrollY, 0);
     const delta = currentScrollY - lastScrollY;
 
@@ -143,9 +140,8 @@ function initWaitlistForm() {
     if (value === '') {
       return 'Please enter your email address';
     }
-    // A simple shape check (something@something.something), not a full
-    // RFC 5322 regex — good enough to catch typos without being
-    // stricter than real-world email addresses actually are.
+    // Simple shape check (something@something.something), not a full RFC 5322 regex,
+    // enough to catch typos without rejecting real addresses
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       return "That doesn't look like an email address";
     }
@@ -188,11 +184,8 @@ function initWaitlistForm() {
       submitButton.disabled = true;
     }
 
-    // Generate one random queue number (1,000-3,000) that drives both
-    // the queue badge and the ticket code, e.g. #1,847 and BN-2026-1847.
-    // queueBadge/ticketCode/signupPanel/confirmationPanel/ticketHeading are
-    // cached once above with input/error/submitButton, rather than queried
-    // fresh on every submit -- they never change between calls.
+    // One random queue number (1,000-3,000) drives both the badge label and the
+    // ticket code, e.g. #1,847 and BN-2026-1847
     const queueNumber = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
     const year = new Date().getFullYear();
 
@@ -216,9 +209,8 @@ function initWaitlistForm() {
     printTicket(queueNumber);
   }
 
-  // Barcode (J7): one <rect> per bar, with widths and gaps drawn from a small
-  // seeded random generator, so the same queue number always gives the same
-  // barcode. Lives in the viewBox 0 0 88 48 the old static barcode used.
+  // Barcode: one <rect> per bar, widths and gaps from a small seeded random
+  // generator, so the same queue number always draws the same barcode (viewBox 0 0 88 48)
   function drawBarcode(svg, seed) {
     const SVG_NS = 'http://www.w3.org/2000/svg';
     const WIDTH = 88;
@@ -245,9 +237,8 @@ function initWaitlistForm() {
     }
   }
 
-  // Ticket print (J7): the CSS animation reveals the ticket; this counts the
-  // queue number up from 0 in step with it. With reduced motion the final
-  // number is shown straight away and nothing animates.
+  // Counts the queue number up from 0 in step with the CSS ticket animation; with
+  // reduced motion the final number shows straight away
   function printTicket(queueNumber) {
     if (!badgeCount) return;
     const finalText = queueNumber.toLocaleString('en-US');
@@ -280,9 +271,8 @@ function initWaitlistForm() {
     window.requestAnimationFrame(handleCountFrame);
   }
 
-  // Only re-check while typing after a failed attempt, so someone isn't
-  // shown "please enter your email" while they're still typing it the
-  // first time around.
+  // Only re-check while typing after a failed attempt, so nobody sees "please enter
+  // your email" before they have finished typing it
   function handleEmailInput() {
     if (!hasAttemptedSubmit) return;
     revalidate();
@@ -293,11 +283,10 @@ function initWaitlistForm() {
 }
 
 function setFilterClass(container, prefix, value) {
-  // Container pattern: a filter is ONE class on the grid, e.g.
-  // .book-row--mood-cozy, and CSS hides the cards that don't match it
-  // (see "FILTER MODIFIERS" in layout.css). JS never touches the cards.
-  // Removes whichever "<prefix>-*" class was set before, then adds the new
-  // one; passing a falsy value clears the filter (all cards show).
+  // A filter is ONE class on the grid (e.g. .book-row--mood-cozy) and CSS hides the
+  // cards that don't match (see "filter modifiers" in layout.css), JS never touches
+  // the cards. Removes the previous "<prefix>-*" class and adds the new one; a falsy
+  // value clears the filter so every card shows
   Array.prototype.slice.call(container.classList).forEach(function (name) {
     if (name.indexOf(prefix + '-') === 0) container.classList.remove(name);
   });
@@ -305,16 +294,14 @@ function setFilterClass(container, prefix, value) {
 }
 
 function countMatches(container, itemSelector, attribute, value) {
-  // Read-only: counts the cards CSS is currently showing, for the
-  // screen-reader announcement. Space-separated attribute lists work
-  // because [attr~="value"] matches one whole word in the list.
+  // Read-only: counts the cards CSS is showing, for the screen-reader announcement
+  // ([attr~="value"] matches one whole word in a space-separated list)
   return container.querySelectorAll(itemSelector + '[' + attribute + '~="' + value + '"]').length;
 }
 
 function setSelectedChip(chipList, selectedChip) {
-  // Single-select behaviour: clicking a chip selects only that one and
-  // resets every other chip in the group. aria-pressed reports the toggle
-  // state to assistive tech; is-selected drives the visual highlight.
+  // Single select: clicking a chip selects only that one and resets the others;
+  // aria-pressed tells assistive tech, is-selected drives the highlight
   chipList.forEach(function (chip) {
     const isSelected = chip === selectedChip;
     chip.classList.toggle('is-selected', isSelected);
@@ -323,9 +310,8 @@ function setSelectedChip(chipList, selectedChip) {
 }
 
 function announce(liveRegion, message) {
-  // Writes into the sr-only aria-live="polite" region so screen reader
-  // users hear the filter result — sighted users already see the book
-  // grid change, but that visual-only change is invisible without this.
+  // Writes into the sr-only aria-live region so screen reader users hear the result;
+  // sighted users see the grid change, this covers everyone else
   liveRegion.textContent = message;
 }
 
@@ -340,14 +326,12 @@ function initMoodFilter() {
   const chipList = Array.prototype.slice.call(chips);
   const totalCount = grid.querySelectorAll('.book-card').length;
 
-  // FLIP mood filter (J5). Keeping the one-class-on-the-grid pattern, the
-  // motion is added around it with the Web Animations API:
-  //   1. cards that don't match shrink and fade out (still in place),
-  //   2. the filter class is applied, so CSS removes them and the grid reflows,
-  //   3. cards that stay glide from their old position to the new one (FLIP:
-  //      First rect, Last rect, Invert with a transform, Play it back),
-  //   4. cards that come back fade in.
-  // A new click cancels whatever is still running. Reduced motion skips it.
+  // FLIP mood filter, added around the one-class-on-the-grid pattern with the Web
+  // Animations API: non-matching cards shrink and fade out, the filter class is
+  // applied so CSS removes them and the grid reflows, staying cards glide from their
+  // old position (First rect, Last rect, Invert with a transform, Play it back) and
+  // returning cards fade in. A new click cancels whatever is still running, and
+  // reduced motion skips it
   const EXIT_MS = 160;
   const MOVE_MS = 380;
   const ENTER_MS = 260;
@@ -429,9 +413,8 @@ function initMoodFilter() {
   }
 
   function applyMoodFilter(chip, animate) {
-    // Shared by the click handler and the on-load default below, so the
-    // "select a chip, filter the cards, announce the result" sequence only
-    // has to be written (and fixed, if it ever needs fixing) once.
+    // Shared by the click handler and the on-load default below, so
+    // select, filter and announce is written once
     const mood = chip.dataset.mood;
     setSelectedChip(chipList, chip);
     setMoodFilter(mood, animate);
@@ -445,9 +428,8 @@ function initMoodFilter() {
   }
 
   function clearMoodFilter() {
-    // Counterpart to applyMoodFilter() — used when the already-selected chip
-    // is clicked again. Passing null reuses setSelectedChip's own loop to
-    // deselect every chip, since chip === null is never true for any chip.
+    // Counterpart to applyMoodFilter(), used when the selected chip is clicked again;
+    // passing null deselects every chip because chip === null is never true
     setSelectedChip(chipList, null);
     setMoodFilter(null, true);
 
@@ -469,11 +451,10 @@ function initMoodFilter() {
     chip.addEventListener('click', handleMoodChipClick);
   });
 
-  // The HTML ships with the Cozy chip already marked is-selected /
-  // aria-pressed="true" and the grid already carrying .book-row--mood-cozy,
-  // so the page is correct before this script runs. Re-applying here keeps
-  // the screen-reader status text in sync, and reads the default from the
-  // markup rather than hardcoding 'cozy'.
+  // The HTML ships with Cozy already selected and the grid already carrying
+  // .book-row--mood-cozy, so the page is right before this runs; re-applying keeps the
+  // screen-reader status in sync and reads the default from the markup instead of
+  // hardcoding 'cozy'
   const defaultChip = chipList.find(function (chip) {
     return chip.classList.contains('is-selected');
   });
@@ -492,9 +473,8 @@ function initAnchorNav() {
 
   const linkList = Array.prototype.slice.call(anchorLinks);
 
-  // Phone layout: the links live in a dropdown opened by a toggle button
-  // (CSS shows the toggle at <=768px; on desktop it is hidden and these
-  // handlers never fire). The toggle's label mirrors the section in view.
+  // Phone layout: the links sit in a dropdown opened by a toggle button (shown by CSS
+  // at 768px and below, so it never fires on desktop); the toggle label mirrors the section in view
   const nav = document.querySelector('.anchor-nav');
   const toggle = document.getElementById('anchor-toggle');
   const currentLabel = document.querySelector('.anchor-nav__current');
@@ -536,10 +516,8 @@ function initAnchorNav() {
   }
 
   function handleAnchorLinkClick(event) {
-    // Instant feedback on click, rather than waiting for the smooth
-    // scroll to finish and the observer below to catch up - also
-    // covers the edge case where the last block might never fully
-    // cross the observer's center-crossing zone on a short viewport.
+    // Instant feedback on click instead of waiting for the smooth scroll and the observer;
+    // also covers a last block that may never cross the observer's zone on a short viewport
     const targetId = event.currentTarget.getAttribute('href').slice(1);
     setActiveLink(targetId);
     setMenuOpen(false);
@@ -564,10 +542,8 @@ function initAnchorNav() {
   });
 
   const observer = new IntersectionObserver(handleBlockIntersect, {
-    // Shrinks the effective viewport to its middle 20% (-40% off the top
-    // and bottom), so a block only counts as "current" once it crosses
-    // near the center of the screen -- not the instant its edge appears,
-    // which would flicker between two adjacent blocks near the boundary.
+    // Shrinks the effective viewport to its middle 20%, so a block only counts as current
+    // near the center of the screen and doesn't flicker between two adjacent blocks
     rootMargin: '-40% 0px -40% 0px'
   });
 
@@ -577,11 +553,9 @@ function initAnchorNav() {
 }
 
 function setSelectedTab(tabList, selectedTab, panel) {
-  // Tabs-specific counterpart to setSelectedChip(): uses aria-selected (the
-  // correct attribute for role="tab", vs. aria-pressed for toggle buttons
-  // like the mood chips) and roving tabindex (selected tab gets tabindex=0,
-  // the rest -1), and repoints the shared results panel's aria-labelledby
-  // at whichever tab is now active.
+  // Tabs version of setSelectedChip(): aria-selected (right for role="tab", aria-pressed is
+  // for toggle buttons) and roving tabindex (selected 0, the rest -1); also points the
+  // shared results panel's aria-labelledby at the active tab
   tabList.forEach(function (tab) {
     const isSelected = tab === selectedTab;
     tab.classList.toggle('is-selected', isSelected);
@@ -595,10 +569,6 @@ function setSelectedTab(tabList, selectedTab, panel) {
 }
 
 function initJournalFilter() {
-  // tabs retrofit: real ARIA tabs (role="tablist"/"tab",
-  // aria-selected, roving tabindex, arrow-key navigation) instead of
-  // toggle buttons. The Explore mood chips are a genuine filter, not
-  // tabs, and are untouched -- they keep aria-pressed and setSelectedChip().
   const tablist = document.querySelector('.category-tabs');
   const tabs = document.querySelectorAll('.category-tabs__tab');
   const grid = document.querySelector('.post-grid__list');
@@ -610,8 +580,8 @@ function initJournalFilter() {
   const tabList = Array.prototype.slice.call(tabs);
   const totalCount = grid.querySelectorAll('.post-card').length;
 
-  // Sliding pill (J6): measure the selected tab and hand the numbers to CSS
-  // as custom properties on the bar. CSS does the actual sliding.
+  // Measures the selected tab and hands the numbers to CSS as custom properties on the
+  // bar, CSS does the sliding
   function movePill(tab) {
     tablist.style.setProperty('--pill-x', tab.offsetLeft + 'px');
     tablist.style.setProperty('--pill-width', tab.offsetWidth + 'px');
@@ -626,9 +596,8 @@ function initJournalFilter() {
   }
 
   function applyJournalFilter(tab) {
-    // Same container pattern as the mood filter: one class on the grid
-    // (.post-grid__list--category-design), CSS does the hiding. "All" has no
-    // matching data-category on any post, so it simply clears the class.
+    // Same one-class-on-the-grid pattern as the mood filter (.post-grid__list--category-design);
+    // "All" matches no data-category, so it just clears the class
     const category = tab.dataset.category;
     const isAll = category === 'all';
     setSelectedTab(tabList, tab, panel);
@@ -649,16 +618,14 @@ function initJournalFilter() {
     applyJournalFilter(event.currentTarget);
   }
 
-  // Roving-tabindex arrow-key navigation, per the WAI-ARIA Tabs pattern:
-  // Left/Right cycle through tabs (wrapping at the ends), Home/End jump to
-  // the first/last tab, and moving focus also activates the tab immediately
-  // ("automatic activation") - matches the existing click-to-filter
-  // behavior instead of requiring a separate Enter/Space press.
+  // Arrow-key navigation with roving tabindex (WAI-ARIA tabs pattern): Left/Right cycle
+  // and wrap, Home/End jump to the first and last tab, and focus activates the tab at
+  // once, like a click
   function handleTabKeydown(event) {
     const currentIndex = tabList.indexOf(document.activeElement);
     if (currentIndex === -1) return;
 
-    let targetIndex = null;
+    let targetIndex;
     if (event.key === 'ArrowRight') {
       targetIndex = (currentIndex + 1) % tabList.length;
     } else if (event.key === 'ArrowLeft') {
@@ -686,9 +653,8 @@ function initJournalFilter() {
     document.fonts.ready.then(handleTabResize); // web-font widths differ from the fallback font's
   }
 
-  // "All" ships pre-selected in the HTML - apply it on load so the status
-  // text and aria state match what the tab bar already shows, same
-  // reasoning as the mood filter's default-to-Cozy.
+  // "All" ships pre-selected in the HTML; applying it on load keeps the status text and aria
+  // state in line with the tab bar, same as the mood filter's default Cozy
   const defaultTab = tabList.find(function (tab) {
     return tab.classList.contains('is-selected');
   });
@@ -699,10 +665,9 @@ function initJournalFilter() {
 }
 
 function initFaqAccordion() {
-  // About page FAQ. Single-open: opening one item closes whichever other
-  // one was open, same pattern as the mood chips / journal tabs above.
-  // The open/closed look is one class on the item (.is-open); CSS animates
-  // the answer's height with grid-template-rows, so JS never touches styles.
+  // About page FAQ, single-open: opening one item closes the other, like the mood chips and
+  // journal tabs above. The look is one class (.is-open) and CSS animates the answer's height
+  // with grid-template-rows, so JS never touches styles
   const questions = document.querySelectorAll('.faq__question');
   if (!questions.length) return;
 
@@ -735,9 +700,8 @@ function prefersReducedMotion() {
 }
 
 function initHeroHeadline() {
-  // Home hero (J10): wrap every word of the h1 in a span so CSS can stagger
-  // them. Spaces stay as plain text nodes, so wrapping and screen-reader
-  // output are unchanged.
+  // Home hero: wrap every word of the h1 in a span so CSS can stagger them; spaces stay as
+  // plain text nodes, so wrapping and screen-reader output don't change
   const title = document.querySelector('.intro__title');
   if (!title || prefersReducedMotion()) return;
 
@@ -766,11 +730,10 @@ function initHeroHeadline() {
 }
 
 function initScrollReveal() {
-  // Scroll reveal (J1). Only sections that start below the fold are touched,
-  // so nothing the visitor sees on load is ever hidden (no flash, no LCP hit).
-  // Each such section gets .reveal and its children (or, for a list, its
-  // items) get .reveal-item with an --i stagger index; one IntersectionObserver
-  // adds .is-revealed to the section when it scrolls into view.
+  // Scroll reveal: only sections that start below the fold are touched, so nothing visible on
+  // load is ever hidden (no flash, no LCP hit). Each gets .reveal and its children (or list
+  // items) get .reveal-item with an --i stagger index; one IntersectionObserver adds
+  // .is-revealed when the section scrolls into view
   if (!('IntersectionObserver' in window) || prefersReducedMotion()) return;
 
   const MAX_STAGGER = 6;
@@ -830,10 +793,9 @@ function initScrollReveal() {
 }
 
 function initCardTilt() {
-  // 3D tilt + glare on book cards (J8). One pair of listeners per book row
-  // (event delegation); the card under the pointer gets .is-tilting and its
-  // --tilt-x / --tilt-y / --glare-x / --glare-y custom properties. CSS does
-  // the rest. Skipped on touch screens and for reduced motion.
+  // 3D tilt and glare on book cards: one pair of listeners per book row (event delegation);
+  // the card under the pointer gets .is-tilting and the --tilt-x/-y and --glare-x/-y custom
+  // properties, CSS does the rest. Skipped on touch screens and for reduced motion
   const rows = document.querySelectorAll('.book-row');
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (!rows.length || !canHover || prefersReducedMotion()) return;
@@ -880,10 +842,9 @@ function initCardTilt() {
 }
 
 function initGenreDonut() {
-  // Genre chart (J3). The legend is the single source of truth: this reads
-  // each percentage from it and sets the matching donut segment's length and
-  // start, so the chart can never disagree with the numbers beside it.
-  // Without JS the CSS defaults draw the same chart in full.
+  // Genre chart: the legend is the single source of truth, this reads each percentage from
+  // it and sets the matching donut segment's length and start, so the chart can't disagree
+  // with the numbers beside it. Without JS the CSS defaults draw the same chart in full
   const panel = document.querySelector('.mock--genre');
   if (!panel) return;
 
@@ -921,9 +882,8 @@ function initGenreDonut() {
 }
 
 function initAliasShuffle() {
-  // Anonymous alias generator (J4). Purely illustrative: it shows that a
-  // profile is a made-up handle plus a generated avatar, never a real name or
-  // photo. Nothing is stored or sent anywhere.
+  // Anonymous alias generator, only illustrative: a profile is a made-up handle plus a
+  // generated avatar, never a real name or photo. Nothing is stored or sent anywhere
   const button = document.querySelector('.profile__shuffle');
   const aliasEl = document.querySelector('.profile__alias');
   const avatar = document.querySelector('.profile__avatar');
@@ -998,9 +958,8 @@ function initAliasShuffle() {
 }
 
 function initHalfStarRater() {
-  // Half-star rater (J2). The ten radios are a native group, so keyboard
-  // users get arrow keys for free; this code only paints the stars, updates
-  // the readout, announces the choice and plays the sparkle.
+  // Half-star rater: the ten radios are a native group, so arrow keys work for free; this
+  // only paints the stars, updates the readout, announces the choice and plays the sparkle
   const rater = document.querySelector('.rater');
   if (!rater) return;
 

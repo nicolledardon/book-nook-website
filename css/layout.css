@@ -1,19 +1,15 @@
-/* CONTAINER */
+/* container */
 
 .page-section { /* only ever touches top-level page sections */
-  width: 100%; /* explicit definite width — without this, the auto side margins below disable
-                  flex stretch on this item, .popular's width goes indefinite, and .book-row's
-                  grid-template-columns: repeat(auto-fill, ...) collapses to a single column */
+  width: 100%; /* definite width: the auto margins below would otherwise disable flex stretch and collapse .book-row's
+                  auto-fill grid to one column */
   max-width: 90rem;
   margin: 0 auto;
   padding: 0 var(--space-lg);
 }
 
-
-/* HOME HERO INTRO
-   Matches Figma's "hero" node — vertical stack, centered, with its own
-   breathing room since it's the first section on the page (main's 96px
-   gap only applies BETWEEN sections, not above the first one). */
+/* home hero intro, with its own top padding because main's 96px gap only applies between sections, not above the
+   first one */
 
 .intro {
   display: grid;
@@ -21,7 +17,6 @@
   align-items: center;
   gap: var(--space-lg);
   max-width: 75rem;
-  margin: 0 auto;
   padding: var(--space-xl) 0;
 }
 
@@ -41,9 +36,6 @@
 }
 
 .intro__book {
-  --x: 0rem;
-  --y: 0rem;
-  --rot: 0deg;
   --ry: 0deg;
   position: absolute;
   top: 50%;
@@ -59,7 +51,6 @@
 }
 
 .intro__book img {
-  display: block;
   width: 100%;
   height: auto;
   border-radius: var(--radius-sm);
@@ -90,7 +81,6 @@
   .intro {
     display: flex;
     flex-direction: column;
-    align-items: center;
     max-width: 60rem;
     gap: var(--space-md);
   }
@@ -105,18 +95,9 @@
   }
 }
 
-/* HOME BOOKSHELF (restored from the PEC 2 wireframe's "book spines" strip,
-   which the PEC 3 design dropped). A row of spines standing on a wooden
-   ledge: ten real titles from the catalogue, thin filler spines and a few
-   leaning books. Purely decorative, so the section is aria-hidden; the same
-   books are listed properly below and on Explore. Spine colours are Dress
-   Blues, Chocolate and Bone for the labelled ones (text passes contrast);
-   the unlabelled fillers also use the two chart tones. Gold is not used:
-   it stays reserved for ratings, as in the colour system. Each spine reads its
-   lift and lean from custom properties, so hover only swaps a variable and
-   the transition on the base state eases it back on mouseout. On narrower
-   screens the same number of spines is trimmed from both ends, so the shelf
-   stays centred and never scrolls sideways. */
+/* home bookshelf: a row of spines on a wooden ledge, decorative only so the section is aria-hidden (the same books
+   are listed below and on Explore); hover only swaps the lift and lean variables and the transition on the base state
+   eases it back; narrower screens trim spines from both ends so the shelf stays centred and never scrolls sideways */
 .shelf {
   max-width: 75rem;
   margin-top: calc(-1 * var(--space-xl)); /* cancels main's gap above, so the shelf follows the hero's own bottom padding */
@@ -134,11 +115,9 @@
 .shelf__book {
   --spine-bg: var(--color-dominant);
   --spine-fg: var(--color-surface);
-  --spine-h: 13rem;
   --lift: 0rem;
   --lean: 0deg;
   flex: none;
-  box-sizing: border-box;
   width: 3.5rem;
   height: var(--spine-h);
   padding: var(--space-sm) var(--space-xs);
@@ -175,7 +154,6 @@
 .shelf__book--tan   { --spine-bg: var(--color-chart-3); --spine-fg: var(--color-dominant); }
 .shelf__book--slate { --spine-bg: var(--color-chart-4); --spine-fg: var(--color-dominant); }
 
-.shelf__book:nth-child(4n + 1) { --spine-h: 12.5rem; }
 .shelf__book:nth-child(4n + 2) { --spine-h: 14.5rem; }
 .shelf__book:nth-child(4n + 3) { --spine-h: 13.5rem; }
 .shelf__book:nth-child(4n)     { --spine-h: 15rem; }
@@ -276,10 +254,8 @@
   color: var(--color-text-muted);
 }
 
-/* FEATURES PAGE INTRO
-   Matches Figma's "page-intro" node — same centered-stack pattern as
-   .intro, but 32px gap and top padding only (the feature blocks below
-   provide their own spacing). */
+/* features page intro, same centered stack as .intro but with top padding only, the feature blocks below bring their
+   own spacing */
 
 .features-intro {
   display: flex;
@@ -287,15 +263,12 @@
   align-items: center;
   gap: var(--space-lg-sm);
   max-width: 60rem;
-  margin: 0 auto;
   padding-top: var(--space-xl);
   text-align: center;
 }
 
-/* FEATURES ANCHOR BUTTONS
-   Matches Figma's "anchor-nav" — a row of links, not pill buttons.
-   Centered automatically because .features-intro (above) centers its
-   flex children, and this div shrinks to fit its own content width. */
+/* features anchor buttons, a row of links (not pills); centered because .features-intro centers its children and this
+   div shrinks to its content */
 
 .anchor-nav {
   display: flex;
@@ -331,35 +304,27 @@
   display: none;
 }
 
-/* Toggled by initHeaderScroll() in main.js in step with header--hidden --
-   slides the nav up to close the gap left where the header used to be,
-   instead of leaving empty space above it. Desktop widths only, since
-   the header itself never hides on mobile. */
+/* initHeaderScroll() in main.js toggles this together with header--hidden, sliding the nav up into the gap the header
+   leaves; desktop only since the header never hides on mobile */
 .anchor-nav.is-docked {
   transform: translateY(calc(-1 * var(--header-height)));
 }
 
-/* Figma sizes these links at 14px, not the button system's standard
-   16px (--fs-body-2). .anchor-nav__link is already a class directly on each
-   link (see features.html), so this targets it directly instead of the
-   .anchor-nav .btn--tertiary descendant selector — same effect,
-   lower specificity, no risk of overriding .btn--tertiary elsewhere. */
+/* 14px instead of the button system's 16px; targets the class directly, which has lower specificity than .anchor-nav
+   .btn--tertiary and can't affect other tertiary buttons */
 .anchor-nav__link {
   font-size: var(--fs-small);
 }
 
-/* Marks whichever feature-block is on screen, per initAnchorNav()'s
-   IntersectionObserver. Same filled-pill treatment as .mood-chip.is-selected
-   for a consistent "this one's active" language across the site. */
+/* the feature block on screen (initAnchorNav() IntersectionObserver), same filled pill as .mood-chip.is-selected so
+   active looks the same everywhere */
 .anchor-nav__link.is-active {
   background-color: var(--color-accent-1);
   color: var(--color-surface);
 }
 
-/* EXPLORE — MOOD-BASED BROWSE
-   Matches Figma's "mood-based-browse" node — unlike the hero/features
-   intros above, this section is left-aligned, not centered; only the
-   text inside each mood-chip button is centered (see components.css). */
+/* explore mood browse: left-aligned unlike the centered intros above, only the text inside each mood chip is centered
+   */
 
 .mood-browse {
   display: flex;
@@ -385,19 +350,15 @@
   color: var(--color-text-muted);
 }
 
-/* Result of the filter, e.g. "Showing 2 books for Cozy". Visible for everyone
-   and also announced by screen readers (aria-live in the HTML). The min-height
-   keeps the line from jumping while the text is empty. */
+/* result line, e.g. "Showing 2 books for Cozy": visible and read out by screen readers (aria-live), the min-height
+   stops it jumping while it is empty */
 .mood-browse__status {
   min-height: 1.5em;
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
 }
 
-/* ABOUT PAGE
-   Matches Figma's "about-content" node — centered single column:
-   photo, heading, body copy, CTA — capped narrower than the hero
-   sections since this is a single block of prose, not a two-line intro. */
+/* about page: a centered single column, capped narrower than the hero sections since it is one block of prose */
 
 .meet-creator {
   display: flex;
@@ -405,14 +366,13 @@
   align-items: center;
   gap: var(--space-lg-sm);
   max-width: 45rem;
-  margin: 0 auto;
   padding: var(--space-xl) 0;
   text-align: center;
 }
 
 .meet-creator__heading {
   font-weight: var(--fw-bold);
-  font-style: normal; /* base.css makes h2 italic by default — this heading isn't */
+  font-style: normal;
 }
 
 .meet-creator__bio {
@@ -427,15 +387,13 @@
   object-fit: cover;
 }
 
-/* PRIVACY / TERMS
-   Plain single-column reading pages. */
+/* privacy and terms, plain single-column reading pages */
 
 .legal {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   max-width: 45rem;
-  margin: 0 auto;
   padding-block: var(--space-xl);
 }
 
@@ -449,17 +407,14 @@
   color: var(--color-text-muted);
 }
 
-/* ABOUT PAGE — FAQ
-   Single-open accordion under the creator bio. Left-aligned unlike
-   .meet-creator above it, since this is a list of Q&A pairs, not a
-   centered block of prose. */
+/* about page FAQ, a single-open accordion; left-aligned unlike .meet-creator above, since it is a list of Q&A pairs
+   and not a block of prose */
 
 .faq {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   max-width: 45rem;
-  margin: 0 auto;
   padding: 0 0 var(--space-xxl);
 }
 
@@ -493,9 +448,8 @@
   isolation: isolate; /* keeps the tint below behind the text without leaving the row */
 }
 
-/* Hover / press tint: a pseudo-element that bleeds past the row's sides, so
-   the tint looks like a pill without adding padding (which would shift the
-   text out of line with the heading). Only its opacity animates. */
+/* hover and press tint: a pseudo-element that bleeds past the row's sides so it looks like a pill without padding,
+   which would shift the text out of line with the heading; only its opacity animates */
 .faq__question::before {
   content: '';
   position: absolute;
@@ -535,10 +489,8 @@
   transform: rotate(-135deg); /* open: chevron pointing up */
 }
 
-/* Smooth open/close: the answer is a one-cell grid whose row animates from
-   0fr to 1fr, so the height eases without JS measuring anything. Closed
-   answers use visibility:hidden (not display:none), which keeps them out of
-   the tab order and away from screen readers but still lets the row animate. */
+/* the answer is a one-cell grid whose row animates 0fr to 1fr, so the height eases without JS measuring; closed uses
+   visibility:hidden, not display:none, to stay out of the tab order and away from screen readers but still animate */
 .faq__answer {
   display: grid;
   grid-template-rows: 0fr;
@@ -561,8 +513,7 @@
   padding-bottom: var(--space-md);
 }
 
-/* WAITLIST — SIGN-UP
-   Matches Figma's "waitlist-hero" node. */
+/* waitlist sign-up */
 
 .signup__panel {
   display: flex;
@@ -570,7 +521,6 @@
   align-items: center;
   gap: var(--space-md);
   max-width: 45rem;
-  margin: 0 auto;
   padding: var(--space-xxl) 0;
   text-align: center;
 }
@@ -644,10 +594,8 @@
   display: none;
 }
 
-/* WAITLIST — CONFIRMATION
-   Matches Figma's "ticket-panel" node. Currently a second section on the
-   same page as sign-up (see design decision logged 2026-09-21) — PEC5
-   will toggle which of the two is visible via JS, no page navigation. */
+/* waitlist confirmation: a second section on the same page as sign-up, JS toggles [hidden] so there is no page
+   navigation */
 
 .confirmation-panel {
   display: flex;
@@ -655,11 +603,8 @@
   padding: var(--space-xl) 0;
 }
 
-/* [hidden] on its own loses to the .confirmation-panel display:flex rule
-   above — same specificity, and author CSS always beats the browser's
-   built-in [hidden] { display: none } rule in a tie. Combining the
-   attribute with the class (.confirmation-panel[hidden]) makes this
-   selector more specific, so it wins and actually hides the section. */
+/* [hidden] alone loses to the .confirmation-panel display:flex above (same specificity, and author CSS beats the
+   browser's [hidden] rule), so the class plus attribute selector is more specific and actually hides it */
 .confirmation-panel[hidden] {
   display: none;
 }
@@ -697,10 +642,8 @@
   font-weight: var(--fw-semibold);
 }
 
-/* Ticket "print" (J7): main.js adds .is-printing once, right after sign-up.
-   The ticket is revealed top to bottom with clip-path while it slides down
-   into place, like a receipt coming out of a printer. fill-mode "backwards"
-   means nothing is left over when the animation ends. */
+/* ticket "print": main.js adds .is-printing once, right after sign-up; clip-path reveals the ticket top to bottom
+   while it slides down, like a receipt from a printer, and fill-mode backwards leaves nothing behind when it ends */
 .ticket.is-printing {
   animation: ticket-print calc(var(--duration-reveal) * 2) cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
 }
@@ -733,9 +676,7 @@
   color: var(--color-text-muted);
 }
 
-
-/* HEADER
-   Translucent, blurred bar */
+/* header, translucent blurred bar */
 
 header {
   position: sticky;
@@ -746,7 +687,6 @@ header {
   background-color: var(--color-header-bg);
   backdrop-filter: blur(0.33125rem);
   -webkit-backdrop-filter: blur(0.33125rem); /* Safari requires the prefixed version */
-  /*border-bottom: 1px solid var(--color-aux8);*/
 }
 
 /* Toggled by initHeaderScroll() in main.js, desktop widths only. */
@@ -831,8 +771,7 @@ header {
   color: var(--color-accent-1);
 }
 
-/* FOOTER
-   Dark 4-column bar: about/tagline — nav links — social — legal */
+/* footer, dark 4-column bar: about and tagline, nav links, social, legal */
 
 footer {
   padding: var(--space-xl-sm) var(--space-lg);
@@ -840,10 +779,8 @@ footer {
   color: var(--color-aux10);
 }
 
-/* Background spans full width (footer above); this inner wrapper caps
-   and centers the actual content at 90rem, matching main > section and
-   header nav so footer columns align with the page content above them
-   on screens wider than 1440px. */
+/* the footer background is full width, this inner wrapper caps the content at 90rem like main > section and header
+   nav so the columns line up on screens wider than 1440px */
 .footer__inner {
   display: flex;
   align-items: flex-start;
@@ -948,19 +885,11 @@ footer a:focus-visible {
   height: 1.1rem;
 }
 
-/* ==========================================================================
-   SECTION RHYTHM
-   96px of vertical breathing room between every top-level section on the
-   page — matches the consistent gap Figma uses between Explore's
-   mood-based-browse / recent-releases / popular-shelves / user-shelves-cta,
-   and between Home's feature-cards-section / popular-books-section. */
+/* section rhythm: 96px of vertical space between every top-level section on the page */
 
-/* FULL-BLEED COLOUR BANDS
-   Two sections get a background that runs edge to edge while their content
-   stays inside the 90rem container: the box-shadow paints the colour 100vmax
-   past both sides, and clip-path trims it back to the section's own height.
-   The transparent border is the band's vertical padding (the .page-section
-   padding shorthand would otherwise override padding-block). */
+/* full-bleed bands: the box-shadow paints the colour 100vmax past both sides and clip-path trims it to the section
+   height; the transparent border is the vertical padding, because the .page-section padding shorthand would override
+   padding-block */
 .highlights,
 .popular-shelves {
   border-block: var(--band-padding) solid transparent;
@@ -986,32 +915,21 @@ main {
   padding-block: var(--space-sm-plus) var(--space-xl-sm);
 }
 
-/* ==========================================================================
-   EXPLORE / BOOK GRID
-   Turns .book-row (Home's "Popular right now" row + all three Explore
-   rows) into a responsive grid instead of a fixed layout. Cards are
-   300px wide with 48px gaps, matching Figma's Book Row exactly — at
-   the 1440px reference width that's 4 columns (4×300 + 3×48 = 1344px,
-   the full container width). On narrower screens columns drop to 3,
-   2, then 1 automatically — no media queries needed. */
+/* book grid: .book-row (Home's "Popular right now" row and all three Explore rows) is an auto-fill grid of 300px
+   cards, 4 columns at 1440px then 3, 2 and 1 with no media queries */
 
 .book-row {
   --book-row-gap: var(--space-lg);
   display: grid;
-  width: 100%; /* explicit definite width — .mood-browse is display:flex with
-                  align-items: flex-start, which shrink-wraps children instead of
-                  stretching them; without this, .book-row has no definite width and
-                  grid-template-columns: repeat(auto-fill, ...) collapses to 1 column,
-                  same root cause as the main > section fix above but for a flex parent
-                  instead of a margin:auto block parent. */
+  width: 100%; /* definite width: .mood-browse is a flex parent with align-items: flex-start, which shrink-wraps its
+                  children, so without this the auto-fill grid collapses to one column (same cause as the
+                  .page-section fix above) */
   grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
   gap: var(--book-row-gap);
 }
 
-/* Shelf ledge: a wooden strip under the last row of covers. It is a grid
-   item on its own row, pulled up with a negative margin so the cards look
-   like they stand on it. Decorative, so it has no content. Hidden on phones
-   and small tablets, where the cards stack into several short rows. */
+/* shelf ledge: a decorative wooden strip under the last row, pulled up with a negative margin so the cards look like
+   they stand on it; hidden on phones and small tablets where the cards stack into short rows */
 .book-row::after {
   content: '';
   grid-column: 1 / -1;
@@ -1023,37 +941,28 @@ main {
   transition: opacity var(--duration-reveal) ease;
 }
 
-/* EXPLORE — RECENT RELEASES / POPULAR SHELVES
-   Heading + book-row pattern, reused identically on Home's "Popular
-   right now" section below. 24px gap between heading and row —
-   corrected 2026-09-27 against the live Figma file (node 117:600/699):
-   96px is the gap BETWEEN these sections (already handled by main's
-   own 96px gap), not the internal heading-to-row spacing, which
-   measures ~24px in Figma — same value .mood-browse already used. */
+/* explore recent releases and popular shelves, the same heading + book-row pattern as Home's "Popular right now";
+   24px between heading and row (the 96px is the gap between sections, handled by main) */
 
 .recent-releases,
 .popular-shelves,
 .popular {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md); /* 24px */
+  gap: var(--space-md);
 }
 
-/* EXPLORE — BUILD YOUR OWN SHELVES CTA
-   Centered heading + paragraph + button, 20px gap, per Figma
-   (Nicolle, 2026-09-26). */
+/* explore "build your own shelves" call to action: centered heading, paragraph and button with a 20px gap */
 
 .user-shelves-cta {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-sm-plus); /* 20px */
+  gap: var(--space-sm-plus);
   text-align: center;
 }
 
-/* FEATURES — BOTTOM CTA
-   Button centered in the section, 240px side padding, per Figma
-   (Nicolle, 2026-09-26). */
+/* features bottom call to action: button centered in the section, 240px side padding */
 
 .features-cta {
   display: flex;
@@ -1061,13 +970,10 @@ main {
   align-items: center;
   gap: var(--space-md);
   text-align: center;
-  padding: 0 15rem; /* 240px */
+  padding: 0 15rem;
 }
 
-/* JOURNAL
-   Blog-style listing -- heading, category filter, and a responsive grid
-   of post cards. Structurally mirrors Explore's mood-based-browse
-   section (heading, filter row, card grid). */
+/* journal: blog-style listing with the same structure as Explore's mood browse (heading, filter row, card grid) */
 
 .journal {
   display: flex;
@@ -1077,10 +983,8 @@ main {
   padding-top: var(--space-xl);
 }
 
-/* Single rounded bar with the active tab as a light pill inside it,
-   per Nicolle's reference (2026-09-28) -- not individual chip buttons
-   like .mood-chip. Centered independently of .journal's own
-   left-aligned heading. */
+/* a single rounded bar with the active tab as a light pill inside it, not separate chips like .mood-chip; centered on
+   its own while the .journal heading stays left-aligned */
 .category-tabs {
   display: inline-flex;
   align-self: center;
@@ -1090,20 +994,17 @@ main {
   border-radius: var(--radius-pill);
   max-width: 100%; /* inline-flex otherwise sizes to its content and ignores
     the container, which is what pushed the page wide on narrow screens */
-  overflow-x: auto; /* the bar itself scrolls sideways once its 5 tabs don't
-    fit, instead of the whole page -- same pattern as category pills on
-    Instagram/YouTube; keeps the reference's single-row pill shape intact
-    at every width, per Nicolle's decision (2026-09-28) */
+  overflow-x: auto; /* the bar scrolls sideways when its 5 tabs don't fit, instead of the page, so the single-row pill
+                       shape holds at every width */
   -webkit-overflow-scrolling: touch;
   position: relative; /* anchors the sliding pill (::before) */
   scrollbar-width: thin; /* slim scrollbar in a Bone tint instead of the default grey bar */
   scrollbar-color: var(--color-surface-60) transparent;
 }
 
-/* Sliding pill (J6): once main.js has measured the selected tab it adds
-   .has-pill and sets --pill-x / --pill-width on the bar. The pill slides
-   between tabs; the selected tab itself goes transparent so the pill shows.
-   Without JS the old per-tab pill (.is-selected) still works. */
+/* sliding pill: once main.js has measured the selected tab it adds .has-pill and sets --pill-x and --pill-width on
+   the bar; the selected tab goes transparent so the pill shows, and without JS the per-tab pill (.is-selected) still
+   works */
 .category-tabs.has-pill::before {
   content: '';
   position: absolute;
@@ -1131,13 +1032,10 @@ main {
   white-space: nowrap;
   padding: 0.625rem 1.125rem;
   border-radius: var(--radius-pill);
-  border: none;
-  background-color: transparent;
   color: var(--color-surface);
   font-family: var(--font-body);
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
-  cursor: pointer;
   transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-fast) ease;
 }
 
@@ -1166,13 +1064,9 @@ main {
 
 .post-grid__list {
   display: grid;
-  width: 100%; /* same auto-fill-collapse fix .book-row needed -- .journal is a flex parent with align-items: flex-start */
-  /* min(18.75rem, 100%) instead of a bare 18.75rem -- self-adapts on narrow
-     screens without a breakpoint override: once 100% of the available width
-     is less than 300px, the column just becomes full-width (one post-card
-     per row) instead of forcing a 300px-minimum track that overflows.
-     Unlike .book-row's 320px fix, this reads as one column rather than two
-     narrow ones, since post-card is text content, not a book cover. */
+  width: 100%; /* same auto-fill collapse fix as .book-row: .journal is a flex parent with align-items: flex-start */
+  /* min(18.75rem, 100%) instead of a bare 18.75rem so narrow screens need no breakpoint: under 300px the column just
+     goes full width (one post card per row) instead of a 300px track that overflows */
   grid-template-columns: repeat(auto-fill, minmax(min(18.75rem, 100%), 1fr));
   gap: var(--space-lg);
 }
@@ -1194,14 +1088,9 @@ main {
   gap: var(--space-xs);
 }
 
-/* FILTER MODIFIERS
-   Explore's mood filter and Journal's category filter use the container
-   pattern: main.js puts ONE class on the grid (e.g. .book-row--mood-cozy)
-   and these rules hide every card whose data attribute doesn't contain that
-   word. [data-moods~="cozy"] matches one whole word inside the space-separated
-   list, so "cozy heartfelt" matches both cozy and heartfelt. display:none
-   also removes hidden cards from the accessibility tree. With no modifier
-   class on the grid, nothing matches and every card shows. */
+/* filter modifiers: main.js puts one class on the grid (e.g. .book-row--mood-cozy) and these rules hide the cards
+   whose data attribute lacks that word ([data-moods~="cozy"] matches one whole word in the list); display:none also
+   removes them from the accessibility tree, and with no class on the grid every card shows */
 
 .book-row--mood-cozy .book-card:not([data-moods~="cozy"]),
 .book-row--mood-thrilling .book-card:not([data-moods~="thrilling"]),
@@ -1241,7 +1130,7 @@ main {
   color: var(--color-text-muted);
 }
 
-/* HAMBURGER MENU & MOBILE NAVIGATION */
+/* hamburger menu and mobile navigation */
 
 .nav__toggle {
   display: none;
@@ -1249,10 +1138,6 @@ main {
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  cursor: pointer;
-  padding: 0;
-  border: none;
-  background-color: transparent;
   color: var(--color-dominant);
   transition: color var(--duration-fast) ease, opacity var(--duration-fast) ease;
 }
@@ -1292,16 +1177,11 @@ body.is-nav-open::before {
   visibility: visible;
 }
 
-/* ==========================================================================
-   MOTION EXTRAS (Phase 5)
-   Only opacity, transform / translate and SVG strokes animate. Durations
-   come from the tokens in variables.css, which base.css zeroes for
-   prefers-reduced-motion.
-   ========================================================================== */
+/* motion extras: only opacity, transform/translate and SVG strokes animate, with durations from the tokens that
+   base.css zeroes under reduced motion */
 
-/* HERO HEADLINE (J10): main.js wraps each word in .intro__word. The words
-   rise into place one after another; opacity starts at 0.25, not 0, so the
-   headline text is painted from the first frame (keeps Lighthouse LCP fast). */
+/* hero headline: main.js wraps each word in .intro__word and the words rise in one after another; opacity starts at
+   0.25, not 0, so the text is painted from the first frame (keeps LCP fast) */
 .intro__word {
   display: inline-block;
   animation: word-rise var(--duration-reveal) ease both;
@@ -1332,7 +1212,6 @@ body.is-nav-open::before {
   left: 0;
   bottom: -0.12em;
   width: 100%;
-  height: auto;
   overflow: visible;
   pointer-events: none;
 }
@@ -1353,11 +1232,9 @@ body.is-nav-open::before {
   }
 }
 
-/* SCROLL REVEAL (J1): below-the-fold sections get .reveal from main.js, and
-   each of their children .reveal-item with an --i index for the stagger.
-   One class on the section (.is-revealed) starts every child's transition.
-   main.js removes both classes afterwards so cards go back to their own
-   hover/tilt transitions. */
+/* scroll reveal: main.js gives below-the-fold sections .reveal and their children .reveal-item with an --i index for
+   the stagger; .is-revealed on the section starts every child's transition, then main.js removes both classes so
+   cards go back to their own hover and tilt transitions */
 .reveal-item {
   opacity: 0;
   translate: 0 1.5rem;
@@ -1391,57 +1268,51 @@ body.is-nav-open::before {
   }
 }
 
-/* ========================================================================== */
-/* RESPONSIVE MEDIA QUERIES — DESKTOP-FIRST                                    */
-/* The base styles above are the desktop layout; each query below overrides   */
-/* them as the screen gets narrower (max-width). Blocks run widest to         */
-/* narrowest: base (1025+) → 769–1024 → ≤768 → ≤480, so the narrowest match wins. */
-/* ========================================================================== */
+/* responsive, desktop-first: the base styles above are the desktop layout and each query below overrides them as the
+   screen narrows (max-width), widest to narrowest, so the narrowest match wins */
 
-/* DESKTOP (1025px+) uses the base styles above as they are: 4-column
-   highlights, 300px book-card tracks. No query needed. */
+/* desktop (1025px and up) needs no query, it uses the base styles above */
 
-/* TABLETS & SMALL DESKTOPS (769px - 1024px) */
+/* tablets and small desktops (769px to 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .highlights__list {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .book-row {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   }
-  
+
   .book-card {
     max-width: 10rem;
   }
-  
-  /* Nav collision fix: logo + 5 links + CTA is ~660px of content against
-     ~673px available at 769px (header padding 48px each side) — a ~13px
-     margin that breaks under real font rendering. Tighten padding + gap. */
+
+  /* nav collision fix: logo, 5 links and the CTA need ~660px against ~673px available at 769px, a ~13px margin that
+     breaks under real font rendering, so tighten padding and gap */
   header {
-    padding: var(--space-md) var(--space-lg-sm); /* 24px top/bottom, 32px sides (was 48px) */
+    padding: var(--space-md) var(--space-lg-sm);
   }
-  
+
   .nav__links {
-    gap: var(--space-md); /* 24px (was 32px) */
-    font-size: var(--fs-small); /* 14px (was 16px) */
+    gap: var(--space-md);
+    font-size: var(--fs-small);
   }
-  
+
   .header__logo {
-    font-size: 1.25rem; /* 20px (was 24px) */
+    font-size: 1.25rem;
   }
 }
 
-/* PHONES & SMALL TABLETS (≤768px) */
+/* phones and small tablets (up to 768px) */
 @media (max-width: 768px) {
   .page-section {
     padding: 0 var(--space-lg-sm);
   }
-  
+
   header {
     padding: var(--space-md) var(--space-lg-sm);
   }
-  
+
   .header__cta {
     display: none;
   }
@@ -1449,21 +1320,13 @@ body.is-nav-open::before {
   .nav__cta {
     display: list-item;
   }
-  
+
   .nav__toggle {
     display: flex;
   }
-  
-  /* .features-cta's 240px side padding (desktop/Figma spec) would overflow badly
-     on mobile — 480px of padding alone exceeds most phone viewports.
-     Fall back to the same padding used by main > section elsewhere. */
-  .features-cta {
-    padding: 0 var(--space-lg-sm);
-  }
-  
-  /* FEATURES ANCHOR NAV — collapses to one slim bar on phones.
-     The four links become a dropdown, opened by the toggle button, so the
-     sticky bar no longer covers the feature blocks underneath. */
+
+  /* features anchor nav collapses to one slim bar on phones: the links become a dropdown opened by the toggle button,
+     so the sticky bar stops covering the feature blocks */
   .anchor-nav {
     top: 5rem; /* the phone header is 80px tall, not the desktop 90px, so no gap shows above the bar */
     padding-block: var(--space-xs);
@@ -1542,9 +1405,8 @@ body.is-nav-open::before {
   }
 
   .nav__links {
-    /* Closed state is invisible, not display:none, so opening can fade and
-       slide instead of snapping. visibility:hidden also keeps the closed
-       links out of the tab order. */
+    /* closed is invisible, not display:none, so opening can fade and slide instead of snapping; visibility:hidden
+       also keeps the closed links out of the tab order */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-0.5rem);
@@ -1564,18 +1426,14 @@ body.is-nav-open::before {
     z-index: 99;
   }
 
-  /* No !important: JS toggles body.is-nav-open, and this selector's higher
-     specificity (1 element + 2 classes = 0,2,1) beats the plain ".nav__links"
-     rule above (0,1,0) on its own, so it wins whenever body has the class —
-     no !important needed, and it still loses to nothing else in this file
-     since nav__links is only styled here and in the desktop (non-media) rule,
-     which this media query already outranks by being more specific+later. */
+  /* JS toggles body.is-nav-open; this selector (0,2,1) beats the plain .nav__links rule (0,1,0) on specificity alone,
+     so no !important is needed */
   body.is-nav-open .nav__links {
     opacity: 1;
     visibility: visible;
     transform: none;
   }
-  
+
   .book-row {
     --book-row-gap: var(--space-lg-sm);
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
@@ -1589,121 +1447,113 @@ body.is-nav-open::before {
   .popular-shelves {
     --band-padding: var(--space-lg);
   }
-  
+
   /* Cards fill their grid track instead of sitting at a fixed width, so
      there is no empty strip on the right. */
   .book-card {
     max-width: none;
   }
-  
+
   .book-card__rating {
     --star-size: 1rem;
   }
-  
+
   .book-card__title {
     font-size: 0.875rem;
   }
-  
-  .book-card__author {
-    font-size: 0.875rem; /* 14px, not 12px */
-  }
-  
+
   .highlights__list {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-md);
   }
-  
+
   .feature-block,
   .feature-block--reverse {
     flex-direction: column;
     gap: var(--space-md);
     padding: var(--space-md);
   }
-  
+
   .feature-block__media {
-    height: auto;
     width: 100%;
     padding: var(--space-base);
   }
-  
+
   footer {
     padding: var(--space-lg-sm);
   }
-  
+
   .footer__inner {
-    flex-wrap: wrap;
     gap: var(--space-lg);
   }
-  
+
   .footer__links,
   .footer__social {
     flex-direction: row;
   }
-  
+
   .signup__form {
     flex-direction: column;
     gap: var(--space-md);
   }
-  
+
   .signup__input {
     width: 100%;
     max-width: 20rem;
   }
-  
+
   .signup__submit {
     width: 100%;
     max-width: 20rem;
   }
-  
+
   .ticket {
     width: 100%;
     max-width: 30rem;
     padding: var(--space-lg-sm);
   }
-  
+
   .intro,
   .features-intro,
   .meet-creator,
   .signup__panel {
     padding: var(--space-lg) var(--space-md);
   }
-  
+
   main {
     gap: var(--space-lg);
     padding-block: var(--space-md);
   }
 }
 
-/* EXTRA SMALL PHONES (≤480px)
-   Last on purpose: on a phone both this block and the 768px block match,
-   and the later one wins. */
+/* extra small phones (up to 480px), last on purpose: on a phone this block and the 768px one both match and the later
+   one wins */
 @media (max-width: 480px) {
   .page-section {
     padding: 0 var(--space-md);
   }
-  
+
   header {
-    padding: var(--space-md) var(--space-md);
+    padding: var(--space-md);
   }
-  
+
   .header__logo {
     font-size: 1.125rem;
     line-height: 1.3;
   }
-  
+
   main {
     gap: var(--space-md);
     padding-block: var(--space-sm) var(--space-md);
   }
-  
+
   .book-row {
-    /* 7.5rem (120px) + 0.75rem (12px) gap: 2*120+12=252px fits inside the
-       272px available at 320px (320 - 48px section padding), and 1fr hands
-       the spare width back to the two cards. */
+    /* 7.5rem (120px) tracks + 12px gap: 2*120+12=252px fits the 272px available at 320px (320 minus 48px section
+       padding), and 1fr hands the spare width back to the two cards */
     --book-row-gap: var(--space-sm);
     grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
   }
-  
+
   .highlights__list {
     grid-template-columns: 1fr;
   }
@@ -1720,11 +1570,11 @@ body.is-nav-open::before {
   .rater {
     --rater-star: 1.875rem;
   }
-  
+
   footer {
     padding: var(--space-md);
   }
-  
+
   .footer__inner {
     flex-direction: column;
     gap: var(--space-md);
@@ -1733,15 +1583,15 @@ body.is-nav-open::before {
   .footer__about {
     flex-basis: auto; /* in a column, 100% would mean height */
   }
-  
+
   .signup__form {
     align-items: stretch;
   }
-  
+
   .ticket {
     padding: var(--space-md);
   }
-  
+
   .intro,
   .features-intro,
   .meet-creator,
