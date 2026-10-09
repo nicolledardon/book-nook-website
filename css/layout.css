@@ -97,7 +97,8 @@
 
 /* home bookshelf: a row of spines on a wooden ledge, decorative only so the section is aria-hidden (the same books
    are listed below and on Explore); hover only swaps the lift and lean variables and the transition on the base state
-   eases it back; narrower screens trim spines from both ends so the shelf stays centred and never scrolls sideways */
+   eases it back; narrower screens trim spines from both ends so the shelf stays centred and never scrolls sideways,
+   and on phones (768px and below) it is hidden entirely */
 .shelf {
   max-width: 75rem;
   margin-top: calc(-1 * var(--space-xl)); /* cancels main's gap above, so the shelf follows the hero's own bottom padding */
@@ -213,24 +214,9 @@
   }
 }
 
+/* phones: decorative only, and it would push the first real content below the fold */
 @media (max-width: 768px) {
   .shelf {
-    margin-top: calc(-1 * var(--space-lg)); /* main's gap is 48px here */
-  }
-
-  .shelf__book:nth-child(-n + 6),
-  .shelf__book:nth-last-child(-n + 6) {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .shelf {
-    margin-top: calc(-1 * var(--space-md)); /* main's gap is 24px here */
-  }
-
-  .shelf__book:nth-child(-n + 8),
-  .shelf__book:nth-last-child(-n + 8) {
     display: none;
   }
 }
